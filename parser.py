@@ -1,6 +1,7 @@
 from cpplint import RemoveMultiLineComments
 from cpplint import CleansedLines
 from cpplint import GetPreviousNonBlankLine
+from pyparsing import *
 import codecs
 import copy
 import getopt
@@ -12,7 +13,6 @@ import string
 import sys
 import unicodedata
 
-#TODO FIRST THING ON THE LIST IS INDENTATION FUNCTIONS
 
 
  #TODO This is on line 1695 cpplint
@@ -24,20 +24,21 @@ import unicodedata
  #   else:
  #     self.class_indent = 0
 
+list_of_errors = {}
+list_of_errors["OPERATOR_SPACE_ERROR"] = "Incorrect spacing around operators"
+list_of_errors["INDENTATION_ERROR"] = "Incorrect indentation.  Check to make sure you are four spaces in from previous code block."
+list_of_errors["COMMAND_ERROR"] = "There should only be one command (statement) on each line.  Ever."
+list_of_errors["IF_ELSE_ERROR"] = "Every If-Else statement should have brackets, regardless."
+list_of_errors["GLOBAL_VARIABLE"] = "You should never, ever, ever... wait for it... ever have a non-const global variable."
+list_of_errors["FUNCTION_LENGTH_ERROR"] = "Your function should not be this long.  Break it up into separate functions."
+list_of_errors["LINE_WIDTH"] = "You exceeded 80 chars on a line.  This needs to be reformatted."
+list_of_errors["BOOL_VALUE"] = "You need to return true or false.  Not 1 or 0."
+list_of_errors["MAGIC_NUMBER"] = "Every number should be stored in a variable, not used as a literal."
+list_of_errors["BRACES_ERROR"] = "Your braces should be egyption style or block style.  You have some kind of formatting error."
+list_of_errors["SPACING_ERROR"] = "Use tabs or spaces, not both."
+list_of_errors["UNNECESSARY_BREAK"] = "Breaks should ONLY be used in switch statements.  Fix your logic."
+list_of_errors["GOTO"] = "Never use the goto function."
 
-OPERATOR_SPACE_ERROR = "Incorrect spacing around operators"
-INDENTATION_ERROR = "Incorrect indentation.  Check to make sure you are four spaces in from previous code block."
-COMMAND_ERROR = "There should only be one command (statement) on each line.  Ever."
-IF_ELSE_ERROR = "Every If-Else statement should have brackets, regardless."
-GLOBAL_VARIABLE = "You should never, ever, ever... wait for it... ever have a non-const global variable."
-FUNCTION_LENGTH_ERROR = "Your function should not be this long.  Break it up into separate functions."
-LINE_WIDTH = "You exceeded 80 chars on a line.  This needs to be reformatted."
-BOOL_VALUE = "You need to return true or false.  Not 1 or 0."
-MAGIC_NUMBER = "Every number should be stored in a variable, not used as a literal."
-BRACES_ERROR = "Your braces should be egyption style or block style.  You have some kind of formatting error."
-SPACING_ERROR = "Use tabs or spaces, not both."
-UNNECESSARY_BREAK = "Breaks should ONLY be used in switch statements.  Fix your logic."
-GOTO = "Never use the goto function."
 
 class Default_Filters():
 
@@ -56,57 +57,12 @@ class StyleError():
         self.label = ""
         self.points_worth = 0
 
+    #TODO: Make this like one line of code with hash table!?
     def __init__(self, points, label, line_num):
-        if label == OPERATOR_SPACE_ERROR:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(OPERATOR_SPACE_ERROR)
-        elif label == INDENTATION_ERROR:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(INDENTATION_ERROR)
-        elif label == COMMAND_ERROR:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(COMMAND_ERROR)
-        elif label == IF_ELSE_ERROR:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(IF_ELSE_ERROR)
-        elif label == GLOBAL_VARIABLE:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(GLOBAL_VARIABLE)
-        elif label == FUNCTION_LENGTH_ERROR:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(FUNCTION_LENGTH_ERROR)
-        elif label == LINE_WIDTH:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(LINE_WIDTH)
-        elif label == BOOL_VALUE:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(BOOL_VALUE)
-        elif label == MAGIC_NUMBER:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(MAGIC_NUMBER)
-        elif label == BRACES_ERROR:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(BRACES_ERROR)
-        elif label == SPACING_ERROR:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(SPACING_ERROR)
-        elif label == UNNECESSARY_BREAK:
-            self.setPointsWorth(1)
-            self.setLineNum(line_num)
-            self.setLabel(UNNECESSARY_BREAK)
-        else:
-            assert "UNRECOGNIZED ERROR LABEL"
+        self.setPointsWorth(points)
+        self.setLineNum(line_num)
+        self.setLabel(list_of_errors[label])
+        print list_of_errors[label]
 
     def setLineNum(self, line):
         self.line_num = line
@@ -120,7 +76,6 @@ class StyleError():
         return self.label
     def getLineNum(self):
         return self.line_num
-
 
 class DataStructureTracker():
     def __init__(self):
@@ -146,11 +101,10 @@ class DataStructureTracker():
         self.brace_stack.pop()
         self.brace_index -= 1
         if self.brace_index == 0:
-            self.isInFunction(False)
+            self.setInBlock(False)
 
     def getBraceIndex(self):
         return self.brace_index
-
 
 class OperatorSpace():
     def __init__(self):
@@ -198,6 +152,8 @@ class StyleRubric(object):
         self.error_tracker = []
         self.output_format = "emacs"
         self.outside_main = True
+        self.egyptian = False
+        self.notEgyptian = False
 
     def setTotalErrors(self, errors):
         self.total_errors = errors
@@ -220,13 +176,17 @@ class StyleRubric(object):
 
     def incrementErrorCount(self, label, line_num):
         self.total_errors += 1
-
         if label not in self.error_types:
             self.error_types[label] = 0
 
         self.error_types[label] += 1
         self.error_tracker.append(StyleError(1, label, line_num))
 
+    def isEgyptian(self, egyptianBool):
+        if egyptianBool:
+            self.egyptian = True
+        else:
+            self.notEgyptian = True
 
 
 def validReturn(filename, clean_lines, line, line_num, rubric):
@@ -242,7 +202,7 @@ def validReturn(filename, clean_lines, line, line_num, rubric):
         else:
             current_line = current_line[6:].strip()
             if(current_line.isdigit()):
-                rubric.incrementErrorCount(MAGIC_NUMBER, line_num)
+                rubric.incrementErrorCount("MAGIC_NUMBER", line_num)
 
 def numOfCommands(filename, clean_lines, line, line_num, rubric):
     cleansed_line = clean_lines.lines[line_num]
@@ -256,13 +216,13 @@ def numOfCommands(filename, clean_lines, line, line_num, rubric):
         not ((cleansed_line.find('case ') != -1 or
         cleansed_line.find('default:') != -1) and
         cleansed_line.find('break;') != -1)):
-        rubric.incrementErrorCount(COMMAND_ERROR, line_num)
+        rubric.incrementErrorCount("COMMAND_ERROR", line_num)
 
 def lineWidthCheck(filename, clean_lines, line, line_num, rubric):
     max_length = 80
     current_length = len(line)
     if current_length > max_length:
-        rubric.incrementErrorCount(LINE_WIDTH, line_num)
+        rubric.incrementErrorCount("LINE_WIDTH", line_num)
 
 def operatorSpacing(filename, clean_lines, line, line_num, operator_space_tracker, rubric):
     code = clean_lines.lines[line_num]
@@ -272,12 +232,13 @@ def operatorSpacing(filename, clean_lines, line, line_num, operator_space_tracke
         not checkOperatorRegEx(code, '\/') or \
         not checkOperatorRegEx(code, '\%') or \
         not checkOperatorRegEx(code, '\*'):
-        rubric.incrementErrorCount(OPERATOR_SPACE_ERROR, line_num)
+
+        rubric.incrementErrorCount("OPERATOR_SPACE_ERROR", line_num)
+
     else:
         return True
 
 def checkOperatorRegEx(code, operator):
-
     regexOne = r'' + '\S+' + operator
     regexTwo =  r'' + operator + '\S+'
     #check to see if there is a non-whitespace character on either side of the operator
@@ -291,7 +252,7 @@ def checkGoTo(clean_lines, line, line_num, rubric):
 
     match = re.search(r'\s+gotos\+', code)
     if(match):
-        rubric.incrementErrorCount(GOTO, line_num)
+        rubric.incrementErrorCount("GOTO", line_num)
 
 def nonConstGlobal(filename, clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
@@ -303,7 +264,40 @@ def nonConstGlobal(filename, clean_lines, line_num, rubric):
         function = re.search(r'(\w(\w|::|\*|\&|\s)*)\(', code)
         variable = re.search(r'^\s*(int|string|char|bool)\s+', code)
         if not function and variable:
-            rubric.incrementErrorCount(GLOBAL_VARIABLE, line_num)
+            rubric.incrementErrorCount("GLOBAL_VARIABLE", line_num)
+
+
+def braceConsistency(clean_lines, line, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    stripped_code = code.strip()
+    function = re.search(r'(\w(\w|::|\*|\&|\s)*)\(', code)
+    if_statement = re.search(r'^if\s*\(\s*', stripped_code)
+    else_if_statement = re.search(r'^else\s*\(', code)
+    else_statement = re.search(r'^else\s+', code)
+    switch_statement = re.search(r'^switch\s*\(', stripped_code)
+
+    if function or else_if_statement or else_statement or switch_statement:
+
+        if function and clean_lines.lines[line_num + 1].find('{') != -1 or\
+            else_if_statement and clean_lines.lines[line_num + 1].find('{') != -1 or\
+            else_statement and clean_lines.lines[line_num + 1].find('{') != -1 or\
+            switch_statement and clean_lines.lines[line_num + 1].find('{') != -1 or\
+                if_statement and clean_lines.lines[line_num + 1].find('{') != -1:
+
+            rubric.isEgyptian(False)
+        elif function and code.find('{') != -1 or \
+                else_if_statement and code.find('{') != -1 or\
+                else_statement and code.find('{') != -1 or\
+                switch_statement and code.find('{') != -1 or\
+                if_statement and code.find('{') != -1:
+
+            rubric.isEgyptian(True)
+        else:
+            rubric.incrementErrorCount("BRACES_ERROR", line_num)
+
+        if rubric.notEgyptian:
+            if rubric.egyptian:
+                rubric.incrementErrorCount("BRACES_ERROR", line_num)
 
 
 def indentationStation(filename, clean_lines, line, line_num, operator_space_tracker, rubric):
@@ -323,7 +317,7 @@ def indentationStation(filename, clean_lines, line, line_num, operator_space_tra
 
     if function or rubric.isOutsideMain():
         if indentation_size != 0:
-            rubric.incrementErrorCount(INDENTATION_ERROR, line_num)
+            rubric.incrementErrorCount("INDENTATION_ERROR", line_num)
         if rubric.isOutsideMain():
             return
 
@@ -343,6 +337,7 @@ def indentationStation(filename, clean_lines, line, line_num, operator_space_tra
         else:
             temp_line_num = line_num
             data_structure_tracker = DataStructureTracker()
+            data_structure_tracker.brace_stack.append('{')
             checkCurrentBlockIndentation(indentation, tab_size, code, rubric,
                                          clean_lines, data_structure_tracker, temp_line_num)
     elif if_statement:
@@ -372,7 +367,6 @@ def indentationStation(filename, clean_lines, line, line_num, operator_space_tra
 def checkCurrentBlockIndentation(indentation, tab_size, code, rubric, clean_lines,
                                  data_structure_tracker, temp_line_num):
 
-
     indentation = re.search(r'^( *)\S', clean_lines.lines[temp_line_num])
     indentation = indentation.group()
     indentation_size = len(indentation) - len(indentation.strip())
@@ -385,7 +379,7 @@ def checkCurrentBlockIndentation(indentation, tab_size, code, rubric, clean_line
         line_start = current_indentation.group()
         current_indentation = len(line_start) - len(line_start.strip())
         if current_indentation != next_indentation and line_start.find('}') == -1:
-            rubric.incrementErrorCount(INDENTATION_ERROR, temp_line_num)
+            rubric.incrementErrorCount("INDENTATION_ERROR", temp_line_num)
         if clean_lines.lines[temp_line_num].find("{") != -1:
             data_structure_tracker.addBrace("{")
             next_indentation = current_indentation + tab_size
@@ -393,24 +387,28 @@ def checkCurrentBlockIndentation(indentation, tab_size, code, rubric, clean_line
             data_structure_tracker.popBrace()
             next_indentation = current_indentation - tab_size
 
-
-
-
 def parseCurrentLine(filename, clean_lines, line, line_num, operator_space_tracker, rubric):
 
-    #TODO
+    #Clear
     nonConstGlobal(filename, clean_lines, line_num, rubric)
+     #Only one statement on the return line?
     validReturn(filename, clean_lines, line, line_num, rubric)
+    #One statement per line
     numOfCommands(filename, clean_lines, line, line_num, rubric)
+    #check to see if the line contains a goto function
     checkGoTo(clean_lines, line, line_num, rubric)
-
     #Check for mixed tabs/spaces and log error #TODO: This can wait
     lineWidthCheck(filename, clean_lines, line, line_num, rubric)
     #Check for unnecessary includes
+    #TODO: Above duh.
+
+    #Check for operator Spacing
     operatorSpacing(filename, clean_lines, line, line_num, operator_space_tracker, rubric)
-    #Call BRACES function to check for correct bracing
+
     #Call function or checking INDENTATION!!
     indentationStation(filename, clean_lines, line, line_num, operator_space_tracker, rubric) #TODO THIS IS UNDER CONSTRUCTION
+    #Check for braces being consistent (egyptian or non-egyptian)
+    braceConsistency(clean_lines, line, line_num, rubric)
 
 
 def processStudentFile(student_code, rubric, filename, operator_space_tracker):
@@ -423,9 +421,7 @@ def processStudentFile(student_code, rubric, filename, operator_space_tracker):
         parseCurrentLine(filename, clean_lines, line, line_num, operator_space_tracker, rubric)
         line_num += 1
 
-
 def gradeStudentFile(filename, rubric, operator_space_tracker):
-
     try:
         student_code = codecs.open(filename, 'r', 'utf8', 'replace').read().split('\n')
         line = 0
@@ -462,14 +458,46 @@ def getArguments(argv):
                                                      'root=',
                                                      'linelength=',
                                                      'extensions='])
-
     except getopt.GetoptError:
         print('Invalid arguments.')
 
     return argv
 
+# def isIfStatement(code):
+#     returntype = (Literal("void") | Literal('int') | Literal('string') |
+#                   Literal('double') | Literal('float') | Literal('char'))
+#     function_name = Word(alphanums + '_')
+#     args= Word(alphanums + ',' + ' ')
+#     function_open = Literal("{")
+#     function_close = Literal("}")
+#     function_decl = returntype + function_name + "(" + Optional(args) + ")"
+#     grammar = function_decl + Optional(function_open)
+#
+#     s = "void function_Name12(int one, int two)"
+#
+#     try:
+#         data = grammar.parseString(s)
+#     except ParseBaseException:
+#         d = ParseBaseException
+
+def isFunction(code):
+
+    returntype = (Literal("void") | Literal('int') | Literal('string') |Literal('double') | Literal('float') | Literal('char'))
+    function_name = Word(alphanums + '_')
+    args= Word(alphanums + ',' + ' ')
+    function_open = Literal("{")
+    function_close = Literal("}")
+    function_decl = returntype + function_name + "(" + Optional(args) + ")"
+    grammar = function_decl + Optional(function_open)
+
+    try:
+        grammar.parseString(code)
+        return True
+    except ParseBaseException:
+        return False
 
 def main():
+
     print "Hello World"
     operator_space_tracker = OperatorSpace()
     rubric = StyleRubric()
@@ -480,11 +508,16 @@ def main():
                                          'replace')
     rubric.resetErrorCount()
 
-
-
     for filename in student_file_names:
         gradeStudentFile(filename, rubric, operator_space_tracker)
-    #function called on each filename function(fileName, rubric)
+
+
+#For debugging purposes only
+    print "Total Errors: " + str(rubric.total_errors)
+    for x,y in rubric.error_types.items():
+        print x, y
+
+ #function called on each filename function(fileName, rubric)
 
 #print / send results
 if __name__ == '__main__':
