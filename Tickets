@@ -10,6 +10,24 @@ Example Ticket:
 
 Ticket 01
 ---------
-Owner: Mike Vianueva
-Problem: Bug with evaluating brace consistency
-  - If you put all braces egyptian style except for the last, the style grader does not pick it up.
+Owner: ???
+Problem: 
+- Fix the bug caused by using multiple command-line arguments (multiple files to check).
+
+Ticket 02
+---------
+Owner: ???
+Problem:
+- Allow extension to be '.h' besides '.cpp'. 
+
+Ticket 03
+---------
+Owner: ???
+Problem:
+- Need to print a newline after "Incorrect filetype".
+
+Ticket 04
+---------
+Owner: ???
+Problem:
+- Fix the crash when asking to check an empty file or one that starts with a blank line.
