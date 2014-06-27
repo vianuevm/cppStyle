@@ -7,6 +7,14 @@ Add colors to error messages (yellow for warnings / potential errors, red for de
 If no error has been found, print an appropriate message in green.  -- Same as above
 Rewrite cheesy error messages. E.g. "You should never, ever, ever... wait for it..."  -- Haha I agree, currently just place holders
 Error messages should have one and not two spaces after error messages.  -- Those error messages are just for debugging currently.
+
+****
+I agree the files need to be split up.  I'm still deciding what backend framework should be using.  If you have knowledge of python frameworks
+that play well with Angular let me know and I'll look into'em.  Once a framwork is decided we can determine the MVC setup.
+
+Also, I might make the webapp and style-grader two separate applications.  Still much to be learned :P
+****
+
 Split roger.py into three files:  
 - parser: model that finds errors; this could be reused for the website without major modifications.
 - main: controller that opens the files with source code and checks their style.
