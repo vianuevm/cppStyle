@@ -103,3 +103,11 @@ Ticket 16
 Owner: Mike
 Problem:
 - Operator Space function doesn't consider self-incrementing.  (It sees i++ as an error)
+
+Ticket 17
+---------
+Owner: Mike
+Problem:
+- Messy code needs to be refactored with consistent naming conventions and multiple files.
+- Settling currently on separating into functions, main, and classes files.
+- MVC framework is possible, still deciding if webapp will be entirely separate (leaning in this direction)
