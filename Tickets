@@ -55,3 +55,45 @@ Ticket 08
 Owner: Mike 
 Problem:
 - Convert all RegEx expressions to PyParsing functions to increase accuracy.
+
+Ticket 09
+---------
+Owner: ??? 
+Problem:
+Check that main is declared as main(), main(void) or main(int argc, char* argv[]) -- Will add ticket
+
+Ticket 10
+---------
+Owner: ??? 
+Problem:
+Check that return type of main is 'int'. No need to check for 'return 0'. -- Will add ticket
+
+Ticket 11
+---------
+Owner: ??? 
+Problem:
+Check that code does not have 'continue'  
+
+Ticket 12
+---------
+Owner: ??? 
+Problem:
+Check that no '#define' is used.
+
+Ticket 13
+---------
+Owner: ??? 
+Problem:
+Check that no ternary operator is used.
+
+Ticket 14
+---------
+Owner: ??? 
+Problem:
+Check that no 'while (true)' is used.
+
+Ticket 15
+---------
+Owner: ??? 
+Problem:
+Check that no 'x == true' or 'x == false' is used.
