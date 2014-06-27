@@ -1,1 +1,43 @@
 Suggestions for Additions / Changes
+
+BUGS:
+Fix the bug caused by using multiple command-line arguments (multiple files to check).
+Allow extension to be '.h' besides '.cpp'.
+Need to print a newline after "Incorrect filetype".
+Fix the crash when asking to check an empty file or one that starts with a blank line.
+
+IMPROVEMENTS:
+Check that there is at least one command-line argument / file to check.
+Add line (and sometimes column) numbers to error messages. Add optional column number variable to StyleError.
+Add colors to error messages (yellow for warnings / potential errors, red for definite errors).
+If no error has been found, print an appropriate message in green.
+Rewrite cheesy error messages. E.g. "You should never, ever, ever... wait for it..."
+Error messages should have one and not two spaces after error messages.
+Split roger.py into three files:
+- parser: model that finds errors; this could be reused for the website without major modifications.
+- main: controller that opens the files with source code and checks their style.
+- style errors: view that has warning and error messages and displays them to the user.
+In a more stable version, print debugging messages (e.g. Total Errors: N) if 'debug' is the first command-line argument.
+
+ADDITIONAL CHECKS:
+Extend brace consistency checking to loops (for, while, do-while).
+Compare lines of comments to the total number of lines. Too few comments would be a warning.
+Check that the file has a multi-line comment at the top.
+Check for 1 space between '//' and comment.
+Check for 1 space after 'if' and similar keywords.
+Do not allow tab characters for indentation.
+Check that main is declared as main(), main(void) or main(int argc, char* argv[]).
+Check that return type of main is 'int'. No need to check for 'return 0'.
+Check that code does not have 'continue'
+Check that no '#define' is used.
+Check that no ternary operator is used.
+Check that no 'while (true)' is used.
+Check that no 'x == true' or 'x == false' is used.
+Check that 0 and 1 are never used as true and false (not just in return value; though ).
+Check that names of constants are in capitals.
+Check for consistent naming convention (camel case or underscores). Note that this might be difficult to enforce due to most projects having distribution code with one or the other naming convention. Best to adopt one convesion for distribution code (e.g. camel case).
+Check that names of classes are capitalized.
+Discourage inline comments.
+Check the length of identifiers' names. Some students name their variables a, b, c, A, B, C, etc. Of course allow i, j, k, l, n.
+Check for consistent placement of * and &.
+Check that necessary libraries are #inlcuded (e.g. string).
