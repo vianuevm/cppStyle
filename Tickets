@@ -31,3 +31,10 @@ Ticket 04
 Owner: ???
 Problem:
 - Fix the crash when asking to check an empty file or one that starts with a blank line.
+
+Ticket 05
+---------
+Owner: ???
+Problem:
+- Check that there is at least one command-line argument / file to check.
+
