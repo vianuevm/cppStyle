@@ -1,11 +1,5 @@
 Suggestions for Additions / Changes
 
-BUGS:
-Fix the bug caused by using multiple command-line arguments (multiple files to check).
-Allow extension to be '.h' besides '.cpp'.
-Need to print a newline after "Incorrect filetype".
-Fix the crash when asking to check an empty file or one that starts with a blank line.
-
 IMPROVEMENTS:
 Check that there is at least one command-line argument / file to check.
 Add line (and sometimes column) numbers to error messages. Add optional column number variable to StyleError.
