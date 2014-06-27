@@ -1,37 +1,37 @@
 Suggestions for Additions / Changes
 
 IMPROVEMENTS:
-Check that there is at least one command-line argument / file to check.
-Add line (and sometimes column) numbers to error messages. Add optional column number variable to StyleError.
-Add colors to error messages (yellow for warnings / potential errors, red for definite errors).
-If no error has been found, print an appropriate message in green.
-Rewrite cheesy error messages. E.g. "You should never, ever, ever... wait for it..."
-Error messages should have one and not two spaces after error messages.
-Split roger.py into three files:
+Check that there is at least one command-line argument / file to check.  --Added a ticket
+Add line (and sometimes column) numbers to error messages. Add optional column number variable to StyleError. -- Line numbers are recorded, column numbers are a possibility if deemed necessary later.
+Add colors to error messages (yellow for warnings / potential errors, red for definite errors).  -- UI / UX are last priority, these things will be considered at the end.
+If no error has been found, print an appropriate message in green.  -- Same as above
+Rewrite cheesy error messages. E.g. "You should never, ever, ever... wait for it..."  -- Haha I agree, currently just place holders
+Error messages should have one and not two spaces after error messages.  -- Those error messages are just for debugging currently.
+Split roger.py into three files:  
 - parser: model that finds errors; this could be reused for the website without major modifications.
 - main: controller that opens the files with source code and checks their style.
 - style errors: view that has warning and error messages and displays them to the user.
 In a more stable version, print debugging messages (e.g. Total Errors: N) if 'debug' is the first command-line argument.
 
 ADDITIONAL CHECKS:
-Extend brace consistency checking to loops (for, while, do-while).
-Compare lines of comments to the total number of lines. Too few comments would be a warning.
-Check that the file has a multi-line comment at the top.
-Check for 1 space between '//' and comment.
-Check for 1 space after 'if' and similar keywords.
-Do not allow tab characters for indentation.
-Check that main is declared as main(), main(void) or main(int argc, char* argv[]).
-Check that return type of main is 'int'. No need to check for 'return 0'.
-Check that code does not have 'continue'
-Check that no '#define' is used.
-Check that no ternary operator is used.
-Check that no 'while (true)' is used.
-Check that no 'x == true' or 'x == false' is used.
-Check that 0 and 1 are never used as true and false (not just in return value; though ).
-Check that names of constants are in capitals.
+Extend brace consistency checking to loops (for, while, do-while).  -- This might already be done, can't remember.
+Compare lines of comments to the total number of lines. Too few comments would be a warning.  -- This will be grader only for now (low priority)
+Check that the file has a multi-line comment at the top.  -- Also low priority now
+Check for 1 space between '//' and comment.  -- Too subjective and menial
+Check for 1 space after 'if' and similar keywords. -- Too subjective (industry standards vary)
+Do not allow tab characters for indentation. -- One or the other is fine, just not both.
+Check that main is declared as main(), main(void) or main(int argc, char* argv[]) -- Will add ticket
+Check that return type of main is 'int'. No need to check for 'return 0'. -- Will add ticket
+Check that code does not have 'continue'  -- Good catch!  Add ticket
+Check that no '#define' is used.  -- Add Ticket
+Check that no ternary operator is used.-- Add ticket
+Check that no 'while (true)' is used. -- Add ticket
+Check that no 'x == true' or 'x == false' is used. -- Add ticket
+Check that 0 and 1 are never used as true and false (not just in return value; though ). -- Add ticket
+Check that names of constants are in capitals. -- Might be low priority riht now
 Check for consistent naming convention (camel case or underscores). Note that this might be difficult to enforce due to most projects having distribution code with one or the other naming convention. Best to adopt one convesion for distribution code (e.g. camel case).
-Check that names of classes are capitalized.
-Discourage inline comments.
+Check that names of classes are capitalized. -- Add ticket
+Discourage inline comments. -- Low priority right now
 Check the length of identifiers' names. Some students name their variables a, b, c, A, B, C, etc. Of course allow i, j, k, l, n.
-Check for consistent placement of * and &.
-Check that necessary libraries are #inlcuded (e.g. string).
+Check for consistent placement of * and &.  -- Low priority right now
+Check that necessary libraries are #inlcuded (e.g. string).  -- This will be autograder's responsibility.
