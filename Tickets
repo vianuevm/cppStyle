@@ -97,3 +97,9 @@ Ticket 15
 Owner: ??? 
 Problem:
 Check that no 'x == true' or 'x == false' is used.
+
+Ticket 16
+---------
+Owner: Mike
+Problem:
+- Operator Space function doesn't consider self-incrementing.  (It sees i++ as an error)
