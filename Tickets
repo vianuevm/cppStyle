@@ -38,3 +38,20 @@ Owner: ???
 Problem:
 - Check that there is at least one command-line argument / file to check.
 
+Ticket 06
+---------
+Owner: ???
+Problem:
+- Check that no ternary operator is used.
+
+Ticket 07
+---------
+Owner: ???
+Problem: 
+- Check that no 'while (true)' is used.
+
+Ticket 08
+---------
+Owner: Mike 
+Problem:
+- Convert all RegEx expressions to PyParsing functions to increase accuracy.
