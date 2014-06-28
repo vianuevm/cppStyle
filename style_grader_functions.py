@@ -27,7 +27,7 @@ def valid_return(filename, clean_lines, line, line_num, rubric):
         else:
             current_line = current_line[6:].strip()
             if current_line.isdigit():
-                rubric.increment_error_count("BOOL_VALUE", line_num)
+                rubric.add_error("BOOL_VALUE", line_num)
 
 
 def num_of_commands(filename, clean_lines, line, line_num, rubric):
@@ -43,14 +43,14 @@ def num_of_commands(filename, clean_lines, line, line_num, rubric):
         cleansed_line.find('default:') != -1) and
         cleansed_line.find('break;') != -1)):
         
-        rubric.increment_error_count("COMMAND_ERROR", line_num)
+        rubric.add_error("COMMAND_ERROR", line_num)
 
 
 def line_width_check(filename, clean_lines, line, line_num, rubric):
     max_length = 80
     current_length = len(line)
     if current_length > max_length:
-        rubric.increment_error_count("LINE_WIDTH", line_num)
+        rubric.add_error("LINE_WIDTH", line_num)
 
 
 def operator_spacing(filename, clean_lines, line, line_num, operator_space_tracker, rubric):
@@ -61,7 +61,7 @@ def operator_spacing(filename, clean_lines, line, line_num, operator_space_track
         not check_operator_regex(code, '\/') or \
         not check_operator_regex(code, '\%') or \
         not check_operator_regex(code, '\*'):
-        rubric.increment_error_count("OPERATOR_SPACE_ERROR", line_num)
+        rubric.add_error("OPERATOR_SPACE_ERROR", line_num)
 
     else:
         return True
@@ -111,7 +111,7 @@ def check_go_to(clean_lines, line, line_num, rubric):
 
     match = re.search(r'\s+gotos\+', code)
     if match :
-        rubric.increment_error_count("GOTO", line_num)
+        rubric.add_error("GOTO", line_num)
 
 
 def check_non_const_global(filename, clean_lines, line_num, rubric):
@@ -120,11 +120,11 @@ def check_non_const_global(filename, clean_lines, line_num, rubric):
     if re.search(r'int main', code):
         rubric.set_inside_main()
 
-    if rubric.check_is_outside_main():
+    if rubric.is_outside_main():
         function = check_if_function(code)
         variable = re.search(r'^\s*(int|string|char|bool)\s+', code)
         if not function and variable:
-            rubric.increment_error_count("GLOBAL_VARIABLE", line_num)
+            rubric.add_error("GLOBAL_VARIABLE", line_num)
 
 
 def check_brace_consistency(clean_lines, line, line_num, rubric):
@@ -144,21 +144,21 @@ def check_brace_consistency(clean_lines, line, line_num, rubric):
             switch_statement and clean_lines.lines[line_num + 1].find('{') != -1 or\
                 if_statement and clean_lines.lines[line_num + 1].find('{') != -1:
 
-            rubric.is_egyptian_style(False)
+            rubric.set_egyptian_style(False)
         elif function and code.find('{') != -1 or \
                 else_if_statement and code.find('{') != -1 or\
                 else_statement and code.find('{') != -1 or\
                 switch_statement and code.find('{') != -1 or\
                 if_statement and code.find('{') != -1:
 
-            rubric.is_egyptian_style(True)
-        elif not rubric.check_is_outside_main():
-            rubric.increment_error_count("BRACES_ERROR", line_num)
+            rubric.set_egyptian_style(True)
+        elif not rubric.is_outside_main():
+            rubric.add_error("BRACES_ERROR", line_num)
 
         #if both of these are true, they are not consistent, therefore error.
         if rubric.notEgyptian:
             if rubric.egyptian:
-                rubric.increment_error_count("BRACES_ERROR", line_num)
+                rubric.add_error("BRACES_ERROR", line_num)
 
 
 def check_function_block_indentation(filename, clean_lines, line, line_num,
@@ -180,10 +180,10 @@ def check_function_block_indentation(filename, clean_lines, line, line_num,
     else:
         return
 
-    if function or rubric.check_is_outside_main():
+    if function or rubric.is_outside_main():
         if indentation_size != 0:
-            rubric.increment_error_count("INDENTATION_ERROR", line_num)
-        if rubric.check_is_outside_main():
+            rubric.add_error("INDENTATION_ERROR", line_num)
+        if rubric.is_outside_main():
             return
 
     #TODO: Need to check indentation ON the same line as the function still
@@ -230,7 +230,7 @@ def process_current_blocks_indentation(indentation, tab_size, code, rubric, clea
             line_start = current_indentation.group()
             current_indentation = len(line_start) - len(line_start.strip())
             if current_indentation != next_indentation and line_start.find('}') == -1:
-                rubric.increment_error_count("INDENTATION_ERROR", temp_line_num)
+                rubric.add_error("INDENTATION_ERROR", temp_line_num)
             if clean_lines.lines[temp_line_num].find("{") != -1:
                 data_structure_tracker.add_brace("{")
                 next_indentation = current_indentation + tab_size

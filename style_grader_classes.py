@@ -162,11 +162,11 @@ class StyleRubric(object):
     def set_inside_main(self):
         self.outside_main = False
 
-    def check_is_outside_main(self):
+    def is_outside_main(self):
         return self.outside_main
 
-    def increment_error_count(self, label, line_num):
-        #NOTE: Perhaps "add_error() instead"
+    def add_error(self, label, line_num):
+        #Naming convention adds clarity
         self.total_errors += 1
         if label not in self.error_types:
             self.error_types[label] = 0
@@ -174,8 +174,8 @@ class StyleRubric(object):
         self.error_types[label] += 1
         self.error_tracker.append(StyleError(1, label, line_num))
 
-    def is_egyptian_style(self, egyptian_bool):
-        #NOTE: Naming convention suggests that this returns a bool instead of setting one
+    def set_egyptian_style(self, egyptian_bool):
+        #Naming convention suggests that "is_x()" returns a bool instead of setting one
         if egyptian_bool:
             self.egyptian = True
         else:
