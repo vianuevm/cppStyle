@@ -141,6 +141,9 @@ class StyleRubric(object):
         # A list of StyleError objects generated from student's code
         self.error_tracker = []
         self.output_format = "emacs" #TODO: If this can be something other than 'emacs', should load from config file
+        self.reset_for_new_file()
+
+    def reset_for_new_file(self):
         self.outside_main = True
         self.egyptian = False
         self.notEgyptian = False

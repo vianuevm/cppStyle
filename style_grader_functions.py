@@ -278,6 +278,7 @@ def process_current_student_file(student_code, rubric, filename, operator_space_
 
 
 def grade_student_file(filename, rubric, operator_space_tracker):
+    print "Grading student submission: {}".format(filename)
     try:
         student_code = codecs.open(filename, 'r', 'utf8', 'replace').read().split('\n')
         newline = False
