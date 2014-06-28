@@ -8,6 +8,12 @@ If no error has been found, print an appropriate message in green.  -- Same as a
 Rewrite cheesy error messages. E.g. "You should never, ever, ever... wait for it..."  -- Haha I agree, currently just place holders
 Error messages should have one and not two spaces after error messages.  -- Those error messages are just for debugging currently.
 
+Comments (Steve):
+Make sure all classes follow new-style object guidelines for Python (https://www.python.org/doc/newstyle/) - inherit from 'object'
+Would be appreciated if all objects have appropriate docstrings, and __init__ method docstrings list parameter info
+Agree that the error messages should go somewhere else, O-O or .ini them maybe, though perhaps y'all have a better idea
+roger.py definitely needs to be split into more than one module. (edit: y'all beat me to it)
+The first two are easy fixes and they'll make my work much simpler as well. I'll pick up some tickets this weekend and get rolling.
 ****
 I agree the files need to be split up.  I'm still deciding what backend framework should be using.  If you have knowledge of python frameworks
 that play well with Angular let me know and I'll look into'em.  Once a framwork is decided we can determine the MVC setup.
