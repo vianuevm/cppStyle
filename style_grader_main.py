@@ -3,11 +3,19 @@ from style_grader_functions import *
 
 #TODO: Set up standard error to print properly
 def main():
-    student_file_names = get_arguments(sys.argv[1:])
+    
     sys.stderr = codecs.StreamReaderWriter(sys.stderr,
                                          codecs.getreader('utf8'),
                                          codecs.getwriter('utf8'),
                                          'replace')
+    # Quick fix for now - ultimately this should be handled using argparse (TODO)
+    if len(sys.argv) == 1:
+        # No files were provided
+        sys.stderr.write("Error: No files provided\n")
+        # Should print usage info here, but argparse will autogen that - skipping this until that's decided
+        sys.stderr.write("<Generic usage info>\n")
+    
+    student_file_names = get_arguments(sys.argv[1:])
     
     rubric = StyleRubric()
     #rubric.reset_error_count() # Is this line necessary?
