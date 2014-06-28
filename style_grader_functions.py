@@ -1,8 +1,6 @@
-from cpplint import RemoveMultiLineComments
-from cpplint import CleansedLines
-from cpplint import GetPreviousNonBlankLine
-from style_grader_classes import *
-from pyparsing import *
+from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
+from style_grader_classes import DefaultFilters, StyleError, DataStructureTracker, OperatorSpace, StyleRubric
+from pyparsing import Literal, Word, Optional, ParseBaseException, alphanums
 import codecs
 import copy
 import getopt
