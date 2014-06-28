@@ -1,3 +1,4 @@
+#!/usr/bin/env
 from style_grader_functions import *
 
 #TODO: Set up standard error to print properly
