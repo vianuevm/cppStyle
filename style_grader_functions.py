@@ -297,7 +297,7 @@ def grade_student_file(filename, rubric, operator_space_tracker):
         location = filename.find('.') + 1
         extension = filename[location:]
 
-        if extension != 'cpp':
+        if extension not in ['h', 'cpp']:
             sys.stderr.write("Incorrect file type")
             return
 
