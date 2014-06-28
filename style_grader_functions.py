@@ -298,7 +298,7 @@ def grade_student_file(filename, rubric, operator_space_tracker):
         extension = filename[location:]
 
         if extension not in ['h', 'cpp']:
-            sys.stderr.write("Incorrect file type")
+            sys.stderr.write("Incorrect file type\n")
             return
 
     except IOError:
