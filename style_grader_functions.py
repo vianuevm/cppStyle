@@ -109,7 +109,7 @@ def check_operator_regex(code, operator):
 def check_go_to(clean_lines, line, line_num, rubric):
     code = clean_lines.lines[line_num]
 
-    match = re.search(r'\s+gotos\+', code)
+    match = re.search(r'(\s+|^)goto\s+', code)
     if match :
         rubric.add_error("GOTO", line_num)
 
