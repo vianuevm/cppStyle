@@ -1,6 +1,6 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
 from style_grader_classes import DefaultFilters, StyleError, DataStructureTracker, OperatorSpace, StyleRubric
-from pyparsing import Literal, Word, Optional, ParseBaseException, alphanums
+from pyparsing import Literal, Word, Optional, ParseException, Group, alphanums
 import codecs
 import copy
 import getopt
@@ -66,6 +66,13 @@ def operator_spacing(filename, clean_lines, line, line_num, operator_space_track
     else:
         return True
 
+def check_equals_true(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    variable = Word(alphanums)
+    keyword = Literal("true") | Literal("false")
+    statement_parser = Group(variable + "==" + keyword) | Group(keyword + "==" + variable)
+    if len(statement_parser.searchString(code)):
+        rubric.add_error("EQUALS_TRUE", line_num) 
 
 def check_operator_regex(code, operator):
     regex_one = r'' + '\S+' + operator
@@ -260,6 +267,10 @@ def parse_current_line_of_code(filename, clean_lines, line, line_num,
     line_width_check(filename, clean_lines, line, line_num, rubric)
     #Check for #define statements
     check_define_statements(clean_lines, line, line_num, rubric)
+    #Check for "== true" statements
+    check_equals_true(clean_lines, line_num, rubric)
+
+    
     #Check for unnecessary includes
     #TODO: Above duh.
 
@@ -348,5 +359,5 @@ def check_if_function(code):
     try:
         grammar.parseString(code)
         return True
-    except ParseBaseException:
+    except ParseException:
         return False

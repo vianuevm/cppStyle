@@ -38,7 +38,8 @@ class StyleError(object):
             "SPACING_ERROR": "Use tabs or spaces, not both.",
             "UNNECESSARY_BREAK": "Breaks should ONLY be used in switch statements. Fix your logic.",
             "GOTO": "Never use the goto function.",
-            "DEFINE_STATEMENT": "While define statements have their applications, we do not allow them in EECS 183."
+            "DEFINE_STATEMENT": "While define statements have their applications, we do not allow them in EECS 183.",
+            "EQUALS_TRUE": "It is stylistically preferred to use 'if (x)' instead of 'if (x == true)'."
         }
 
         self.set_points_worth(points)

@@ -15,6 +15,11 @@ int main(){
         cout << "Hello World!" << endl;
         cout << "Hello World!" << endl;
     }
+    
+    if (5 == true) {
+        cout << "Hello World!" << endl;
+        cout << "Hello World!" << endl;
+    }
 
     for(int x = 0; x < 10; ++x){
         cout << x;
