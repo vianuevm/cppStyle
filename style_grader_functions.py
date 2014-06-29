@@ -13,7 +13,7 @@ import sys
 import unicodedata
 
 
-def valid_return(filename, clean_lines, line, line_num, rubric):
+def valid_return(clean_lines, line_num, rubric):
     code = clean_lines.lines
     current_line = code[line_num]
     returnVal = re.search(r'\s+return\s+', current_line)
@@ -30,7 +30,7 @@ def valid_return(filename, clean_lines, line, line_num, rubric):
                 rubric.add_error("BOOL_VALUE", line_num)
 
 
-def num_of_commands(filename, clean_lines, line, line_num, rubric):
+def num_of_commands(clean_lines, line_num, rubric):
     cleansed_line = clean_lines.lines[line_num]
     # This code is taken directly from cpplint lines 3430-3440
     if (cleansed_line.count(';') > 1 and
@@ -46,14 +46,14 @@ def num_of_commands(filename, clean_lines, line, line_num, rubric):
         rubric.add_error("COMMAND_ERROR", line_num)
 
 
-def line_width_check(filename, clean_lines, line, line_num, rubric):
+def line_width_check(line, rubric):
     max_length = 80
     current_length = len(line)
     if current_length > max_length:
         rubric.add_error("LINE_WIDTH", line_num)
 
 
-def operator_spacing(filename, clean_lines, line, line_num, operator_space_tracker, rubric):
+def operator_spacing(clean_lines, line_num, operator_space_tracker, rubric):
     code = clean_lines.lines[line_num]
     matches = []
     if not check_operator_regex(code, '\+')  or \
@@ -113,7 +113,7 @@ def check_operator_regex(code, operator):
         return True
 
 
-def check_go_to(clean_lines, line, line_num, rubric):
+def check_go_to(clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
 
     match = re.search(r'(\s+|^)goto\s+', code)
@@ -145,7 +145,7 @@ def check_while_true(clean_lines, line_num, rubric):
     if len(statement_parser.searchString(code)):
         rubric.add_error("WHILE_TRUE", line_num)
 
-def check_non_const_global(filename, clean_lines, line_num, rubric):
+def check_non_const_global(clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
 
     if re.search(r'int main', code):
@@ -158,7 +158,7 @@ def check_non_const_global(filename, clean_lines, line_num, rubric):
             rubric.add_error("GLOBAL_VARIABLE", line_num)
 
 
-def check_brace_consistency(clean_lines, line, line_num, rubric):
+def check_brace_consistency(clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
     stripped_code = code.strip()
     function = check_if_function(code)
@@ -192,7 +192,7 @@ def check_brace_consistency(clean_lines, line, line_num, rubric):
                 rubric.add_error("BRACES_ERROR", line_num)
 
 
-def check_function_block_indentation(filename, clean_lines, line, line_num,
+def check_function_block_indentation(filename, clean_lines, line_num,
                                      operator_space_tracker, rubric):
 
     tab_size = 4
@@ -243,15 +243,18 @@ def check_function_block_indentation(filename, clean_lines, line, line_num,
     else:
         return
 
-def check_main_syntax(clean_lines, line_num, rubric):
-    code = clean_lines.lines[line_num]
-    main_syntax = Literal("main")+Literal("(")
-    full_use = "int"+Word(alphanums)+","+"char*"+Word(alphanums)+"["+"]"+")"
-    # 3 options for main() syntax
-    if not len((main_syntax+Literal(")")).searchString(code)) and \
-       not len((main_syntax+Literal("void")+Literal(")")).searchString(code)) and \
-       not len((main_syntax+full_use).searchString(code)):
-        rubric.add_error("MAIN_SYNTAX", line_num) 
+def check_main_prefix(clean_lines, line_num, rubric):
+    #Return value for main is optional in C++11
+    parser = Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")+Literal("{")
+    if len(parser.searchString(clean_lines.lines[line_num])):
+        code = clean_lines.lines[line_num]
+        main_prefix = Literal("main")+Literal("(")
+        full_use = "int"+Word(alphanums)+","+"char*"+Word(alphanums)+"["+"]"+")"
+        # 3 options for main() syntax
+        if not len((main_prefix+Literal(")")).searchString(code)) and \
+           not len((main_prefix+Literal("void")+Literal(")")).searchString(code)) and \
+           not len((main_prefix+full_use).searchString(code)):
+            rubric.add_error("MAIN_SYNTAX", line_num) 
 
 def process_current_blocks_indentation(indentation, tab_size, code, rubric, clean_lines,
                                        data_structure_tracker, temp_line_num):
@@ -282,21 +285,18 @@ def process_current_blocks_indentation(indentation, tab_size, code, rubric, clea
 def parse_current_line_of_code(filename, clean_lines, line, line_num,
                                operator_space_tracker, rubric):
    
-    #Check for proper main() declaration
-    #Return value for main is optional in C++11
-    parser = Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")+Literal("{")
-    if len(parser.searchString(clean_lines.lines[line_num])):
-        check_main_syntax(clean_lines, line_num, rubric)
+    #Check for proper main() declaration (if main is present on this line)
+    check_main_prefix(clean_lines, line_num, rubric)
     #Check non const globals
-    check_non_const_global(filename, clean_lines, line_num, rubric)
+    check_non_const_global(clean_lines, line_num, rubric)
      #Only one statement on the return line?
-    valid_return(filename, clean_lines, line, line_num, rubric)
+    valid_return(clean_lines, line_num, rubric)
     #One statement per line
-    num_of_commands(filename, clean_lines, line, line_num, rubric)
+    num_of_commands(clean_lines, line_num, rubric)
     #check to see if the line contains a goto function
-    check_go_to(clean_lines, line, line_num, rubric)
+    check_go_to(clean_lines, line_num, rubric)
     #Check for mixed tabs/spaces and log error #TODO: This can wait
-    line_width_check(filename, clean_lines, line, line_num, rubric)
+    line_width_check(line, rubric)
     #Check for #define statements
     check_define_statements(clean_lines, line_num, rubric)
     #Check for "== true" statements
@@ -313,14 +313,14 @@ def parse_current_line_of_code(filename, clean_lines, line, line_num,
     #TODO: Above duh.
 
     #Check for operator Spacing
-    operator_spacing(filename, clean_lines, line, line_num, operator_space_tracker, rubric)
+    operator_spacing(clean_lines, line_num, operator_space_tracker, rubric)
 
     #Call function or checking INDENTATION!!
-    check_function_block_indentation(filename, clean_lines, line, line_num, operator_space_tracker,
+    check_function_block_indentation(filename, clean_lines, line_num, operator_space_tracker,
                        rubric)
                        #TODO THIS IS UNDER CONSTRUCTION
     #Check for braces being consistent (egyptian or non-egyptian)
-    check_brace_consistency(clean_lines, line, line_num, rubric)
+    check_brace_consistency(clean_lines, line_num, rubric)
 
 
 def process_current_student_file(student_code, rubric, filename, operator_space_tracker):
