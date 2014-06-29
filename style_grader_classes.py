@@ -1,35 +1,4 @@
-#TODO: Find this data a non-global home
-#This is global/hard-coded for now till it gets a database home.
-list_of_errors = {}
-list_of_errors["OPERATOR_SPACE_ERROR"] = \
-    "Incorrect spacing around operators"
-list_of_errors["INDENTATION_ERROR"] = \
-    "Incorrect indentation.  Check to make sure you are four spaces in from previous code block."
-list_of_errors["COMMAND_ERROR"] = \
-    "There should only be one command (statement) on each line.  Ever."
-list_of_errors["IF_ELSE_ERROR"] = \
-    "Every If-Else statement should have brackets, regardless."
-list_of_errors["GLOBAL_VARIABLE"] = \
-    "You should never, ever, ever... wait for it... ever have a non-const global variable."
-list_of_errors["FUNCTION_LENGTH_ERROR"] = \
-    "Your function should not be this long.  Break it up into separate functions."
-list_of_errors["LINE_WIDTH"] = \
-    "You exceeded 80 chars on a line.  This needs to be reformatted."
-list_of_errors["BOOL_VALUE"] = \
-    "You need to return true or false.  Not an actual number."
-list_of_errors["MAGIC_NUMBER"] = \
-    "Every number should be stored in a variable, not used as a literal."
-list_of_errors["BRACES_ERROR"] = \
-    "Your braces should be egyption style or block style.  You have some kind of formatting error."
-list_of_errors["SPACING_ERROR"] = \
-    "Use tabs or spaces, not both."
-list_of_errors["UNNECESSARY_BREAK"] = \
-    "Breaks should ONLY be used in switch statements.  Fix your logic."
-list_of_errors["GOTO"] = \
-    "Never use the goto function."
-
-
-class DefaultFilters():
+class DefaultFilters(object):
     def __init__(self):
         self.goto = True
         self.globals = True
@@ -37,14 +6,46 @@ class DefaultFilters():
 
 #Todo: Define filters through command line arguments
 
+class StyleError(object):
+    """
+    Represents a style error in the student's code.
+    """
 
-class StyleError():
     def __init__(self):
         self.line_num = 0
         self.label = ""
         self.points_worth = 0
 
     def __init__(self, points, label, line_num):
+        """
+        Log the line number, type and point value of a specific error.
+        points (int): Weight of this error.
+        label (str): Key for response lookup in list_of_errors.
+        line_num (int): Line number of this error.
+        """
+
+        list_of_errors = {
+            "OPERATOR_SPACE_ERROR": "Incorrect spacing around operators",
+            "INDENTATION_ERROR": "Incorrect indentation. Check to make sure you are four spaces in from previous code block.",
+            "COMMAND_ERROR": "There should only be one command (statement) on each line.",
+            "IF_ELSE_ERROR": "Every If-Else statement should have brackets.",
+            "GLOBAL_VARIABLE": "You should never have a non-const global variable.",
+            "FUNCTION_LENGTH_ERROR": "Your function is too long. Break it up into separate functions.",
+            "LINE_WIDTH": "Line limit of 80 characters exceeded.",
+            "BOOL_VALUE": "You need to return true or false, instead of an actual number.",
+            "MAGIC_NUMBER": "Store numbers in variables, so that you can give them meaningful names.",
+            "BRACES_ERROR": "Your braces should be either Egyptian or block style, pick one.",
+            "SPACING_ERROR": "Use tabs or spaces, not both.",
+            "UNNECESSARY_BREAK": "Breaks should ONLY be used in switch statements. Fix your logic.",
+            "GOTO": "Never use the goto function.",
+            "DEFINE_STATEMENT": "While define statements have their applications, we do not allow them in EECS 183.",
+            "EQUALS_TRUE": "It is stylistically preferred to use 'if (x)' instead of 'if (x == true)'.",
+            "WHILE_TRUE": "It is almost always preferred to use an explicit conditional instead of 'while(true)'.",
+            "TERNARY_OPERATOR": "The use of ternary expressions (e.g. return f(x) ? true : false) is discouraged in EECS 183.",
+            "CONTINUE_STATEMENT": "While 'continue' is occasionally appropriate, we discourage its use in EECS 183.",
+            "MAIN_SYNTAX": "Your declaration of main() does not adhere to conventional stylistic guidelines.",
+        }
+
         self.set_points_worth(points)
         self.set_line_num(line_num)
         self.set_label(list_of_errors[label])
@@ -64,7 +65,11 @@ class StyleError():
         return self.line_num
 
 
-class DataStructureTracker():
+class DataStructureTracker(object):
+    """
+    Counter object to track braces so we know whether or not we're inside a code block.
+    """
+
     def __init__(self):
         self.in_block = False
         self.brace_stack = []
@@ -93,7 +98,11 @@ class DataStructureTracker():
     def get_brace_index(self):
         return self.brace_index
 
-class OperatorSpace():
+class OperatorSpace(object):
+    """
+    Counter object to track instances of binary operands.
+    """
+    
     def __init__(self):
         self.add = 0
         self.sub = 0
@@ -101,9 +110,9 @@ class OperatorSpace():
         self.less = 0
         self.divide = 0
         self.mod = 0
-        self.total = 0
+        self.total = 0 #TODO: Only calculate total on request
 
-    def add_even_instance(self, amount):
+    def add_even_instance(self, amount): # Why is this named 'even'?
         self.add += amount
         self.total += amount
 
@@ -127,22 +136,26 @@ class OperatorSpace():
         self.mod += amount
         self.total += amount
 
-
-
 class StyleRubric(object):
-    """ This class sets all variable aspects of grading (whitespace, gotos etc)
+    """
+    This class sets all variable aspects of grading (whitespace, gotos etc)
     """
     def __init__(self):
         self.total_errors = 0
         self.filters = DefaultFilters()
         self.error_types = {}
+        # A list of StyleError objects generated from student's code
         self.error_tracker = []
-        self.output_format = "emacs"
+        self.output_format = "emacs" #TODO: If this can be something other than 'emacs', should load from config file
+        self.reset_for_new_file()
+
+    def reset_for_new_file(self):
         self.outside_main = True
         self.egyptian = False
         self.notEgyptian = False
 
-    def set_total_errors(self, errors):
+    def set_total_errors(self, errors): 
+        #NOTE: Potential issue if total_errors does not match count held by self.error_types. Might be fine, haven't read all yet
         self.total_errors = errors
 
     def set_filters(self, filters): #TODO: You are going to need to figure out what this will do and how
@@ -158,10 +171,11 @@ class StyleRubric(object):
     def set_inside_main(self):
         self.outside_main = False
 
-    def check_is_outside_main(self):
+    def is_outside_main(self):
         return self.outside_main
 
-    def increment_error_count(self, label, line_num):
+    def add_error(self, label, line_num):
+        #Naming convention adds clarity
         self.total_errors += 1
         if label not in self.error_types:
             self.error_types[label] = 0
@@ -169,7 +183,8 @@ class StyleRubric(object):
         self.error_types[label] += 1
         self.error_tracker.append(StyleError(1, label, line_num))
 
-    def is_egyptian_style(self, egyptian_bool):
+    def set_egyptian_style(self, egyptian_bool):
+        #Naming convention suggests that "is_x()" returns a bool instead of setting one
         if egyptian_bool:
             self.egyptian = True
         else:

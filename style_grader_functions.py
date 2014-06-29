@@ -1,8 +1,6 @@
-from cpplint import RemoveMultiLineComments
-from cpplint import CleansedLines
-from cpplint import GetPreviousNonBlankLine
-from style_grader_classes import *
-from pyparsing import *
+from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
+from style_grader_classes import DefaultFilters, StyleError, DataStructureTracker, OperatorSpace, StyleRubric
+from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums
 import codecs
 import copy
 import getopt
@@ -29,7 +27,7 @@ def valid_return(filename, clean_lines, line, line_num, rubric):
         else:
             current_line = current_line[6:].strip()
             if current_line.isdigit():
-                rubric.increment_error_count("BOOL_VALUE", line_num)
+                rubric.add_error("BOOL_VALUE", line_num)
 
 
 def num_of_commands(filename, clean_lines, line, line_num, rubric):
@@ -45,14 +43,14 @@ def num_of_commands(filename, clean_lines, line, line_num, rubric):
         cleansed_line.find('default:') != -1) and
         cleansed_line.find('break;') != -1)):
         
-        rubric.increment_error_count("COMMAND_ERROR", line_num)
+        rubric.add_error("COMMAND_ERROR", line_num)
 
 
 def line_width_check(filename, clean_lines, line, line_num, rubric):
     max_length = 80
     current_length = len(line)
     if current_length > max_length:
-        rubric.increment_error_count("LINE_WIDTH", line_num)
+        rubric.add_error("LINE_WIDTH", line_num)
 
 
 def operator_spacing(filename, clean_lines, line, line_num, operator_space_tracker, rubric):
@@ -63,11 +61,18 @@ def operator_spacing(filename, clean_lines, line, line_num, operator_space_track
         not check_operator_regex(code, '\/') or \
         not check_operator_regex(code, '\%') or \
         not check_operator_regex(code, '\*'):
-        rubric.increment_error_count("OPERATOR_SPACE_ERROR", line_num)
+        rubric.add_error("OPERATOR_SPACE_ERROR", line_num)
 
     else:
         return True
 
+def check_equals_true(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    variable = Word(alphanums)
+    keyword = Literal("true") | Literal("false")
+    statement_parser = Group(variable + "==" + keyword) | Group(keyword + "==" + variable)
+    if len(statement_parser.searchString(code)):
+        rubric.add_error("EQUALS_TRUE", line_num) 
 
 def check_operator_regex(code, operator):
     regex_one = r'' + '\S+' + operator
@@ -111,10 +116,34 @@ def check_operator_regex(code, operator):
 def check_go_to(clean_lines, line, line_num, rubric):
     code = clean_lines.lines[line_num]
 
-    match = re.search(r'\s+gotos\+', code)
+    match = re.search(r'(\s+|^)goto\s+', code)
     if match :
-        rubric.increment_error_count("GOTO", line_num)
+        rubric.add_error("GOTO", line_num)
 
+def check_define_statements(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    
+    match = re.search(r'(\s+|^)#(\s*)define(\s+)', code)
+    if match:
+        rubric.add_error("DEFINE_STATEMENT", line_num)
+
+def check_continue_statements(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    if len(Literal("continue").searchString(code)):
+        rubric.add_error("CONTINUE_STATEMENT", line_num)
+
+def check_ternary_operator(clean_lines, line_num, rubric):
+    # This is really easy - ternary operators require the conditional operator "?",
+    # which has no other application in C++. Since we're parsing out comments, it's as easy as:
+    code = clean_lines.lines[line_num]
+    if len(Literal("?").searchString(code)):
+        rubric.add_error("TERNARY_OPERATOR", line_num)
+
+def check_while_true(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    statement_parser = Literal("while") + Literal("(") + Literal("true") + Literal(")")
+    if len(statement_parser.searchString(code)):
+        rubric.add_error("WHILE_TRUE", line_num)
 
 def check_non_const_global(filename, clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
@@ -122,11 +151,11 @@ def check_non_const_global(filename, clean_lines, line_num, rubric):
     if re.search(r'int main', code):
         rubric.set_inside_main()
 
-    if rubric.check_is_outside_main():
+    if rubric.is_outside_main():
         function = check_if_function(code)
         variable = re.search(r'^\s*(int|string|char|bool)\s+', code)
         if not function and variable:
-            rubric.increment_error_count("GLOBAL_VARIABLE", line_num)
+            rubric.add_error("GLOBAL_VARIABLE", line_num)
 
 
 def check_brace_consistency(clean_lines, line, line_num, rubric):
@@ -146,21 +175,21 @@ def check_brace_consistency(clean_lines, line, line_num, rubric):
             switch_statement and clean_lines.lines[line_num + 1].find('{') != -1 or\
                 if_statement and clean_lines.lines[line_num + 1].find('{') != -1:
 
-            rubric.is_egyptian_style(False)
+            rubric.set_egyptian_style(False)
         elif function and code.find('{') != -1 or \
                 else_if_statement and code.find('{') != -1 or\
                 else_statement and code.find('{') != -1 or\
                 switch_statement and code.find('{') != -1 or\
                 if_statement and code.find('{') != -1:
 
-            rubric.is_egyptian_style(True)
-        elif not rubric.check_is_outside_main():
-            rubric.increment_error_count("BRACES_ERROR", line_num)
+            rubric.set_egyptian_style(True)
+        elif not rubric.is_outside_main():
+            rubric.add_error("BRACES_ERROR", line_num)
 
         #if both of these are true, they are not consistent, therefore error.
         if rubric.notEgyptian:
             if rubric.egyptian:
-                rubric.increment_error_count("BRACES_ERROR", line_num)
+                rubric.add_error("BRACES_ERROR", line_num)
 
 
 def check_function_block_indentation(filename, clean_lines, line, line_num,
@@ -182,10 +211,10 @@ def check_function_block_indentation(filename, clean_lines, line, line_num,
     else:
         return
 
-    if function or rubric.check_is_outside_main():
+    if function or rubric.is_outside_main():
         if indentation_size != 0:
-            rubric.increment_error_count("INDENTATION_ERROR", line_num)
-        if rubric.check_is_outside_main():
+            rubric.add_error("INDENTATION_ERROR", line_num)
+        if rubric.is_outside_main():
             return
 
     #TODO: Need to check indentation ON the same line as the function still
@@ -214,6 +243,15 @@ def check_function_block_indentation(filename, clean_lines, line, line_num,
     else:
         return
 
+def check_main_syntax(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    main_syntax = Literal("main")+Literal("(")
+    full_use = "int"+Word(alphanums)+","+"char*"+Word(alphanums)+"["+"]"+")"
+    # 3 options for main() syntax
+    if not len((main_syntax+Literal(")")).searchString(code)) and \
+       not len((main_syntax+Literal("void")+Literal(")")).searchString(code)) and \
+       not len((main_syntax+full_use).searchString(code)):
+        rubric.add_error("MAIN_SYNTAX", line_num) 
 
 def process_current_blocks_indentation(indentation, tab_size, code, rubric, clean_lines,
                                        data_structure_tracker, temp_line_num):
@@ -232,7 +270,7 @@ def process_current_blocks_indentation(indentation, tab_size, code, rubric, clea
             line_start = current_indentation.group()
             current_indentation = len(line_start) - len(line_start.strip())
             if current_indentation != next_indentation and line_start.find('}') == -1:
-                rubric.increment_error_count("INDENTATION_ERROR", temp_line_num)
+                rubric.add_error("INDENTATION_ERROR", temp_line_num)
             if clean_lines.lines[temp_line_num].find("{") != -1:
                 data_structure_tracker.add_brace("{")
                 next_indentation = current_indentation + tab_size
@@ -243,8 +281,13 @@ def process_current_blocks_indentation(indentation, tab_size, code, rubric, clea
 
 def parse_current_line_of_code(filename, clean_lines, line, line_num,
                                operator_space_tracker, rubric):
-
-    #Clear
+   
+    #Check for proper main() declaration
+    #Return value for main is optional in C++11
+    parser = Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")+Literal("{")
+    if len(parser.searchString(clean_lines.lines[line_num])):
+        check_main_syntax(clean_lines, line_num, rubric)
+    #Check non const globals
     check_non_const_global(filename, clean_lines, line_num, rubric)
      #Only one statement on the return line?
     valid_return(filename, clean_lines, line, line_num, rubric)
@@ -254,6 +297,18 @@ def parse_current_line_of_code(filename, clean_lines, line, line_num,
     check_go_to(clean_lines, line, line_num, rubric)
     #Check for mixed tabs/spaces and log error #TODO: This can wait
     line_width_check(filename, clean_lines, line, line_num, rubric)
+    #Check for #define statements
+    check_define_statements(clean_lines, line_num, rubric)
+    #Check for "== true" statements
+    check_equals_true(clean_lines, line_num, rubric)
+    #Check for "while(true)" statements
+    check_while_true(clean_lines, line_num, rubric)
+    #Check ternary expressions
+    check_ternary_operator(clean_lines, line_num, rubric)
+    #Check continue statements
+    check_continue_statements(clean_lines, line_num, rubric)
+
+    
     #Check for unnecessary includes
     #TODO: Above duh.
 
@@ -280,6 +335,7 @@ def process_current_student_file(student_code, rubric, filename, operator_space_
 
 
 def grade_student_file(filename, rubric, operator_space_tracker):
+    print "Grading student submission: {}".format(filename)
     try:
         student_code = codecs.open(filename, 'r', 'utf8', 'replace').read().split('\n')
         newline = False
@@ -299,8 +355,8 @@ def grade_student_file(filename, rubric, operator_space_tracker):
         location = filename.find('.') + 1
         extension = filename[location:]
 
-        if extension != 'cpp':
-            sys.stderr.write("Incorrect file type")
+        if extension not in ['h', 'cpp']:
+            sys.stderr.write("Incorrect file type\n")
             return
 
     except IOError:
@@ -341,5 +397,5 @@ def check_if_function(code):
     try:
         grammar.parseString(code)
         return True
-    except ParseBaseException:
+    except ParseException:
         return False
