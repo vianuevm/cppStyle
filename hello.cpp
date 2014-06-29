@@ -23,6 +23,7 @@ int main(){
     if (5 == true) {
         cout << "Hello World!" << endl;
         cout << "Hello World!" << endl;
+        continue;
     }
 
     for(int x = 0; x < 10; ++x){

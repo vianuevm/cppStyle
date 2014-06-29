@@ -120,12 +120,17 @@ def check_go_to(clean_lines, line, line_num, rubric):
     if match :
         rubric.add_error("GOTO", line_num)
 
-def check_define_statements(clean_lines, line, line_num, rubric):
+def check_define_statements(clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
     
     match = re.search(r'(\s+|^)#(\s*)define(\s+)', code)
     if match:
         rubric.add_error("DEFINE_STATEMENT", line_num)
+
+def check_continue_statements(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    if len(Literal("continue").searchString(code)):
+        rubric.add_error("CONTINUE_STATEMENT", line_num)
 
 def check_ternary_operator(clean_lines, line_num, rubric):
     # This is really easy - ternary operators require the conditional operator "?",
@@ -279,13 +284,15 @@ def parse_current_line_of_code(filename, clean_lines, line, line_num,
     #Check for mixed tabs/spaces and log error #TODO: This can wait
     line_width_check(filename, clean_lines, line, line_num, rubric)
     #Check for #define statements
-    check_define_statements(clean_lines, line, line_num, rubric)
+    check_define_statements(clean_lines, line_num, rubric)
     #Check for "== true" statements
     check_equals_true(clean_lines, line_num, rubric)
     #Check for "while(true)" statements
     check_while_true(clean_lines, line_num, rubric)
     #Check ternary expressions
     check_ternary_operator(clean_lines, line_num, rubric)
+    #Check continue statements
+    check_continue_statements(clean_lines, line_num, rubric)
 
     
     #Check for unnecessary includes
