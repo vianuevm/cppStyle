@@ -39,7 +39,8 @@ class StyleError(object):
             "UNNECESSARY_BREAK": "Breaks should ONLY be used in switch statements. Fix your logic.",
             "GOTO": "Never use the goto function.",
             "DEFINE_STATEMENT": "While define statements have their applications, we do not allow them in EECS 183.",
-            "EQUALS_TRUE": "It is stylistically preferred to use 'if (x)' instead of 'if (x == true)'."
+            "EQUALS_TRUE": "It is stylistically preferred to use 'if (x)' instead of 'if (x == true)'.",
+            "WHILE_TRUE": "It is almost always preferred to use an explicit conditional instead of 'while(true)'.",
         }
 
         self.set_points_worth(points)

@@ -16,6 +16,10 @@ int main(){
         cout << "Hello World!" << endl;
     }
     
+    while(true) {
+        cout << "Hello World!" << endl;
+    } 
+    
     if (5 == true) {
         cout << "Hello World!" << endl;
         cout << "Hello World!" << endl;

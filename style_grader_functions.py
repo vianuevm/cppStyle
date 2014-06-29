@@ -127,6 +127,12 @@ def check_define_statements(clean_lines, line, line_num, rubric):
     if match:
         rubric.add_error("DEFINE_STATEMENT", line_num)
 
+def check_while_true(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    statement_parser = Literal("while") + Literal("(") + Literal("true") + Literal(")")
+    if len(statement_parser.searchString(code)):
+        rubric.add_error("WHILE_TRUE", line_num)
+
 def check_non_const_global(filename, clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
 
@@ -269,6 +275,8 @@ def parse_current_line_of_code(filename, clean_lines, line, line_num,
     check_define_statements(clean_lines, line, line_num, rubric)
     #Check for "== true" statements
     check_equals_true(clean_lines, line_num, rubric)
+    #Check for "while(true)" statements
+    check_while_true(clean_lines, line_num, rubric)
 
     
     #Check for unnecessary includes
