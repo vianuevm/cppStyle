@@ -7,14 +7,19 @@ int x = 0;
 
 int prototype(int one, void two);
 
-int main(){
+int main(void bloogy){
+    int z = 0;
+    z++;
     int x = 4 / 4;
     //int r =  2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2 + 2
     if(2 + 2 = 4)
     {
+        int x = 0;
+        x++; i++;
         cout << "Hello World!" << endl;
         cout << "Hello World!" << endl;
     }
+
     
     while(true) {
         cout << "Hello World!" << endl;

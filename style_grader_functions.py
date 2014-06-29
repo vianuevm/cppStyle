@@ -1,6 +1,6 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
 from style_grader_classes import DefaultFilters, StyleError, DataStructureTracker, OperatorSpace, StyleRubric
-from pyparsing import Literal, Word, Optional, ParseException, Group, alphanums
+from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums
 import codecs
 import copy
 import getopt
@@ -243,6 +243,15 @@ def check_function_block_indentation(filename, clean_lines, line, line_num,
     else:
         return
 
+def check_main_syntax(clean_lines, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    main_syntax = Literal("main")+Literal("(")
+    full_use = "int"+Word(alphanums)+","+"char*"+Word(alphanums)+"["+"]"+")"
+    # 3 options for main() syntax
+    if not len((main_syntax+Literal(")")).searchString(code)) and \
+       not len((main_syntax+Literal("void")+Literal(")")).searchString(code)) and \
+       not len((main_syntax+full_use).searchString(code)):
+        rubric.add_error("MAIN_SYNTAX", line_num) 
 
 def process_current_blocks_indentation(indentation, tab_size, code, rubric, clean_lines,
                                        data_structure_tracker, temp_line_num):
@@ -272,8 +281,13 @@ def process_current_blocks_indentation(indentation, tab_size, code, rubric, clea
 
 def parse_current_line_of_code(filename, clean_lines, line, line_num,
                                operator_space_tracker, rubric):
-
-    #Clear
+   
+    #Check for proper main() declaration
+    #Return value for main is optional in C++11
+    parser = Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")+Literal("{")
+    if len(parser.searchString(clean_lines.lines[line_num])):
+        check_main_syntax(clean_lines, line_num, rubric)
+    #Check non const globals
     check_non_const_global(filename, clean_lines, line_num, rubric)
      #Only one statement on the return line?
     valid_return(filename, clean_lines, line, line_num, rubric)

@@ -43,6 +43,7 @@ class StyleError(object):
             "WHILE_TRUE": "It is almost always preferred to use an explicit conditional instead of 'while(true)'.",
             "TERNARY_OPERATOR": "The use of ternary expressions (e.g. return f(x) ? true : false) is discouraged in EECS 183.",
             "CONTINUE_STATEMENT": "While 'continue' is occasionally appropriate, we discourage its use in EECS 183.",
+            "MAIN_SYNTAX": "Your declaration of main() does not adhere to conventional stylistic guidelines.",
         }
 
         self.set_points_worth(points)
