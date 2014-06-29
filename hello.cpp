@@ -34,7 +34,7 @@ int main(){
     }
 
 
-    return 0;
+    return true ? 1 : 0;
 }
 
 int prototype(int one, void two)

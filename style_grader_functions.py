@@ -127,6 +127,13 @@ def check_define_statements(clean_lines, line, line_num, rubric):
     if match:
         rubric.add_error("DEFINE_STATEMENT", line_num)
 
+def check_ternary_operator(clean_lines, line_num, rubric):
+    # This is really easy - ternary operators require the conditional operator "?",
+    # which has no other application in C++. Since we're parsing out comments, it's as easy as:
+    code = clean_lines.lines[line_num]
+    if len(Literal("?").searchString(code)):
+        rubric.add_error("TERNARY_OPERATOR", line_num)
+
 def check_while_true(clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
     statement_parser = Literal("while") + Literal("(") + Literal("true") + Literal(")")
@@ -277,6 +284,8 @@ def parse_current_line_of_code(filename, clean_lines, line, line_num,
     check_equals_true(clean_lines, line_num, rubric)
     #Check for "while(true)" statements
     check_while_true(clean_lines, line_num, rubric)
+    #Check ternary expressions
+    check_ternary_operator(clean_lines, line_num, rubric)
 
     
     #Check for unnecessary includes
