@@ -35,7 +35,7 @@
       <file leaf-file-name="style_grader_functions.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/style_grader_functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="392" column="19" selection-start="15846" selection-end="15846" vertical-scroll-proportion="0.0" vertical-offset="4804" max-vertical-offset="6105">
+            <state line="189" column="24" selection-start="7415" selection-end="7421" vertical-scroll-proportion="-5.3076925" vertical-offset="2697" max-vertical-offset="6105">
               <folding>
                 <element signature="e#0#83#0" expanded="true" />
               </folding>
@@ -43,10 +43,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style_grader_classes.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="style_grader_classes.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/style_grader_classes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="167" column="35" selection-start="5936" selection-end="5936" vertical-scroll-proportion="0.35303515" vertical-offset="2284" max-vertical-offset="3000">
+            <state line="167" column="35" selection-start="5936" selection-end="5936" vertical-scroll-proportion="0.0" vertical-offset="2284" max-vertical-offset="3000">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="style_grader_main.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/style_grader_main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="43" selection-start="1234" selection-end="1234" vertical-scroll-proportion="0.52272725" vertical-offset="205" max-vertical-offset="645">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pydevd.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1149" column="40" selection-start="47895" selection-end="47895" vertical-scroll-proportion="0.0" vertical-offset="15938" max-vertical-offset="21570">
               <folding />
             </state>
           </provider>
@@ -96,6 +114,7 @@
         <option value="$PROJECT_DIR$/../Hackathon/menu" />
         <option value="$PROJECT_DIR$/../whitespace/wSpace.py" />
         <option value="$PROJECT_DIR$/style_grader_classes.py" />
+        <option value="$PROJECT_DIR$/style_grader_functions.py" />
       </list>
     </option>
   </component>
@@ -170,8 +189,8 @@
       <recent name="C:\Users\Murphy\PycharmProjects\eecs183Alpha" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.parser">
-    <configuration default="false" name="parser" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.style_grader_main">
+    <configuration default="false" name="style_grader_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -183,7 +202,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="eecs183Alpha" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/parser" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/style_grader_main.py" />
       <option name="PARAMETERS" value="hello.cpp" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -331,12 +350,12 @@
       <method />
     </configuration>
     <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Python.parser" />
+      <item index="0" class="java.lang.String" itemvalue="Python.style_grader_main" />
       <item index="1" class="java.lang.String" itemvalue="Python.wSpace" />
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.parser" />
+        <item index="0" class="java.lang.String" itemvalue="Python.style_grader_main" />
         <item index="1" class="java.lang.String" itemvalue="Python.wSpace" />
       </list>
     </recent_temporary>
@@ -376,7 +395,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23938507" sideWeight="0.71472394" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2852761" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2852761" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29907975" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -440,8 +459,13 @@
           <line>472</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/style_grader_main.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="25" />
+      <option name="time" value="27" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -494,11 +518,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1138" column="0" selection-start="47511" selection-end="47511" vertical-scroll-proportion="0.0" vertical-offset="18107" max-vertical-offset="24446" />
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/re.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="149" column="39" selection-start="7251" selection-end="7251" vertical-scroll-proportion="0.0" vertical-offset="1122" max-vertical-offset="5610">
@@ -527,18 +546,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/style_grader_classes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="167" column="35" selection-start="5936" selection-end="5936" vertical-scroll-proportion="0.0" vertical-offset="2284" max-vertical-offset="3000">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1149" column="40" selection-start="47895" selection-end="47895" vertical-scroll-proportion="0.0" vertical-offset="15938" max-vertical-offset="21570">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/style_grader_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="392" column="19" selection-start="15846" selection-end="15846" vertical-scroll-proportion="0.0" vertical-offset="4804" max-vertical-offset="6105">
+        <state line="189" column="24" selection-start="7415" selection-end="7421" vertical-scroll-proportion="-5.3076925" vertical-offset="2697" max-vertical-offset="6105">
           <folding>
             <element signature="e#0#83#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/style_grader_classes.py">
+    <entry file="file://$PROJECT_DIR$/style_grader_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="167" column="35" selection-start="5936" selection-end="5936" vertical-scroll-proportion="0.35303515" vertical-offset="2284" max-vertical-offset="3000">
+        <state line="29" column="43" selection-start="1234" selection-end="1234" vertical-scroll-proportion="0.52272725" vertical-offset="205" max-vertical-offset="645">
           <folding />
         </state>
       </provider>

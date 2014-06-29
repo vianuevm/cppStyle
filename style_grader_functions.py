@@ -187,7 +187,7 @@ def check_brace_consistency(clean_lines, line, line_num, rubric):
             rubric.add_error("BRACES_ERROR", line_num)
 
         #if both of these are true, they are not consistent, therefore error.
-        if rubric.notEgyptian:
+        if rubric.not_egyptian:
             if rubric.egyptian:
                 rubric.add_error("BRACES_ERROR", line_num)
 
