@@ -113,6 +113,12 @@ def check_go_to(clean_lines, line, line_num, rubric):
     if match :
         rubric.add_error("GOTO", line_num)
 
+def check_define_statements(clean_lines, line, line_num, rubric):
+    code = clean_lines.lines[line_num]
+    
+    match = re.search(r'(\s+|^)#(\s*)define(\s+)', code)
+    if match:
+        rubric.add_error("DEFINE_STATEMENT", line_num)
 
 def check_non_const_global(filename, clean_lines, line_num, rubric):
     code = clean_lines.lines[line_num]
@@ -252,6 +258,8 @@ def parse_current_line_of_code(filename, clean_lines, line, line_num,
     check_go_to(clean_lines, line, line_num, rubric)
     #Check for mixed tabs/spaces and log error #TODO: This can wait
     line_width_check(filename, clean_lines, line, line_num, rubric)
+    #Check for #define statements
+    check_define_statements(clean_lines, line, line_num, rubric)
     #Check for unnecessary includes
     #TODO: Above duh.
 

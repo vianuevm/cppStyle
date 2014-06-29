@@ -1,5 +1,8 @@
 #include <iostream>
 using namespace std;
+
+#define private public
+
 int x = 0;
 
 int prototype(int one, void two);

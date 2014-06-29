@@ -37,7 +37,8 @@ class StyleError(object):
             "BRACES_ERROR": "Your braces should be either Egyptian or block style, pick one.",
             "SPACING_ERROR": "Use tabs or spaces, not both.",
             "UNNECESSARY_BREAK": "Breaks should ONLY be used in switch statements. Fix your logic.",
-            "GOTO": "Never use the goto function."
+            "GOTO": "Never use the goto function.",
+            "DEFINE_STATEMENT": "While define statements have their applications, we do not allow them in EECS 183."
         }
 
         self.set_points_worth(points)
