@@ -98,6 +98,7 @@ class DataStructureTracker(object):
     def get_brace_index(self):
         return self.brace_index
 
+
 class OperatorSpace(object):
     """
     Counter object to track instances of binary operands.
@@ -136,6 +137,7 @@ class OperatorSpace(object):
         self.mod += amount
         self.total += amount
 
+
 class StyleRubric(object):
     """
     This class sets all variable aspects of grading (whitespace, gotos etc)
@@ -152,10 +154,11 @@ class StyleRubric(object):
     def reset_for_new_file(self):
         self.outside_main = True
         self.egyptian = False
-        self.notEgyptian = False
+        self.not_egyptian = False
 
     def set_total_errors(self, errors): 
-        #NOTE: Potential issue if total_errors does not match count held by self.error_types. Might be fine, haven't read all yet
+        #NOTE: Potential issue if total_errors does not
+        # match count held by self.error_types. Might be fine, haven't read all yet
         self.total_errors = errors
 
     def set_filters(self, filters): #TODO: You are going to need to figure out what this will do and how
@@ -188,4 +191,4 @@ class StyleRubric(object):
         if egyptian_bool:
             self.egyptian = True
         else:
-            self.notEgyptian = True
+            self.not_egyptian = True

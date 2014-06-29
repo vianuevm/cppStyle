@@ -23,30 +23,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="parser" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/parser">
+      <file leaf-file-name="hello.cpp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/hello.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="482" column="0" selection-start="17300" selection-end="17300" vertical-scroll-proportion="0.5926518" vertical-offset="7823" max-vertical-offset="8449">
-              <folding>
-                <element signature="e#0#43#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wSpace.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../whitespace/wSpace.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="0" selection-start="321" selection-end="321" vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="374">
+            <state line="15" column="3" selection-start="301" selection-end="301" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="840">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hello.cpp" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hello.cpp">
+      <file leaf-file-name="style_grader_functions.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/style_grader_functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="4" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="289">
+            <state line="392" column="19" selection-start="15846" selection-end="15846" vertical-scroll-proportion="0.0" vertical-offset="4804" max-vertical-offset="6105">
+              <folding>
+                <element signature="e#0#83#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="style_grader_classes.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/style_grader_classes.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="167" column="35" selection-start="5936" selection-end="5936" vertical-scroll-proportion="0.35303515" vertical-offset="2284" max-vertical-offset="3000">
               <folding />
             </state>
           </provider>
@@ -55,7 +55,7 @@
       <file leaf-file-name="re.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://C:/Python27/Lib/re.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="149" column="39" selection-start="7251" selection-end="7251" vertical-scroll-proportion="0.0" vertical-offset="2533" max-vertical-offset="5644">
+            <state line="149" column="39" selection-start="7251" selection-end="7251" vertical-scroll-proportion="0.0" vertical-offset="2235" max-vertical-offset="4980">
               <folding />
             </state>
           </provider>
@@ -64,7 +64,16 @@
       <file leaf-file-name="cpplint.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cpplint.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1188" column="0" selection-start="38973" selection-end="38973" vertical-scroll-proportion="0.0" vertical-offset="20196" max-vertical-offset="80886">
+            <state line="1188" column="0" selection-start="38973" selection-end="38973" vertical-scroll-proportion="0.0" vertical-offset="17820" max-vertical-offset="71235">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pyparsing.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pyparsing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="56190">
               <folding />
             </state>
           </provider>
@@ -86,6 +95,7 @@
         <option value="$PROJECT_DIR$/parser" />
         <option value="$PROJECT_DIR$/../Hackathon/menu" />
         <option value="$PROJECT_DIR$/../whitespace/wSpace.py" />
+        <option value="$PROJECT_DIR$/style_grader_classes.py" />
       </list>
     </option>
   </component>
@@ -128,14 +138,6 @@
               <option name="myItemId" value="eecs183Alpha" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 2.7.2 (C:/Python27/python.exe) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -143,7 +145,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="eecs183Alpha" />
+              <option name="myItemId" value="183_style_grader" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -154,8 +156,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="recentsLimit" value="5" />
-    <property name="restartRequiresConfirmation" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../whitespace/wSpace.py" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -367,13 +369,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23938507" sideWeight="0.71472394" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23938507" sideWeight="0.71472394" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2852761" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -402,9 +404,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14985164" sideWeight="0.7129338" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29938272" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29938272" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -443,12 +445,24 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/parser">
+    <entry file="file://$PROJECT_DIR$/hello.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="410" column="44" selection-start="14743" selection-end="14743" vertical-scroll-proportion="0.0" vertical-offset="6970" max-vertical-offset="8432">
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
+        <state line="6" column="0" selection-start="77" selection-end="77" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/re.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="149" column="39" selection-start="7251" selection-end="7251" vertical-scroll-proportion="0.0" vertical-offset="2235" max-vertical-offset="4980">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cpplint.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1188" column="0" selection-start="38973" selection-end="38973" vertical-scroll-proportion="0.0" vertical-offset="17820" max-vertical-offset="71370">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -473,15 +487,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parser">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="217" column="0" selection-start="7616" selection-end="7616" vertical-scroll-proportion="0.0" vertical-offset="3492" max-vertical-offset="5542">
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cpplint.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1693" column="0" selection-start="56638" selection-end="56638" vertical-scroll-proportion="0.0" vertical-offset="28781" max-vertical-offset="80886">
@@ -489,45 +494,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parser">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="11" selection-start="1641" selection-end="1641" vertical-scroll-proportion="0.0" vertical-offset="854" max-vertical-offset="1462">
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../DjangoTest/mysite/mysite/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1564" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../DjangoTest/mysite/mysite/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="366" />
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1138" column="0" selection-start="47511" selection-end="47511" vertical-scroll-proportion="0.0" vertical-offset="18107" max-vertical-offset="24446" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../Hackathon/menu">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="51" selection-start="739" selection-end="739" vertical-scroll-proportion="0.8199357" vertical-offset="0" max-vertical-offset="1819" />
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/re.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="149" column="39" selection-start="7251" selection-end="7251" vertical-scroll-proportion="0.0" vertical-offset="1122" max-vertical-offset="5610">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../whitespace/wSpace.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="321" selection-end="321" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
           <folding />
         </state>
       </provider>
@@ -539,19 +513,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hello.cpp">
+    <entry file="file://$PROJECT_DIR$/pyparsing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="4" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="289">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="56190">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parser">
+    <entry file="file://$PROJECT_DIR$/hello.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="482" column="0" selection-start="17300" selection-end="17300" vertical-scroll-proportion="0.5926518" vertical-offset="7823" max-vertical-offset="8449">
+        <state line="15" column="3" selection-start="301" selection-end="301" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style_grader_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="392" column="19" selection-start="15846" selection-end="15846" vertical-scroll-proportion="0.0" vertical-offset="4804" max-vertical-offset="6105">
           <folding>
-            <element signature="e#0#43#0" expanded="true" />
+            <element signature="e#0#83#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style_grader_classes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="167" column="35" selection-start="5936" selection-end="5936" vertical-scroll-proportion="0.35303515" vertical-offset="2284" max-vertical-offset="3000">
+          <folding />
         </state>
       </provider>
     </entry>
