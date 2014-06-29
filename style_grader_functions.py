@@ -1,16 +1,3 @@
-from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
-from style_grader_classes import DefaultFilters, StyleError, DataStructureTracker, OperatorSpace, StyleRubric
-from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums
-import codecs
-import copy
-import getopt
-import math  # for log
-import os
-import re
-import sre_compile
-import string
-import sys
-import unicodedata
 
 
 def valid_return(clean_lines, line_num, rubric):

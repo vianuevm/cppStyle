@@ -6,6 +6,7 @@ class DefaultFilters(object):
 
 #Todo: Define filters through command line arguments
 
+
 class StyleError(object):
     """
     Represents a style error in the student's code.
@@ -136,59 +137,3 @@ class OperatorSpace(object):
     def add_mod_instance(self, amount):
         self.mod += amount
         self.total += amount
-
-
-class StyleRubric(object):
-    """
-    This class sets all variable aspects of grading (whitespace, gotos etc)
-    """
-    def __init__(self):
-        self.total_errors = 0
-        self.filters = DefaultFilters()
-        self.error_types = {}
-        # A list of StyleError objects generated from student's code
-        self.error_tracker = []
-        self.output_format = "emacs" #TODO: If this can be something other than 'emacs', should load from config file
-        self.reset_for_new_file()
-
-    def reset_for_new_file(self):
-        self.outside_main = True
-        self.egyptian = False
-        self.not_egyptian = False
-
-    def set_total_errors(self, errors): 
-        #NOTE: Potential issue if total_errors does not
-        # match count held by self.error_types. Might be fine, haven't read all yet
-        self.total_errors = errors
-
-    def set_filters(self, filters): #TODO: You are going to need to figure out what this will do and how
-        self.filters = filters
-
-    def set_output_format(self, format):
-        self.output_format = format
-
-    def reset_error_count(self):
-        self.total_errors = 0
-        self.error_types = {}
-
-    def set_inside_main(self):
-        self.outside_main = False
-
-    def is_outside_main(self):
-        return self.outside_main
-
-    def add_error(self, label, line_num):
-        #Naming convention adds clarity
-        self.total_errors += 1
-        if label not in self.error_types:
-            self.error_types[label] = 0
-
-        self.error_types[label] += 1
-        self.error_tracker.append(StyleError(1, label, line_num))
-
-    def set_egyptian_style(self, egyptian_bool):
-        #Naming convention suggests that "is_x()" returns a bool instead of setting one
-        if egyptian_bool:
-            self.egyptian = True
-        else:
-            self.not_egyptian = True

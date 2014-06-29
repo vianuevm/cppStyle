@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from style_grader_functions import *
+from StyleRubric import *
 
 #TODO: Set up standard error to print properly
 def main():
@@ -23,7 +24,7 @@ def main():
 
     for filename in student_file_names:
         rubric.reset_for_new_file() # Fixes issue with multiple command-line arguments
-        grade_student_file(filename, rubric, operator_space_tracker)
+        rubric.grade_student_file(filename, operator_space_tracker)
 
 #For debugging purposes only
     print "Total Errors: " + str(rubric.total_errors)
