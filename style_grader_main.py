@@ -20,11 +20,10 @@ def main():
     
     rubric = StyleRubric()
     #rubric.reset_error_count() # Is this line necessary?
-    operator_space_tracker = OperatorSpace()
 
     for filename in student_file_names:
         rubric.reset_for_new_file() # Fixes issue with multiple command-line arguments
-        rubric.grade_student_file(filename, operator_space_tracker)
+        rubric.grade_student_file(filename)
 
 #For debugging purposes only
     print "Total Errors: " + str(rubric.total_errors)

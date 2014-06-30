@@ -105,8 +105,7 @@ class StyleRubric(object):
         if current_length > max_length:
             self.add_error("LINE_WIDTH")
 
-    def operator_spacing(self, code, operator_space_tracker):
-        #TODO: Why is operator_space_tracker passed to this fn but not used
+    def operator_spacing(self, code):
         if not check_operator_regex(code, '\+')  or \
             not check_operator_regex(code, '\-') or \
             not check_operator_regex(code, '\/') or \
@@ -211,7 +210,7 @@ class StyleRubric(object):
 
 
 
-    def check_function_block_indentation(self, clean_lines, operator_space_tracker):
+    def check_function_block_indentation(self, clean_lines):
         tab_size = 4
         code = clean_lines.lines[self.current_line_num]
         stripped_code = code.strip()
@@ -312,7 +311,7 @@ class StyleRubric(object):
                     next_indentation = next_indentation - tab_size
 
 
-    def parse_current_line_of_code(self, clean_lines, operator_space_tracker):
+    def parse_current_line_of_code(self, clean_lines):
         code = clean_lines.lines[self.current_line_num]
 
         #Check for proper main() declaration (if main is present on this line)
@@ -345,13 +344,13 @@ class StyleRubric(object):
         #TODO: Above duh.
 
         #Check for operator Spacing
-        self.operator_spacing(code, operator_space_tracker)
+        self.operator_spacing(code)
         #Call function or checking INDENTATION!!
-        self.check_function_block_indentation(clean_lines, operator_space_tracker)
+        self.check_function_block_indentation(clean_lines)
         #Check for braces being consistent (egyptian or non-egyptian)
         self.check_brace_consistency(clean_lines)
 
-    def grade_student_file(self, filename, operator_space_tracker):
+    def grade_student_file(self, filename):
         print "Grading student submission: {}".format(filename)
         try:
             student_code = codecs.open(filename, 'r', 'utf8', 'replace').read().split('\n')
@@ -383,4 +382,4 @@ class StyleRubric(object):
             code = clean_lines.lines
             for line_num in range(len(code)):
                 self.current_line_num = line_num
-                self.parse_current_line_of_code(clean_lines, operator_space_tracker)
+                self.parse_current_line_of_code(clean_lines)

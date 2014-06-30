@@ -23,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="hello.cpp" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="hello.cpp" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hello.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.024347827" vertical-offset="751" max-vertical-offset="1462">
-              <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+            <state vertical-scroll-proportion="-33.285713" vertical-offset="88" max-vertical-offset="1462">
+              <caret line="60" column="28" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -36,8 +36,8 @@
       <file leaf-file-name="style_grader_functions.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/style_grader_functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.0" vertical-offset="280" max-vertical-offset="1530">
-              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+            <state vertical-scroll-proportion="-4.392857" vertical-offset="727" max-vertical-offset="1530">
+              <caret line="50" column="35" selection-start-line="50" selection-start-column="35" selection-end-line="50" selection-end-column="35" />
               <folding>
                 <element signature="e#0#87#0" expanded="true" />
               </folding>
@@ -48,8 +48,8 @@
       <file leaf-file-name="style_grader_classes.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/style_grader_classes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="1785">
-              <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+            <state vertical-scroll-proportion="-6.821429" vertical-offset="863" max-vertical-offset="1785">
+              <caret line="62" column="14" selection-start-line="62" selection-start-column="6" selection-end-line="62" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -58,8 +58,8 @@
       <file leaf-file-name="StyleError.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StyleError.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.464286" vertical-offset="217" max-vertical-offset="1122">
-              <caret line="30" column="30" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="30" />
+            <state vertical-scroll-proportion="-6.678571" vertical-offset="136" max-vertical-offset="1122">
+              <caret line="19" column="28" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -68,8 +68,8 @@
       <file leaf-file-name="style_grader_main.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/style_grader_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.392858" vertical-offset="173" max-vertical-offset="748">
-              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+            <state vertical-scroll-proportion="-7.785714" vertical-offset="156" max-vertical-offset="731">
+              <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding>
                 <element signature="e#18#54#0" expanded="true" />
               </folding>
@@ -77,11 +77,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StyleRubric.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="StyleRubric.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/StyleRubric.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-24.535715" vertical-offset="5824" max-vertical-offset="6664">
-              <caret line="383" column="0" selection-start-line="383" selection-start-column="0" selection-end-line="383" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.7081851" vertical-offset="5807" max-vertical-offset="6647">
+              <caret line="365" column="21" selection-start-line="365" selection-start-column="21" selection-end-line="365" selection-end-column="21" />
               <folding>
                 <element signature="e#0#83#0" expanded="true" />
               </folding>
@@ -145,9 +145,10 @@
         <option value="$PROJECT_DIR$/../Hackathon/menu" />
         <option value="$PROJECT_DIR$/../whitespace/wSpace.py" />
         <option value="$PROJECT_DIR$/style_grader_functions.py" />
-        <option value="$PROJECT_DIR$/StyleRubric.py" />
         <option value="$PROJECT_DIR$/style_grader_classes.py" />
         <option value="$PROJECT_DIR$/hello.cpp" />
+        <option value="$PROJECT_DIR$/StyleRubric.py" />
+        <option value="$PROJECT_DIR$/style_grader_main.py" />
       </list>
     </option>
   </component>
@@ -492,12 +493,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/style_grader_main.py</url>
-          <line>30</line>
+          <line>29</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/StyleRubric.py</url>
-          <line>383</line>
+          <line>382</line>
           <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
@@ -653,36 +654,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StyleError.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.464286" vertical-offset="217" max-vertical-offset="1122">
-          <caret line="30" column="30" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/Lib/re.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2158" max-vertical-offset="5576">
           <caret line="141" column="0" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style_grader_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.0" vertical-offset="280" max-vertical-offset="1530">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#87#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style_grader_classes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="1785">
-          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -695,31 +670,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/hello.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-33.285713" vertical-offset="88" max-vertical-offset="1462">
+          <caret line="60" column="28" selection-start-line="60" selection-start-column="28" selection-end-line="60" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StyleError.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.678571" vertical-offset="136" max-vertical-offset="1122">
+          <caret line="19" column="28" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/style_grader_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.392858" vertical-offset="173" max-vertical-offset="748">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        <state vertical-scroll-proportion="-7.785714" vertical-offset="156" max-vertical-offset="731">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
             <element signature="e#18#54#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StyleRubric.py">
+    <entry file="file://$PROJECT_DIR$/style_grader_classes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-24.535715" vertical-offset="5824" max-vertical-offset="6664">
-          <caret line="383" column="0" selection-start-line="383" selection-start-column="0" selection-end-line="383" selection-end-column="0" />
+        <state vertical-scroll-proportion="-6.821429" vertical-offset="863" max-vertical-offset="1785">
+          <caret line="62" column="14" selection-start-line="62" selection-start-column="6" selection-end-line="62" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style_grader_functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.392857" vertical-offset="727" max-vertical-offset="1530">
+          <caret line="50" column="35" selection-start-line="50" selection-start-column="35" selection-end-line="50" selection-end-column="35" />
           <folding>
-            <element signature="e#0#83#0" expanded="true" />
+            <element signature="e#0#87#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hello.cpp">
+    <entry file="file://$PROJECT_DIR$/StyleRubric.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.024347827" vertical-offset="751" max-vertical-offset="1462">
-          <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
-          <folding />
+        <state vertical-scroll-proportion="0.7081851" vertical-offset="5807" max-vertical-offset="6647">
+          <caret line="365" column="21" selection-start-line="365" selection-start-column="21" selection-end-line="365" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#83#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
