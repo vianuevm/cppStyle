@@ -1,7 +1,7 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
 from style_grader_classes import DefaultFilters, DataStructureTracker, OperatorSpace
 from style_grader_functions import check_if_function, get_arguments, check_operator_regex
-from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums
+from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables
 from StyleError import StyleError
 import codecs
 import copy
@@ -26,6 +26,7 @@ class StyleRubric(object):
         self.error_tracker = []
         self.output_format = "emacs" #TODO: If this can be something other than 'emacs', should load from config file
         self.reset_for_new_file()
+        self.braces_error = False #To prevent multiple braces errors
 
     def reset_for_new_file(self):
         self.outside_main = True
@@ -68,8 +69,8 @@ class StyleRubric(object):
             self.notEgyptian = True
 
     def valid_return(self, code):
-        returnVal = re.search(r'\s+return\s+', code)
-        if returnVal: 
+        returnVal = Literal("return")
+        if len(returnVal.searchString(code)): 
             # make sure it's not the end of a word
             list_of_line = code.split(' ')
             if len(list_of_line) > 2:
@@ -122,23 +123,33 @@ class StyleRubric(object):
             self.add_error("EQUALS_TRUE") 
 
     def check_go_to(self, code):
-        match = re.search(r'(\s+|^)goto\s+', code)
-        if match:
+        match = Literal("goto")
+        if len(match.searchString(code)):
             self.add_error("GOTO")
 
     def check_define_statements(self, code):
-        match = re.search(r'(\s+|^)#(\s*)define(\s+)', code)
-        if match:
+        match = Literal("#")+Literal("define")
+        if len(match.searchString(code)):
             self.add_error("DEFINE_STATEMENT")
 
+    def check_for_stringstreams(self, code):
+        match = Literal("#")+Literal("include")+Literal("<sstream>")
+        try:
+            result = match.parseString(code)
+            self.add_error("STRINGSTREAM")
+        except ParseException:
+            pass
+
     def check_continue_statements(self, code):
-        if len(Literal("continue").searchString(code)):
+        quotedContinue = '"'+SkipTo(Literal("continue"))+"continue"+SkipTo(Literal('"'))+'"'
+        if len(Literal("continue").searchString(code)) and not len(quotedContinue.searchString(code)):
             self.add_error("CONTINUE_STATEMENT")
 
     def check_ternary_operator(self, code):
         # This is really easy - ternary operators require the conditional operator "?",
         # which has no other application in C++. Since we're parsing out comments, it's as easy as:
-        if len(Literal("?").searchString(code)):
+        quotedTernary = '"'+SkipTo(Literal("?"))+"?"+SkipTo(Literal('"'))+'"'
+        if len(Literal("?").searchString(code)) and not len(quotedTernary.searchString(code)):
             self.add_error("TERNARY_OPERATOR")
 
     def check_while_true(self, code):
@@ -147,13 +158,15 @@ class StyleRubric(object):
             self.add_error("WHILE_TRUE")
 
     def check_non_const_global(self, code):
-        if re.search(r'int main', code):
+        inside = Literal("int main")
+        if len(inside.searchString(code)):
             self.set_inside_main()
 
         if self.is_outside_main():
             function = check_if_function(code)
-            variable = re.search(r'^\s*(int|string|char|bool)\s+', code)
-            if not function and variable:
+            variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
+            using = LineStart()+Literal("using")
+            if not function and len(variable.searchString(code)) and not len(using.searchString(code)):
                 self.add_error("GLOBAL_VARIABLE")
 
     def check_brace_consistency(self, clean_lines):
@@ -181,12 +194,15 @@ class StyleRubric(object):
 
                 self.set_egyptian_style(True)
             elif not self.is_outside_main():
-                self.add_error("BRACES_ERROR")
+                if not self.braces_error:
+                    self.add_error("BRACES_ERROR")
+                    self.braces_error = True
 
             #if both of these are true, they are not consistent, therefore error.
             if self.notEgyptian:
-                if self.egyptian:
+                if self.egyptian and not self.braces_error:
                     self.add_error("BRACES_ERROR")
+                    self.braces_error = True
 
     def check_function_block_indentation(self, clean_lines, operator_space_tracker):
         tab_size = 4
@@ -298,6 +314,8 @@ class StyleRubric(object):
         self.check_ternary_operator(code)
         #Check continue statements
         self.check_continue_statements(code) 
+        #Check stringstreams
+        self.check_for_stringstreams(code)
         
         #Check for unnecessary includes
         #TODO: Above duh.
