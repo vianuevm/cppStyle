@@ -16,16 +16,23 @@ class DataStructureTracker(object):
         self.in_block = False
         self.brace_stack = []
         self.brace_index = 1
+        self.switch_brace_index = 0
         self.length_so_far = 0
+        self.in_switch = False
+        self.switch_brace_stack = []
 
     def get_length(self):
         return self.length_so_far
 
-    def set_is_in_block(self, boolVar):
-        self.in_block = boolVar
+    def set_is_in_block(self, bool_var):
+        self.in_block = bool_var
 
     def check_is_in_block(self):
         return self.in_block
+
+    def add_switch_brace(self, brace):
+        self.switch_brace_stack.append(brace)
+        self.switch_brace_index += 1
 
     def add_brace(self, brace):
         self.brace_stack.append(brace)
@@ -37,9 +44,21 @@ class DataStructureTracker(object):
         if self.brace_index == 0:
             self.set_is_in_block(False)
 
+    def pop_switch_brace(self):
+        self.switch_brace_stack.pop()
+        self.switch_brace_index -= 1
+        if self.switch_brace_index == 0:
+            self.set_in_switch(False)
+
     def get_brace_index(self):
         return self.brace_index
 
+    def set_in_switch(self, truth_val):
+        self.in_switch = truth_val
+
+
+    def is_in_switch(self):
+        return self.in_switch
 
 class OperatorSpace(object):
     """

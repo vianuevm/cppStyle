@@ -14,6 +14,18 @@ main();
 int main(int argc, char* argv){};
 
 int main(void bloogy){
+
+    switch(argument){
+
+    case argument:
+        break;
+
+
+    }
+
+    break;
+
+
     int z = 0;
     z++;
     int x = 4 / 4;
@@ -29,6 +41,11 @@ int main(void bloogy){
     
     while(true) {
         cout << "Hello World!" << endl;
+
+
+            break;
+
+
     } 
     
     if (5 == true) {
@@ -52,5 +69,12 @@ int main(void bloogy){
 int prototype(int one, void two)
 {
     int x = 2;
+
+    for(int x = 0; x > 10; ++x)
+    {
+        cout << "Stupid Break";
+        break;
+    }
+
     return x;
 }

@@ -4,14 +4,35 @@ import re
 
 def check_if_function(code):
 
-    returntype = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
+    return_type = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
     function_name = Word(alphanums + '_' + ':')
     args = Word(alphanums + ',' + ' ' + '_')
     function_open = Literal("{")
     function_close = Literal("}")
-    function_declaration = returntype + function_name + "(" + Optional(args) + ")"
+    function_declaration = return_type + function_name + "(" + Optional(args) + ")"
     grammar = function_declaration + Optional(function_open)
 
+    try:
+        grammar.parseString(code)
+        return True
+    except ParseException:
+        return False
+
+def check_if_switch_statement(code):
+    statement = Word('switch')
+    args = Word(alphanums + '_')
+    grammar = statement + Optional(" ") + "(" + args + ")"
+    try:
+        grammar.parseString(code)
+        return True
+    except ParseException:
+        return False
+
+
+def check_if_break_statement(code):
+
+    statement = Word('break')
+    grammar = statement + Optional(" ") + ";"
     try:
         grammar.parseString(code)
         return True

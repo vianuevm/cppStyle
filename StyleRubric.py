@@ -1,6 +1,6 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
 from style_grader_classes import DefaultFilters, DataStructureTracker, OperatorSpace
-from style_grader_functions import check_if_function, get_arguments, check_operator_regex
+from style_grader_functions import check_if_function, get_arguments, check_operator_regex, check_if_break_statement, check_if_switch_statement
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables
 from StyleError import StyleError
 import codecs
@@ -27,6 +27,8 @@ class StyleRubric(object):
         self.output_format = "emacs" #TODO: If this can be something other than 'emacs', should load from config file
         self.reset_for_new_file()
         self.braces_error = False #To prevent multiple braces errors
+        self.in_switch = False
+
 
     def reset_for_new_file(self):
         self.outside_main = True
@@ -52,6 +54,7 @@ class StyleRubric(object):
 
     def is_outside_main(self):
         return self.outside_main
+
 
     def add_error(self, label):
         #Naming convention adds clarity
@@ -178,6 +181,7 @@ class StyleRubric(object):
         else_statement = re.search(r'^else\s+', code)
         switch_statement = re.search(r'^switch\s*\(', stripped_code)
         #TODO: Clean this line up
+
         if function or if_statement or else_statement or switch_statement:
             if function and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
                 else_if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
@@ -203,6 +207,9 @@ class StyleRubric(object):
                 if self.egyptian and not self.braces_error:
                     self.add_error("BRACES_ERROR")
                     self.braces_error = True
+
+
+
 
     def check_function_block_indentation(self, clean_lines, operator_space_tracker):
         tab_size = 4
@@ -273,24 +280,41 @@ class StyleRubric(object):
         data_structure_tracker.set_is_in_block(True)
         next_indentation = indentation_size + tab_size
 
+
+
         while data_structure_tracker.check_is_in_block():
             temp_line_num += 1
             current_indentation = re.search(r'^( *)\S',
                                             clean_lines.lines[temp_line_num])
+
+            switch_statement = check_if_switch_statement(clean_lines.lines[temp_line_num])
+            if(switch_statement):
+                data_structure_tracker.set_in_switch((True))
+            is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
+
+            if is_break_statement and not data_structure_tracker.is_in_switch():
+                self.add_error("UNNECESSARY_BREAK")
+
             if current_indentation:
                 line_start = current_indentation.group()
                 current_indentation = len(line_start) - len(line_start.strip())
                 if current_indentation != next_indentation and line_start.find('}') == -1:
-                    self.add_error("INDENTATION_ERROR", temp_line_num)
+                    self.add_error("INDENTATION_ERROR")
                 if clean_lines.lines[temp_line_num].find("{") != -1:
+                    if data_structure_tracker.is_in_switch():
+                        data_structure_tracker.add_switch_brace("{")
                     data_structure_tracker.add_brace("{")
                     next_indentation = current_indentation + tab_size
                 elif clean_lines.lines[temp_line_num].find("}") != -1:
+                    if data_structure_tracker.is_in_switch():
+                        data_structure_tracker.pop_switch_brace()
                     data_structure_tracker.pop_brace()
                     next_indentation = next_indentation - tab_size
 
+
     def parse_current_line_of_code(self, clean_lines, operator_space_tracker):
         code = clean_lines.lines[self.current_line_num]
+
         #Check for proper main() declaration (if main is present on this line)
         self.check_main_prefix(code)
         #Check non const globals
@@ -322,10 +346,8 @@ class StyleRubric(object):
 
         #Check for operator Spacing
         self.operator_spacing(code, operator_space_tracker)
-
         #Call function or checking INDENTATION!!
         self.check_function_block_indentation(clean_lines, operator_space_tracker)
-        #TODO THIS IS UNDER CONSTRUCTION
         #Check for braces being consistent (egyptian or non-egyptian)
         self.check_brace_consistency(clean_lines)
 
