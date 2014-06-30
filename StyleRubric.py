@@ -239,10 +239,10 @@ class StyleRubric(object):
 
     def check_main_prefix(self, code):
         #Return value for main is optional in C++11
-        parser = Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")+Literal("{")
+        parser = Literal("int")+Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")
         if len(parser.searchString(code)):
             main_prefix = Literal("main")+Literal("(")
-            full_use = "int"+Word(alphanums)+","+"char*"+Word(alphanums)+"["+"]"+")"
+            full_use = Literal("int")+"argc"+","+"char"+"*"+"argv"+"["+"]"+")"
             # 3 options for main() syntax
             if not len((main_prefix+Literal(")")).searchString(code)) and \
                not len((main_prefix+Literal("void")+Literal(")")).searchString(code)) and \
