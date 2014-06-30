@@ -1,7 +1,7 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
 from style_grader_classes import DefaultFilters, DataStructureTracker, OperatorSpace
 from style_grader_functions import check_if_function, get_arguments, check_operator_regex
-from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart
+from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables
 from StyleError import StyleError
 import codecs
 import copy
@@ -133,13 +133,15 @@ class StyleRubric(object):
             self.add_error("DEFINE_STATEMENT")
 
     def check_continue_statements(self, code):
-        if len(Literal("continue").searchString(code)):
+        quotedContinue = '"'+SkipTo(Literal("continue"))+"continue"+SkipTo(Literal('"'))+'"'
+        if len(Literal("continue").searchString(code)) and not len(quotedContinue.searchString(code)):
             self.add_error("CONTINUE_STATEMENT")
 
     def check_ternary_operator(self, code):
         # This is really easy - ternary operators require the conditional operator "?",
         # which has no other application in C++. Since we're parsing out comments, it's as easy as:
-        if len(Literal("?").searchString(code)):
+        quotedTernary = '"'+SkipTo(Literal("?"))+"?"+SkipTo(Literal('"'))+'"'
+        if len(Literal("?").searchString(code)) and not len(quotedTernary.searchString(code)):
             self.add_error("TERNARY_OPERATOR")
 
     def check_while_true(self, code):
