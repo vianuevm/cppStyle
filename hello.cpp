@@ -7,6 +7,11 @@ int x = 0;
 
 int prototype(int one, void two);
 
+void main(){};
+main();
+
+int main(int argc, char* argv){};
+
 int main(void bloogy){
     int z = 0;
     z++;
