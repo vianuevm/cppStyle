@@ -26,6 +26,7 @@ class StyleRubric(object):
         self.error_tracker = []
         self.output_format = "emacs" #TODO: If this can be something other than 'emacs', should load from config file
         self.reset_for_new_file()
+        self.braces_error = False #To prevent multiple braces errors
 
     def reset_for_new_file(self):
         self.outside_main = True
@@ -181,12 +182,15 @@ class StyleRubric(object):
 
                 self.set_egyptian_style(True)
             elif not self.is_outside_main():
-                self.add_error("BRACES_ERROR")
+                if not self.braces_error:
+                    self.add_error("BRACES_ERROR")
+                    self.braces_error = True
 
             #if both of these are true, they are not consistent, therefore error.
             if self.notEgyptian:
-                if self.egyptian:
+                if self.egyptian and not self.braces_error:
                     self.add_error("BRACES_ERROR")
+                    self.braces_error = True
 
     def check_function_block_indentation(self, clean_lines, operator_space_tracker):
         tab_size = 4
