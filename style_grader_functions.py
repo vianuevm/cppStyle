@@ -4,8 +4,7 @@ import re
 
 def check_if_function(code):
 
-    returntype = (Literal("void") | Literal('int') | Literal('string')
-                  | Literal('double') | Literal('float') | Literal('char'))
+    returntype = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
     function_name = Word(alphanums + '_' + ':')
     args = Word(alphanums + ',' + ' ')
     function_open = Literal("{")
