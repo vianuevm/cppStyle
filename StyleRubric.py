@@ -132,6 +132,14 @@ class StyleRubric(object):
         if len(match.searchString(code)):
             self.add_error("DEFINE_STATEMENT")
 
+    def check_for_stringstreams(self, code):
+        match = Literal("#")+Literal("include")+Literal("<sstream>")
+        try:
+            result = match.parseString(code)
+            self.add_error("STRINGSTREAM")
+        except ParseException:
+            pass
+
     def check_continue_statements(self, code):
         quotedContinue = '"'+SkipTo(Literal("continue"))+"continue"+SkipTo(Literal('"'))+'"'
         if len(Literal("continue").searchString(code)) and not len(quotedContinue.searchString(code)):
@@ -158,9 +166,7 @@ class StyleRubric(object):
             function = check_if_function(code)
             variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
             using = LineStart()+Literal("using")
-            print code, len(variable.searchString(code)), len(using.searchString(code))
             if not function and len(variable.searchString(code)) and not len(using.searchString(code)):
-                print "HELLO|",code
                 self.add_error("GLOBAL_VARIABLE")
 
     def check_brace_consistency(self, clean_lines):
@@ -308,6 +314,8 @@ class StyleRubric(object):
         self.check_ternary_operator(code)
         #Check continue statements
         self.check_continue_statements(code) 
+        #Check stringstreams
+        self.check_for_stringstreams(code)
         
         #Check for unnecessary includes
         #TODO: Above duh.
