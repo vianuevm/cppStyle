@@ -6,7 +6,7 @@ def check_if_function(code):
 
     returntype = (Literal("void") | Literal('int') | Literal('string')
                   | Literal('double') | Literal('float') | Literal('char'))
-    function_name = Word(alphanums + '_')
+    function_name = Word(alphanums + '_' + ':')
     args = Word(alphanums + ',' + ' ')
     function_open = Literal("{")
     function_close = Literal("}")
