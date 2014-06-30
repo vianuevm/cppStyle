@@ -6,7 +6,7 @@ def check_if_function(code):
 
     returntype = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
     function_name = Word(alphanums + '_' + ':')
-    args = Word(alphanums + ',' + ' ')
+    args = Word(alphanums + ',' + ' ' + '_')
     function_open = Literal("{")
     function_close = Literal("}")
     function_declaration = returntype + function_name + "(" + Optional(args) + ")"
