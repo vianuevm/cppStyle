@@ -82,3 +82,6 @@ def check_operator_regex(code, operator):
                 return False
     else:
         return True
+
+def printSuccess():
+    print '\033[32mNo errors have been found :)\033[0m'

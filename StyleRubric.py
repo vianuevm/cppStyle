@@ -63,7 +63,7 @@ class StyleRubric(object):
             self.error_types[label] = 0
 
         self.error_types[label] += 1
-        self.error_tracker.append(StyleError(1, label, self.current_line_num))
+        self.error_tracker.append(StyleError(1, label, self.current_line_num + 1))
 
     def set_egyptian_style(self, egyptian_bool):
         if egyptian_bool:
@@ -109,8 +109,8 @@ class StyleRubric(object):
         if not check_operator_regex(code, '\+')  or \
             not check_operator_regex(code, '\-') or \
             not check_operator_regex(code, '\/') or \
-            not check_operator_regex(code, '\%') or \
-            not check_operator_regex(code, '\*'):
+            not check_operator_regex(code, '\%'):
+            # or not check_operator_regex(code, '\*'): # TODO somehow correctly check spacing for *
             self.add_error("OPERATOR_SPACE_ERROR")
             return False
 
@@ -264,7 +264,7 @@ class StyleRubric(object):
         parser = Literal("int")+Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")
         if len(parser.searchString(code)):
             main_prefix = Literal("main")+Literal("(")
-            full_use = Literal("int")+"argc"+","+"char"+"*"+"argv"+"["+"]"+")"
+            full_use = Literal("int")+"argc"+","+Optional("const")+"char"+"*"+"argv"+"["+"]"+")"
             # 3 options for main() syntax
             if not len((main_prefix+Literal(")")).searchString(code)) and \
                not len((main_prefix+Literal("void")+Literal(")")).searchString(code)) and \

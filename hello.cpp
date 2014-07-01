@@ -13,6 +13,11 @@ main();
 
 int main(int argc, char* argv){};
 
+int main(int argc, const char* argv[])
+{
+    return 0;
+}
+
 int main(void bloogy){
 
     switch(argument){
