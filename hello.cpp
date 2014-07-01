@@ -11,7 +11,7 @@ int x = 0;
 
 int prototype(int one, void two);
 
-void main();
+  void main();
 main();
 
 int main(int argc, char* argv);
@@ -42,7 +42,7 @@ int main(void bloogy)
 
     break;
 
-
+    int a = 2-0;
     int z = 0;
     z++;
     int x = 4 / 4;
