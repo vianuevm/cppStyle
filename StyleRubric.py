@@ -168,7 +168,7 @@ class StyleRubric(object):
             function = check_if_function(code)
             variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
             using = LineStart()+Literal("using")
-            constant = LineStart()+Literal("const")
+            constant = LineStart()+Optional("static")+Literal("const")
             if not function and len(variable.searchString(code)) and not len(using.searchString(code)) and not len(constant.searchString(code)):
                 self.add_error("GLOBAL_VARIABLE")
 
