@@ -1,7 +1,7 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
 from style_grader_classes import DefaultFilters, DataStructureTracker, OperatorSpace
 from style_grader_functions import check_if_function, get_arguments, check_operator_regex, check_if_break_statement, check_if_switch_statement
-from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables
+from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, alphas, LineStart, ZeroOrMore, printables
 from StyleError import StyleError
 import codecs
 import copy
@@ -168,7 +168,8 @@ class StyleRubric(object):
             function = check_if_function(code)
             variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
             using = LineStart()+Literal("using")
-            if not function and len(variable.searchString(code)) and not len(using.searchString(code)):
+            constant = LineStart()+Literal("const")
+            if not function and len(variable.searchString(code)) and not len(using.searchString(code)) and not len(constant.searchString(code)):
                 self.add_error("GLOBAL_VARIABLE")
 
     def check_brace_consistency(self, clean_lines):
