@@ -4,6 +4,9 @@ using namespace std;
 
 #define private public
 
+const int LIVES = 3;
+const bool happy = true;
+
 int x = 0;
 
 int prototype(int one, void two);
