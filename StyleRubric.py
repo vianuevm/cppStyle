@@ -56,14 +56,17 @@ class StyleRubric(object):
         return self.outside_main
 
 
-    def add_error(self, label, column=0, data={}):
+    def add_error(self, label, line=0, column=0, data={}):
         #Naming convention adds clarity
         self.total_errors += 1
         if label not in self.error_types:
             self.error_types[label] = 0
 
+        if not line:
+            line = self.current_line_num + 1
+
         self.error_types[label] += 1
-        self.error_tracker.append(StyleError(1, label, self.current_line_num + 1, column_num=column, data=data))
+        self.error_tracker.append(StyleError(1, label, line, column_num=column, data=data))
 
     def set_egyptian_style(self, egyptian_bool):
         if egyptian_bool:
@@ -108,14 +111,15 @@ class StyleRubric(object):
     def operator_spacing(self, code):
         # TODO somehow correctly check spacing for *
         operators = ['+', '-', '/', '%']
-        spacing_error = False
+        correct_spacing = True
         for operator in operators:
-            if not check_operator_regex(code, '\{}'.format(operator)):
-                spacing_error = True
-                column_num = code.find(operator) + 1
-                self.add_error("OPERATOR_SPACE_ERROR", column=column_num)
+            column_num = check_operator_regex(code, '\{}'.format(operator))
+            if column_num:
+                correct_spacing = False
+                data = {'operator': operator}
+                self.add_error("OPERATOR_SPACE_ERROR", column=column_num, data=data)
 
-        return not spacing_error
+        return not correct_spacing
 
     def check_equals_true(self, code):
         variable = Word(alphanums)
@@ -294,14 +298,14 @@ class StyleRubric(object):
             is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
 
             if is_break_statement and not data_structure_tracker.is_in_switch():
-                self.add_error("UNNECESSARY_BREAK")
+                self.add_error("UNNECESSARY_BREAK", line=temp_line_num + 1)
 
             if current_indentation:
                 line_start = current_indentation.group()
                 current_indentation = len(line_start) - len(line_start.strip())
                 if current_indentation != next_indentation and line_start.find('}') == -1:
-                    data = {'expected': next_indentation, 'found': indentation_size}
-                    self.add_error("INDENTATION_ERROR", data=data)
+                    data = {'expected': next_indentation, 'found': current_indentation}
+                    self.add_error("INDENTATION_ERROR", temp_line_num + 1, data=data)
                 if clean_lines.lines[temp_line_num].find("{") != -1:
                     if data_structure_tracker.is_in_switch():
                         data_structure_tracker.add_switch_brace("{")

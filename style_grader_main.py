@@ -28,6 +28,8 @@ def main():
     if not rubric.error_tracker:
         printSuccess()
 
+    rubric.error_tracker.sort()
+
     # print all errors
     for error in rubric.error_tracker:
         print error

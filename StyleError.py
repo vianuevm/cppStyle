@@ -38,6 +38,14 @@ class StyleError(object):
         output_str += self.get_message()
         return output_str
 
+    def __gt__(self, other):
+        if self.get_line_number() > other.get_line_number():
+            return True
+        elif self.get_line_number() == other.get_line_number() and self.get_column_number() > other.get_column_number():
+            return True
+        else:
+            return False
+
     def set_line_num(self, line):
         self.line_num = line
     def set_column_num(self, column):
@@ -68,7 +76,7 @@ class StyleError(object):
 
     def get_error_message(self, label):
         list_of_errors = {
-            "OPERATOR_SPACE_ERROR": "Incorrect spacing around operators",
+            "OPERATOR_SPACE_ERROR": "Incorrect spacing around {}".format(self.get_data().get('operator')),
             "INDENTATION_ERROR": "Incorrect indentation. Expected: {}, found: {}.".format(self.get_data().get('expected'), self.get_data().get('found')),
             "COMMAND_ERROR": "There should only be one command (statement) on each line.",
             "IF_ELSE_ERROR": "Every If-Else statement should have brackets.",
