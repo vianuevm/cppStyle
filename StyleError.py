@@ -4,21 +4,72 @@ class StyleError(object):
     """
 
     def __init__(self):
+        self.data = {}
         self.line_num = 0
-        self.label = ""
+        self.column_num = 0
+        self.message = ""
         self.points_worth = 0
+        self.type = "ERROR"
 
-    def __init__(self, points, label, line_num):
+    def __init__(self, points, label, line_num=0, column_num=0, data={}):
         """
         Log the line number, type and point value of a specific error.
         points (int): Weight of this error.
         label (str): Key for response lookup in list_of_errors.
         line_num (int): Line number of this error.
+        column_num (int): Column number of this error.
+        data (dictionary): Additional information about the error,
         """
 
+        self.set_data(data)
+        self.set_points_worth(points)
+        self.set_line_num(line_num)
+        self.set_column_num(column_num)
+        self.set_message_from_label(label)
+        self.set_type("ERROR")
+
+    def __str__(self):
+        output_str = ''
+        if self.get_line_number():
+            output_str += '{}'.format(self.get_line_number())
+            if self.get_column_number():
+                output_str += ':{}'.format(self.get_column_number())
+            output_str += '  '
+        output_str += self.get_message()
+        return output_str
+
+    def set_line_num(self, line):
+        self.line_num = line
+    def set_column_num(self, column):
+        self.column_num = column
+    def set_message(self, new_message):
+        self.message = new_message
+    def set_points_worth(self, points):
+        self.points_worth = points
+    def set_type(self, new_type):
+        self.type = new_type
+    def set_data(self, new_data):
+        self.data = new_data
+    def get_points(self):
+        return self.points_worth
+    def get_message(self):
+        return self.message
+    def get_line_number(self):
+        return self.line_num
+    def get_column_number(self):
+        return self.column_num
+    def get_type(self):
+        return self.type
+    def get_data(self):
+        return self.data
+
+    def set_message_from_label(self, label):
+        self.set_message(self.get_error_message(label))
+
+    def get_error_message(self, label):
         list_of_errors = {
             "OPERATOR_SPACE_ERROR": "Incorrect spacing around operators",
-            "INDENTATION_ERROR": "Incorrect indentation. Check to make sure you are four spaces in from previous code block.",
+            "INDENTATION_ERROR": "Incorrect indentation. Expected: {}, found: {}.".format(self.get_data().get('expected'), self.get_data().get('found')),
             "COMMAND_ERROR": "There should only be one command (statement) on each line.",
             "IF_ELSE_ERROR": "Every If-Else statement should have brackets.",
             "GLOBAL_VARIABLE": "You should never have a non-const global variable.",
@@ -39,24 +90,5 @@ class StyleError(object):
             "STRINGSTREAM": "We disallow the use of stringstreams in this course to ensure mastery of other IO methods.",
         }
 
-        self.set_points_worth(points)
-        self.set_line_num(line_num)
-        self.set_label(list_of_errors[label])
-
-    def __str__(self):
-        return '{0}  {1}'.format(self.get_line_number(), self.get_label())
-
-    def set_line_num(self, line):
-        self.line_num = line
-    def set_label(self, label_name):
-        self.label = label_name
-    def set_points_worth(self, points):
-        self.points_worth = points
-    def get_points(self):
-        return self.points_worth
-    def get_label(self):
-        return self.label
-    def get_line_number(self):
-        return self.line_num
-
+        return list_of_errors[label]
 

@@ -4,26 +4,35 @@ using namespace std;
 
 #define private public
 
-const int LIVES = 3;
+static const int LIVES = 3;
 const bool happy = true;
 
 int x = 0;
 
 int prototype(int one, void two);
 
-void main(){};
+  void main();
 main();
 
-int main(int argc, char* argv){};
+int main(int argc, char* argv);
 
 int main(int argc, const char* argv[])
 {
+    for (int x = 0; x < 4; ++x)
+    {
+        if (x == 4)
+        {
+            break;
+        }
+    }
     return 0;
 }
 
-int main(void bloogy){
+int main(void bloogy)
+{
 
-    switch(argument){
+    switch(argument)
+    {
 
     case argument:
         break;
@@ -33,7 +42,7 @@ int main(void bloogy){
 
     break;
 
-
+    int a = 2-0;
     int z = 0;
     z++;
     int x = 4 / 4;
@@ -46,26 +55,30 @@ int main(void bloogy){
         cout << "Hello World!" << endl;
     }
 
-    
-    while(true) {
+
+    while(true)
+    {
         cout << "Hello World!" << endl;
 
 
             break;
 
 
-    } 
-    
-    if (5 == true) {
+    }
+
+    if (5 == true)
+    {
         cout << "Hello World!" << endl;
         cout << "Hello World!" << endl;
         continue;
     }
 
-    for(int x = 0; x < 10; ++x){
+    for(int x = 0; x < 10; ++x)
+    {
         cout << x;
 
-        if(true) {
+        if(true)
+        {
             cout << "hello";
         }
     }

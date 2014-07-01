@@ -56,14 +56,14 @@ class StyleRubric(object):
         return self.outside_main
 
 
-    def add_error(self, label):
+    def add_error(self, label, column=0, data={}):
         #Naming convention adds clarity
         self.total_errors += 1
         if label not in self.error_types:
             self.error_types[label] = 0
 
         self.error_types[label] += 1
-        self.error_tracker.append(StyleError(1, label, self.current_line_num + 1))
+        self.error_tracker.append(StyleError(1, label, self.current_line_num + 1, column_num=column, data=data))
 
     def set_egyptian_style(self, egyptian_bool):
         if egyptian_bool:
@@ -106,12 +106,19 @@ class StyleRubric(object):
             self.add_error("LINE_WIDTH")
 
     def operator_spacing(self, code):
-        if not check_operator_regex(code, '\+')  or \
-            not check_operator_regex(code, '\-') or \
-            not check_operator_regex(code, '\/') or \
-            not check_operator_regex(code, '\%'):
-            # or not check_operator_regex(code, '\*'): # TODO somehow correctly check spacing for *
-            self.add_error("OPERATOR_SPACE_ERROR")
+        # TODO somehow correctly check spacing for *
+        operators = ['+', '-', '/', '%']
+        spacing_error = False
+        for operator in operators:
+            if not check_operator_regex(code, '\{}'.format(operator)):
+                spacing_error = True
+
+        if spacing_error:
+            column_nums = []
+            for operator in operators:
+                column_nums.append(code.find(operator))
+            column_num = min(filter(lambda x:x>0, column_nums)) + 1
+            self.add_error("OPERATOR_SPACE_ERROR", column=column_num)
             return False
 
         else:
@@ -168,7 +175,7 @@ class StyleRubric(object):
             function = check_if_function(code)
             variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
             using = LineStart()+Literal("using")
-            constant = LineStart()+Literal("const")
+            constant = LineStart()+Optional("static")+Literal("const")
             if not function and len(variable.searchString(code)) and not len(using.searchString(code)) and not len(constant.searchString(code)):
                 self.add_error("GLOBAL_VARIABLE")
 
@@ -228,9 +235,12 @@ class StyleRubric(object):
         else:
             return
 
+
+
         if function or self.is_outside_main():
             if indentation_size != 0:
-                self.add_error("INDENTATION_ERROR")
+                data = {'expected': 0, 'found': indentation_size}
+                self.add_error("INDENTATION_ERROR", data=data)
             if self.is_outside_main():
                 return
 
@@ -299,7 +309,8 @@ class StyleRubric(object):
                 line_start = current_indentation.group()
                 current_indentation = len(line_start) - len(line_start.strip())
                 if current_indentation != next_indentation and line_start.find('}') == -1:
-                    self.add_error("INDENTATION_ERROR")
+                    data = {'expected': next_indentation, 'found': indentation_size}
+                    self.add_error("INDENTATION_ERROR", data=data)
                 if clean_lines.lines[temp_line_num].find("{") != -1:
                     if data_structure_tracker.is_in_switch():
                         data_structure_tracker.add_switch_brace("{")
