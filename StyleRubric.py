@@ -63,7 +63,7 @@ class StyleRubric(object):
             self.error_types[label] = 0
 
         self.error_types[label] += 1
-        self.error_tracker.append(StyleError(1, label, self.current_line_num))
+        self.error_tracker.append(StyleError(1, label, self.current_line_num + 1))
 
     def set_egyptian_style(self, egyptian_bool):
         if egyptian_bool:
