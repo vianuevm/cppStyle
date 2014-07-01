@@ -5,8 +5,11 @@ class StyleError(object):
 
     def __init__(self):
         self.line_num = 0
-        self.label = ""
+        self.column_num = 0
+        self.message = ""
         self.points_worth = 0
+        self.type = "ERROR"
+        self.data = {}
 
     def __init__(self, points, label, line_num):
         """
@@ -16,6 +19,44 @@ class StyleError(object):
         line_num (int): Line number of this error.
         """
 
+        self.set_points_worth(points)
+        self.set_line_num(line_num)
+        self.set_column_num(0)
+        self.set_message_from_label(label)
+        self.type = "ERROR"
+        self.data = {}
+
+    def __str__(self):
+        output_str = ''
+        if self.get_line_number():
+            output_str += '{}'.format(self.get_line_number())
+            if self.get_column_number():
+                output_str += ':{}'.format(self.get_column_number())
+            output_str += '  '
+        output_str += self.get_message()
+        return output_str
+
+    def set_line_num(self, line):
+        self.line_num = line
+    def set_column_num(self, column):
+        self.column_num = column
+    def set_message(self, new_message):
+        self.message = new_message
+    def set_points_worth(self, points):
+        self.points_worth = points
+    def get_points(self):
+        return self.points_worth
+    def get_message(self):
+        return self.message
+    def get_line_number(self):
+        return self.line_num
+    def get_column_number(self):
+        return self.column_num
+
+    def set_message_from_label(self, label):
+        self.set_message(self.get_error_message(label))
+
+    def get_error_message(self, label):
         list_of_errors = {
             "OPERATOR_SPACE_ERROR": "Incorrect spacing around operators",
             "INDENTATION_ERROR": "Incorrect indentation. Check to make sure you are four spaces in from previous code block.",
@@ -39,24 +80,5 @@ class StyleError(object):
             "STRINGSTREAM": "We disallow the use of stringstreams in this course to ensure mastery of other IO methods.",
         }
 
-        self.set_points_worth(points)
-        self.set_line_num(line_num)
-        self.set_label(list_of_errors[label])
-
-    def __str__(self):
-        return '{0}  {1}'.format(self.get_line_number(), self.get_label())
-
-    def set_line_num(self, line):
-        self.line_num = line
-    def set_label(self, label_name):
-        self.label = label_name
-    def set_points_worth(self, points):
-        self.points_worth = points
-    def get_points(self):
-        return self.points_worth
-    def get_label(self):
-        return self.label
-    def get_line_number(self):
-        return self.line_num
-
+        return list_of_errors[label]
 
