@@ -112,17 +112,10 @@ class StyleRubric(object):
         for operator in operators:
             if not check_operator_regex(code, '\{}'.format(operator)):
                 spacing_error = True
+                column_num = code.find(operator) + 1
+                self.add_error("OPERATOR_SPACE_ERROR", column=column_num)
 
-        if spacing_error:
-            column_nums = []
-            for operator in operators:
-                column_nums.append(code.find(operator))
-            column_num = min(filter(lambda x:x>0, column_nums)) + 1
-            self.add_error("OPERATOR_SPACE_ERROR", column=column_num)
-            return False
-
-        else:
-            return True
+        return not spacing_error
 
     def check_equals_true(self, code):
         variable = Word(alphanums)
@@ -234,8 +227,6 @@ class StyleRubric(object):
             indentation_size = len(indentation) - len(indentation.strip())
         else:
             return
-
-
 
         if function or self.is_outside_main():
             if indentation_size != 0:
