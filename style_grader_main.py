@@ -25,6 +25,9 @@ def main():
         rubric.reset_for_new_file() # Fixes issue with multiple command-line arguments
         rubric.grade_student_file(filename)
 
+    if not rubric.error_tracker:
+        printSuccess()
+
     # print all errors
     for error in rubric.error_tracker:
         print error
