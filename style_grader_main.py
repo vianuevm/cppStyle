@@ -16,12 +16,20 @@ def main():
         # Should print usage info here, but argparse will autogen that - skipping this until that's decided
         sys.stderr.write("<Generic usage info>\n")
     
-    student_file_names = get_arguments(sys.argv[1:])
-    
+    args = get_arguments(sys.argv[1:])
     rubric = StyleRubric()
+    rubric.student_file_names = args["student_files"]
+    rubric.permitted_includes = args["includes"]
+
+
+   # filters = args["filters"]
+    
+
+    rubric.student_file_names = rubric.clean_file(rubric.student_file_names)
+    rubric.permitted_includes = rubric.clean_file(rubric.permitted_includes)
     #rubric.reset_error_count() # Is this line necessary?
 
-    for filename in student_file_names:
+    for filename in rubric.student_file_names:
         rubric.reset_for_new_file() # Fixes issue with multiple command-line arguments
         rubric.grade_student_file(filename)
 
