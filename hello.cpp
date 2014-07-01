@@ -66,6 +66,8 @@ int main(void bloogy)
 
     }
 
+    cout << "Rrrrrrrrrrrreeeeeeeeeeeaaaaaaaaaaaallllllllllyyyyyyyyyyyy           llllllloooooooonnnnnnnnnnngggggggggggg!!!!!!!!!!!!!" << endl;
+
     if (5 == true)
     {
         cout << "Hello World!" << endl;

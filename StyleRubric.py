@@ -106,7 +106,7 @@ class StyleRubric(object):
         max_length = 80
         current_length = len(line)
         if current_length > max_length:
-            self.add_error("LINE_WIDTH")
+            self.add_error("LINE_WIDTH", data={'length': current_length})
 
     def operator_spacing(self, code):
         # TODO somehow correctly check spacing for *

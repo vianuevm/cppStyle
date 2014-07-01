@@ -11,7 +11,7 @@ class StyleError(object):
         self.points_worth = 0
         self.type = "ERROR"
 
-    def __init__(self, points, label, line_num=0, column_num=0, data={}):
+    def __init__(self, points, label, line_num=0, column_num=0, type="ERROR", data={}):
         """
         Log the line number, type and point value of a specific error.
         points (int): Weight of this error.
@@ -26,7 +26,7 @@ class StyleError(object):
         self.set_line_num(line_num)
         self.set_column_num(column_num)
         self.set_message_from_label(label)
-        self.set_type("ERROR")
+        self.set_type(type)
 
     def __str__(self):
         output_str = ''
@@ -75,14 +75,14 @@ class StyleError(object):
         self.set_message(self.get_error_message(label))
 
     def get_error_message(self, label):
-        list_of_errors = {
+        return {
             "OPERATOR_SPACE_ERROR": "Incorrect spacing around {}".format(self.get_data().get('operator')),
             "INDENTATION_ERROR": "Incorrect indentation. Expected: {}, found: {}.".format(self.get_data().get('expected'), self.get_data().get('found')),
             "COMMAND_ERROR": "There should only be one command (statement) on each line.",
             "IF_ELSE_ERROR": "Every If-Else statement should have brackets.",
             "GLOBAL_VARIABLE": "You should never have a non-const global variable.",
             "FUNCTION_LENGTH_ERROR": "Your function is too long. Break it up into separate functions.",
-            "LINE_WIDTH": "Line limit of 80 characters exceeded.",
+            "LINE_WIDTH": "Line of {} characters exceeded the limit of 80.".format(self.get_data().get('length')),
             "BOOL_VALUE": "You need to return true or false, instead of an actual number.",
             "MAGIC_NUMBER": "Store numbers in variables, so that you can give them meaningful names.",
             "BRACES_ERROR": "Your braces should be either Egyptian or block style, pick one.",
@@ -96,7 +96,5 @@ class StyleError(object):
             "CONTINUE_STATEMENT": "While 'continue' is occasionally appropriate, we discourage its use in EECS 183.",
             "MAIN_SYNTAX": "Your declaration of main() does not adhere to conventional stylistic guidelines.",
             "STRINGSTREAM": "We disallow the use of stringstreams in this course to ensure mastery of other IO methods.",
-        }
-
-        return list_of_errors[label]
+        } [label]
 
