@@ -42,7 +42,9 @@ class StyleError(object):
         self.set_points_worth(points)
         self.set_line_num(line_num)
         self.set_label(list_of_errors[label])
-        print list_of_errors[label]
+
+    def __str__(self):
+        return '{0}  {1}'.format(self.get_line_number(), self.get_label())
 
     def set_line_num(self, line):
         self.line_num = line
