@@ -291,7 +291,7 @@ class StyleRubric(object):
             if len(parsed):
                 self.add_error("FIRST_CHAR",
                                data={"keyword": keyword,
-                                     "expected": str(parsed[0][1]).lower().capitalize(),
+                                     "expected": str(parsed[0][1]).capitalize(),
                                      "found": str(parsed[0][1])})
                 return
 
