@@ -96,7 +96,10 @@ class StyleError(object):
             "CONTINUE_STATEMENT": "While 'continue' is occasionally appropriate, we discourage its use in EECS 183.",
             "MAIN_SYNTAX": "Your declaration of main() does not adhere to conventional stylistic guidelines.",
             "STRINGSTREAM": "We disallow the use of stringstreams in this course to ensure mastery of other IO methods.",
-            "UNNECESSARY_INCLUDE": "You have included a library we do not allow."
+            "UNNECESSARY_INCLUDE": "You have included a library we do not allow.",
+            "FIRST_CHAR": "First character of a {} name must be capitalized. Expected: {}, found: {}".format(self.get_data().get("keyword"),
+                                                                                                                   self.get_data().get("expected"),
+                                                                                                                   self.get_data().get("found"))
         }[label]
 
 
