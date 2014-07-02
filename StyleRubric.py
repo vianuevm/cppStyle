@@ -56,14 +56,17 @@ class StyleRubric(object):
         return self.outside_main
 
 
-    def add_error(self, label):
+    def add_error(self, label, line=0, column=0, data={}):
         #Naming convention adds clarity
         self.total_errors += 1
         if label not in self.error_types:
             self.error_types[label] = 0
 
+        if not line:
+            line = self.current_line_num + 1
+
         self.error_types[label] += 1
-        self.error_tracker.append(StyleError(1, label, self.current_line_num + 1))
+        self.error_tracker.append(StyleError(1, label, line, column_num=column, data=data))
 
     def set_egyptian_style(self, egyptian_bool):
         if egyptian_bool:
@@ -103,19 +106,20 @@ class StyleRubric(object):
         max_length = 80
         current_length = len(line)
         if current_length > max_length:
-            self.add_error("LINE_WIDTH")
+            self.add_error("LINE_WIDTH", data={'length': current_length})
 
     def operator_spacing(self, code):
-        if not check_operator_regex(code, '\+')  or \
-            not check_operator_regex(code, '\-') or \
-            not check_operator_regex(code, '\/') or \
-            not check_operator_regex(code, '\%'):
-            # or not check_operator_regex(code, '\*'): # TODO somehow correctly check spacing for *
-            self.add_error("OPERATOR_SPACE_ERROR")
-            return False
+        # TODO somehow correctly check spacing for *
+        operators = ['+', '-', '/', '%']
+        correct_spacing = True
+        for operator in operators:
+            column_num = check_operator_regex(code, '\{}'.format(operator))
+            if column_num:
+                correct_spacing = False
+                data = {'operator': operator}
+                self.add_error("OPERATOR_SPACE_ERROR", column=column_num, data=data)
 
-        else:
-            return True
+        return not correct_spacing
 
     def check_equals_true(self, code):
         variable = Word(alphanums)
@@ -168,7 +172,7 @@ class StyleRubric(object):
             function = check_if_function(code)
             variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
             using = LineStart()+Literal("using")
-            constant = LineStart()+Literal("const")
+            constant = LineStart()+Optional("static")+Literal("const")
             if not function and len(variable.searchString(code)) and not len(using.searchString(code)) and not len(constant.searchString(code)):
                 self.add_error("GLOBAL_VARIABLE")
 
@@ -230,7 +234,8 @@ class StyleRubric(object):
 
         if function or self.is_outside_main():
             if indentation_size != 0:
-                self.add_error("INDENTATION_ERROR")
+                data = {'expected': 0, 'found': indentation_size}
+                self.add_error("INDENTATION_ERROR", data=data)
             if self.is_outside_main():
                 return
 
@@ -293,13 +298,14 @@ class StyleRubric(object):
             is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
 
             if is_break_statement and not data_structure_tracker.is_in_switch():
-                self.add_error("UNNECESSARY_BREAK")
+                self.add_error("UNNECESSARY_BREAK", line=temp_line_num + 1)
 
             if current_indentation:
                 line_start = current_indentation.group()
                 current_indentation = len(line_start) - len(line_start.strip())
                 if current_indentation != next_indentation and line_start.find('}') == -1:
-                    self.add_error("INDENTATION_ERROR")
+                    data = {'expected': next_indentation, 'found': current_indentation}
+                    self.add_error("INDENTATION_ERROR", temp_line_num + 1, data=data)
                 if clean_lines.lines[temp_line_num].find("{") != -1:
                     if data_structure_tracker.is_in_switch():
                         data_structure_tracker.add_switch_brace("{")

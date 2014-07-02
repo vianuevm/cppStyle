@@ -53,6 +53,9 @@ def get_arguments(argv):
     return argv
 
 def check_operator_regex(code, operator):
+    """
+    If an error has been found, return the column number of the operator, else return 0
+    """
     regex_one = r'' + '\S+' + operator
     regex_two =  r'' + operator + '\S+'
     #check to see if there is a non-whitespace character on either side of the operator
@@ -67,21 +70,22 @@ def check_operator_regex(code, operator):
             operator = right_symbol[0]
             if operator == '+' or operator == '-':
                 if right_symbol == '-' or right_symbol == '=' or right_symbol == '+':
-                    return  True
+                    return 0
                 if left_symbol == '-' or left_symbol == '=' or left_symbol == '+':
-                    return True
+                    return 0
             elif operator == '/':
                 if right_symbol == '=':
-                    return True
+                    return 0
             elif operator == '=':
                 if left_symbol == '+' or left_symbol == '-':
-                    return True
+                    return 0
                 if right_symbol or left_symbol == '=':
-                    return True
+                    return 0
             else:
-                return False
+                # return column number of the error
+                return right_not_wspace.regs[0][0] + 1
     else:
-        return True
+        return 0
 
 def printSuccess():
     print '\033[32mNo errors have been found :)\033[0m'
