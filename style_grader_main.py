@@ -19,14 +19,13 @@ def main():
     args = get_arguments(sys.argv[1:])
     rubric = StyleRubric()
 
-    if args["student_files"]:
+    if "student_files" in args.iterkeys():
         rubric.student_file_names = args["student_files"]
-    if args["includes"]:
-        rubric.permitted_includes = args["includes"]
+        rubric.student_file_names = rubric.clean_file(rubric.student_file_names)
 
-    rubric.student_file_names = rubric.clean_file(rubric.student_file_names)
-    rubric.permitted_includes = rubric.clean_file(rubric.permitted_includes)
-    #rubric.reset_error_count() # Is this line necessary?
+    if "includes" in args.iterkeys():
+        rubric.permitted_includes = args["includes"]
+        rubric.permitted_includes = rubric.clean_file(rubric.permitted_includes)
 
     for filename in rubric.student_file_names:
         rubric.reset_for_new_file() # Fixes issue with multiple command-line arguments
