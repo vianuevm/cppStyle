@@ -1,6 +1,8 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <godzilla>
+
 using namespace std;
 
 #define private public

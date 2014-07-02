@@ -18,12 +18,11 @@ def main():
     
     args = get_arguments(sys.argv[1:])
     rubric = StyleRubric()
-    rubric.student_file_names = args["student_files"]
-    rubric.permitted_includes = args["includes"]
 
-
-   # filters = args["filters"]
-    
+    if args["student_files"]:
+        rubric.student_file_names = args["student_files"]
+    if args["includes"]:
+        rubric.permitted_includes = args["includes"]
 
     rubric.student_file_names = rubric.clean_file(rubric.student_file_names)
     rubric.permitted_includes = rubric.clean_file(rubric.permitted_includes)
