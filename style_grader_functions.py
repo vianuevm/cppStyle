@@ -41,16 +41,21 @@ def check_if_break_statement(code):
 
 def get_arguments(argv):
     try:
-        (opts, filenames) = getopt.getopt(argv, '', ['whitespace=', 'globalconst=', 'verbose=',
-                                                     'counting=',
-                                                     'filter=',
-                                                     'root=',
-                                                     'linelength=',
-                                                     'extensions='])
+        (opts, args) = getopt.getopt(argv, "i:s:f:", "")
     except getopt.GetoptError:
         print('Invalid arguments.')
 
-    return argv
+    args = {}
+
+    for o, a in opts:
+        if o == "-i":
+            args["includes"] = a
+        elif o == "-s":
+            args["student_files"] = a
+        elif o == "-f":
+            args["filters"] = a
+
+    return args
 
 def check_operator_regex(code, operator):
     """

@@ -19,6 +19,8 @@ class StyleRubric(object):
     This class sets all variable aspects of grading (whitespace, gotos etc)
     """
     def __init__(self):
+        self.permitted_includes = []
+        self.student_files = []
         self.total_errors = 0
         self.filters = DefaultFilters()
         self.error_types = {}
@@ -346,10 +348,8 @@ class StyleRubric(object):
         self.check_continue_statements(code) 
         #Check stringstreams
         self.check_for_stringstreams(code)
-        
         #Check for unnecessary includes
-        #TODO: Above duh.
-
+        self.check_unnecessary_include(code)
         #Check for operator Spacing
         self.operator_spacing(code)
         #Call function or checking INDENTATION!!
@@ -357,36 +357,61 @@ class StyleRubric(object):
         #Check for braces being consistent (egyptian or non-egyptian)
         self.check_brace_consistency(clean_lines)
 
+
+    def check_unnecessary_include(self, code):
+
+        statement = Literal('include')
+        pound = Literal('#')
+        outer = Literal('<')
+        library = Word(alphanums)
+
+        grammar = pound + statement + outer + library
+
+        try:
+            grammar.parseString(code)
+            begin = code.find("<")
+            end = code.find(">")
+            included_library = code[begin + 1:end]
+            if included_library not in self.permitted_includes:
+                self.add_error("UNNECESSARY_INCLUDE")
+        except ParseException:
+            return
+
     def grade_student_file(self, filename):
         print "Grading student submission: {}".format(filename)
+
+        # This avoids getting the period character
+        location = filename.find('.') + 1
+        extension = filename[location:]
+        if extension not in ['h', 'cpp']:
+            sys.stderr.write("Incorrect file type\n")
+            return
+        cleaned_file = self.clean_file(filename)
+        error = ""
+        RemoveMultiLineComments(filename, cleaned_file, error)
+        clean_lines = CleansedLines(cleaned_file)
+        code = clean_lines.lines
+        for line_num in range(len(code)):
+            self.current_line_num = line_num
+            self.parse_current_line_of_code(clean_lines)
+
+    def clean_file(self, filename):
         try:
-            student_code = codecs.open(filename, 'r', 'utf8', 'replace').read().split('\n')
+            dirty_text = codecs.open(filename, 'r', 'utf8', 'replace').read().split('\n')
             newline = False
             x = 0
             ending = ''
-            for x in range(x, len(student_code)):
-                if len(student_code[x]) > 0:
-                    ending = student_code[x][-1]
+            for x in range(x, len(dirty_text)):
+                if len(dirty_text[x]) > 0:
+                    ending = dirty_text[x][-1]
                 if ending == '\r':
-                    student_code[x] = student_code[x].rstrip('\r')
+                    dirty_text[x] = dirty_text[x].rstrip('\r')
                     newline = True
                 else:
                     newline = False
-            # This avoids getting the period character
-            location = filename.find('.') + 1
-            extension = filename[location:]
-            if extension not in ['h', 'cpp']:
-                sys.stderr.write("Incorrect file type\n")
-                return
+
         except IOError:
             sys.stderr.write(
                 "This file could not be read: '%s.'  "
                 "Please check filename and resubmit \n" % filename)
-        else:
-            error = ""
-            RemoveMultiLineComments(filename, student_code, error)
-            clean_lines = CleansedLines(student_code)
-            code = clean_lines.lines
-            for line_num in range(len(code)):
-                self.current_line_num = line_num
-                self.parse_current_line_of_code(clean_lines)
+        return dirty_text
