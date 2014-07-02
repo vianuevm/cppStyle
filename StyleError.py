@@ -35,7 +35,7 @@ class StyleError(object):
             if self.get_column_number():
                 output_str += ':{}'.format(self.get_column_number())
             output_str += '  '
-        output_str += self.get_message()
+        output_str += str(self.get_message())
         return output_str
 
     def __gt__(self, other):
@@ -96,5 +96,7 @@ class StyleError(object):
             "CONTINUE_STATEMENT": "While 'continue' is occasionally appropriate, we discourage its use in EECS 183.",
             "MAIN_SYNTAX": "Your declaration of main() does not adhere to conventional stylistic guidelines.",
             "STRINGSTREAM": "We disallow the use of stringstreams in this course to ensure mastery of other IO methods.",
-        } [label]
+            "UNNECESSARY_INCLUDE": "You have included a library we do not allow."
+        }[label]
+
 
