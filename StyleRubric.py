@@ -1,7 +1,7 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
 from style_grader_classes import DefaultFilters, DataStructureTracker, OperatorSpace
 from style_grader_functions import check_if_function, get_arguments, check_operator_regex, check_if_break_statement, check_if_switch_statement
-from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables
+from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables, srange
 from StyleError import *
 import codecs
 import copy
@@ -173,9 +173,11 @@ class StyleRubric(object):
         if self.is_outside_main():
             function = check_if_function(code)
             variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
-            using = LineStart()+Literal("using")
+            special_keywords = LineStart()+Literal("using") | LineStart()+Literal("class") | LineStart()+Literal("struct")
             constant = LineStart()+Optional("static")+Literal("const")
-            if not function and len(variable.searchString(code)) and not len(using.searchString(code)) and not len(constant.searchString(code)):
+            if not function and len(variable.searchString(code)) and \
+                not len(special_keywords.searchString(code)) and \
+                not len(constant.searchString(code)):
                 self.add_error("GLOBAL_VARIABLE")
 
     def check_brace_consistency(self, clean_lines):
@@ -279,6 +281,20 @@ class StyleRubric(object):
                not len((main_prefix+full_use).searchString(code)):
                 self.add_error("MAIN_SYNTAX")
 
+    def check_first_char(self, code):
+        # check if the first char is lower-case alpha or '_'
+        identifier_name = Word(srange("[a-z]") + "_", alphanums + "_")
+        keywords = ("struct", "class")
+        for keyword in keywords:
+            syntax = Literal(keyword) + identifier_name
+            parsed = syntax.searchString(code).asList()
+            if len(parsed):
+                self.add_error("FIRST_CHAR",
+                               data={"keyword": keyword,
+                                     "expected": str(parsed[0][1]).capitalize(),
+                                     "found": str(parsed[0][1])})
+                return
+
     def process_current_blocks_indentation(self, indentation, tab_size, code, clean_lines,
                                            data_structure_tracker, temp_line_num):
         indentation = re.search(r'^( *)\S', clean_lines.lines[temp_line_num])
@@ -352,6 +368,8 @@ class StyleRubric(object):
         self.check_unnecessary_include(code)
         #Check for operator Spacing
         self.operator_spacing(code)
+
+        self.check_first_char(code)
         #Call function or checking INDENTATION!!
         self.check_function_block_indentation(clean_lines)
         #Check for braces being consistent (egyptian or non-egyptian)

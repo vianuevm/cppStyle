@@ -10,6 +10,30 @@ using namespace std;
 static const int LIVES = 3;
 const bool happy = true;
 
+struct person
+{
+    int age;
+    int id;
+}
+
+struct Person
+{
+    int age;
+    int id;
+}
+
+class Student
+{
+    int id;
+    string dorm;
+}
+
+class sTUDENT
+{
+    int id;
+    string dorm;
+}
+
 int x = 0;
 
 int prototype(int one, void two);
