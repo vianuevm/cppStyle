@@ -10,6 +10,9 @@ using namespace std;
 static const int LIVES = 3;
 const bool happy = true;
 
+int &x;
+int& x;
+
 struct person
 {
     int age;
@@ -53,6 +56,16 @@ int main(int argc, const char* argv[])
         }
     }
     return 0;
+}
+
+void spacingTests(int * x, int **xy) {
+    int *x;
+    int* x;
+    int * x;
+    int** x;
+    int ***y;
+    TargetStar& w;
+    Xtara &y;
 }
 
 int main(void bloogy)

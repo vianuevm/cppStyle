@@ -99,7 +99,9 @@ class StyleError(object):
             "UNNECESSARY_INCLUDE": "You have included a library we do not allow.",
             "FIRST_CHAR": "First character of a {} name must be capitalized. Expected: {}, found: {}".format(self.get_data().get("keyword"),
                                                                                                                    self.get_data().get("expected"),
-                                                                                                                   self.get_data().get("found"))
+                                                                                                                   self.get_data().get("found")),
+            "OPERATOR_CONSISTENCY": "Your spacing around operators is inconsistent. Pick left, right or both for spacing and stick to it.",
+            "POINTER_REFERENCE_SPACING": "Your use of spacing surrounding '*' and '&' is inconsistent.",
         }[label]
 
 

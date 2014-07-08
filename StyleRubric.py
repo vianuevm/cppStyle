@@ -1,5 +1,5 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
-from style_grader_classes import DefaultFilters, DataStructureTracker, OperatorSpace
+from style_grader_classes import DefaultFilters, DataStructureTracker, OperatorSpace, SpacingTracker
 from style_grader_functions import check_if_function, get_arguments, check_operator_regex, check_if_break_statement, check_if_switch_statement
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables, srange
 from StyleError import *
@@ -30,6 +30,7 @@ class StyleRubric(object):
         self.reset_for_new_file()
         self.braces_error = False #To prevent multiple braces errors
         self.in_switch = False
+        self.spacer = SpacingTracker()
 
 
     def reset_for_new_file(self):
@@ -111,17 +112,50 @@ class StyleRubric(object):
             self.add_error("LINE_WIDTH", data={'length': current_length})
 
     def operator_spacing(self, code):
-        # TODO somehow correctly check spacing for *
-        operators = ['+', '-', '/', '%']
-        correct_spacing = True
-        for operator in operators:
+        # Check normal operators
+        for operator in ['+', '-', '/', '%']:
             column_num = check_operator_regex(code, '\{}'.format(operator))
             if column_num:
-                correct_spacing = False
                 data = {'operator': operator}
                 self.add_error("OPERATOR_SPACE_ERROR", column=column_num, data=data)
+        # Check ampersands
+        for match in re.findall('.&.', code):
+            print match
+            if '&' in [match[0], match[2]]:
+                continue
+            elif match[0] == ' ':
+                if match[2] == ' ':
+                    if self.spacer.amps_left or self.spacer.amps_right:
+                        self.add_error('OPERATOR_CONSISTENCY')
+                    self.spacer.amps_both = True
+                else:
+                    if self.spacer.amps_right or self.spacer.amps_both:
+                        self.add_error('OPERATOR_CONSISTENCY')
+                    self.spacer.amps_left = True
+            else:
+                if match[2] == ' ':
+                    if self.spacer.amps_left or self.spacer.amps_both:
+                        self.add_error('OPERATOR_CONSISTENCY')
+                    self.spacer.amps_right = True
+        # Check asterisks
+        for match in re.findall('.\*+.', code):
+            print match
+            if match[0] == ' ' and match[-1] != ' ':
+                if self.spacer.asts_right:
+                    self.add_error('OPERATOR_CONSISTENCY')
+                self.spacer.asts_left = True
+            elif match[0] != ' ' and match[-1] == ' ':
+                if self.spacer.asts_left:
+                    self.add_error('OPERATOR_CONSISTENCY')
+                self.spacer.asts_right = True
 
-        return not correct_spacing
+    def check_ast_amp_consistency(self):
+        if self.spacer.asts_left:
+            if self.spacer.amps_right or self.spacer.amps_both:
+                self.add_error('POINTER_REFERENCE_SPACING')
+        elif self.spacer.asts_right:
+            if self.spacer.amps_left or self.spacer.amps_both:
+                self.add_error('POINTER_REFERENCE_SPACING')
 
     def check_equals_true(self, code):
         variable = Word(alphanums)
@@ -412,6 +446,7 @@ class StyleRubric(object):
         for line_num in range(len(code)):
             self.current_line_num = line_num
             self.parse_current_line_of_code(clean_lines)
+        self.check_ast_amp_consistency()
 
     def clean_file(self, filename):
         try:
