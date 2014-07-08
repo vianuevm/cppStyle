@@ -67,24 +67,24 @@ class StyleRubric(object):
         for line_num in range(len(full_lines)):
             self.current_line_num = line_num
             self.parse_comments_for_line(full_lines)
-        self.check_ast_amp_consistency()
+        self.check_pointer_reference_consistency()
     
     def parse_current_line_of_code(self, clean_lines):
         code = clean_lines.lines[self.current_line_num]
 
         #Check for proper main() declaration (if main is present on this line)
-        self.check_main_prefix(code)
+        self.check_main_syntax(code)
         #Check non const globals
         self.check_non_const_global(code)
          #Only one statement on the return line?
-        self.valid_return(code)
+        self.check_int_for_bool(code)
         #One statement per line
-        self.num_of_commands(clean_lines)
+        self.check_statements_per_line(clean_lines)
         #check to see if the line contains a goto function
         self.check_goto(code)
         #Check for mixed tabs/spaces and log error #TODO: This can wait
         #Check for #define statements
-        self.check_define_statements(code) 
+        self.check_define_statement(code) 
         #Check for "== true" statements
         self.check_equals_true(code) 
         #Check for "while(true)" statements
@@ -92,29 +92,29 @@ class StyleRubric(object):
         #Check ternary expressions
         self.check_ternary_operator(code)
         #Check continue statements
-        self.check_continue_statements(code) 
+        self.check_continue(code) 
         #Check stringstreams
-        self.check_for_stringstreams(code)
+        self.check_stringstream(code)
         #Check for unnecessary includes
         self.check_unnecessary_include(code)
         #Check for operator Spacing
-        self.operator_spacing(code)
+        self.check_operator_spacing(code)
         #Check for capitalization of first character
         self.check_first_char(code)
         #Call function or checking INDENTATION!!
-        self.check_function_block_indentation(clean_lines)
+        self.check_block_indentation(clean_lines)
         #Check for braces being consistent (egyptian or non-egyptian)
         self.check_brace_consistency(clean_lines)
     
     def parse_comments_for_line(self, lines):
         text = lines[self.current_line_num]
         #Check line width
-        self.line_width_check(text)
+        self.check_line_width(text)
         #Check RMEs
         if check_if_function(text):
-            self.check_RME(lines)
+            self.check_missing_rme(lines)
 
-    def valid_return(self, code):
+    def check_int_for_bool(self, code):
         returnVal = Literal("return")
         if len(returnVal.searchString(code)): 
            # make sure it's not the end of a word
@@ -125,9 +125,9 @@ class StyleRubric(object):
             else:
                 code = code[6:].strip()
                 if code.isdigit():
-                    self.add_error("BOOL_VALUE")
+                    self.add_error("INT_FOR_BOOL")
 
-    def num_of_commands(self, clean_lines):
+    def check_statements_per_line(self, clean_lines):
         cleansed_line = clean_lines.lines[self.current_line_num]
         # This code is taken directly from cpplint lines 3430-3440
         if (cleansed_line.count(';') > 1 and
@@ -139,15 +139,16 @@ class StyleRubric(object):
            not ((cleansed_line.find('case ') != -1 or
            cleansed_line.find('default:') != -1) and
            cleansed_line.find('break;') != -1)):
-            self.add_error("COMMAND_ERROR")
+            self.add_error("STATEMENTS_PER_LINE")
 
-    def operator_spacing(self, code):
+    def check_operator_spacing(self, code):
         # Check normal operators
         for operator in ['+', '-', '/', '%']:
             column_num = check_operator_regex(code, '\{}'.format(operator))
             if column_num:
                 data = {'operator': operator}
-                self.add_error("OPERATOR_SPACE_ERROR", column=column_num, data=data)
+                #self.add_error("OPERATOR_SPACING", column=column_num, data=data)
+                self.add_error("OPERATOR_SPACING")
         # Check ampersands
         for match in re.findall('.&.', code):
             if '&' in [match[0], match[2]]:
@@ -177,13 +178,13 @@ class StyleRubric(object):
                     self.add_error('OPERATOR_CONSISTENCY')
                 self.spacer.asts_right = True
 
-    def check_ast_amp_consistency(self):
+    def check_pointer_reference_consistency(self):
         if self.spacer.asts_left:
             if self.spacer.amps_right or self.spacer.amps_both:
-                self.add_error('POINTER_REFERENCE_SPACING')
+                self.add_error('POINTER_REFERENCE_CONSISTENCY')
         elif self.spacer.asts_right:
             if self.spacer.amps_left or self.spacer.amps_both:
-                self.add_error('POINTER_REFERENCE_SPACING')
+                self.add_error('POINTER_REFERENCE_CONSISTENCY')
 
     def check_equals_true(self, code):
         variable = Word(alphanums)
@@ -197,18 +198,18 @@ class StyleRubric(object):
         if len(match.searchString(code)):
             self.add_error("GOTO")
 
-    def check_define_statements(self, code):
+    def check_define_statement(self, code):
         match = Literal("#")+Literal("define")
         if len(match.searchString(code)):
             self.add_error("DEFINE_STATEMENT")
 
-    def check_for_stringstreams(self, code):
+    def check_stringstream(self, code):
         match = Literal("#")+Literal("include")+Literal("<sstream>")
         try: result = match.parseString(code)
         except ParseException: pass
         else: self.add_error("STRINGSTREAM")
 
-    def check_continue_statements(self, code):
+    def check_continue(self, code):
         quotedContinue = '"'+SkipTo(Literal("continue"))+"continue"+SkipTo(Literal('"'))+'"'
         if len(Literal("continue").searchString(code)) and not len(quotedContinue.searchString(code)):
             self.add_error("CONTINUE_STATEMENT")
@@ -238,7 +239,7 @@ class StyleRubric(object):
             if not function and len(variable.searchString(code)) and \
                not len(special_keywords.searchString(code)) and \
                not len(constant.searchString(code)):
-                self.add_error("GLOBAL_VARIABLE")
+                self.add_error("NON_CONST_GLOBAL")
 
     def set_egyptian_style(self, egyptian_bool):
         if egyptian_bool: self.egyptian = True
@@ -271,16 +272,16 @@ class StyleRubric(object):
                 self.set_egyptian_style(True)
             elif not self.outside_main:
                 if not self.braces_error:
-                    self.add_error("BRACES_ERROR")
+                    self.add_error("BRACE_CONSISTENCY")
                     self.braces_error = True
 
             #if both of these are true, they are not consistent, therefore error.
             if self.notEgyptian:
                 if self.egyptian and not self.braces_error:
-                    self.add_error("BRACES_ERROR")
+                    self.add_error("BRACE_CONSISTENCY")
                     self.braces_error = True
 
-    def check_function_block_indentation(self, clean_lines):
+    def check_block_indentation(self, clean_lines):
         #TODO: Load from config file? 
         tab_size = 4
         code = clean_lines.lines[self.current_line_num]
@@ -299,7 +300,8 @@ class StyleRubric(object):
         if function or self.outside_main:
             if indentation_size != 0:
                 data = {'expected': 0, 'found': indentation_size}
-                self.add_error("INDENTATION_ERROR", data=data)
+                #self.add_error("BLOCK_INDENTATION", data=data)
+                self.add_error("BLOCK_INDENTATION")
             if self.outside_main:
                 return
         #TODO: Need to check indentation ON the same line as the function still
@@ -327,7 +329,7 @@ class StyleRubric(object):
         else:
             return
 
-    def check_main_prefix(self, code):
+    def check_main_syntax(self, code):
         #Return value for main is optional in C++11
         parser = Literal("int")+Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")
         if len(parser.searchString(code)):
@@ -347,10 +349,13 @@ class StyleRubric(object):
             syntax = Literal(keyword) + identifier_name
             parsed = syntax.searchString(code).asList()
             if len(parsed):
+                '''
                 self.add_error("FIRST_CHAR",
                                data={"keyword": keyword,
                                      "expected": str(parsed[0][1]).capitalize(),
                                      "found": str(parsed[0][1])})
+                '''
+                self.add_error("FIRST_CHAR")
                 return
 
     def process_current_blocks_indentation(self, indentation, tab_size, code, clean_lines,
@@ -369,13 +374,15 @@ class StyleRubric(object):
                 data_structure_tracker.in_switch = True
             is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
             if is_break_statement and not data_structure_tracker.in_switch:
-                self.add_error("UNNECESSARY_BREAK", line=temp_line_num + 1)
+                #self.add_error("UNNECESSARY_BREAK", line=temp_line_num + 1)
+                self.add_error("UNNECESSARY_BREAK")
             if current_indentation:
                 line_start = current_indentation.group()
                 current_indentation = len(line_start) - len(line_start.strip())
                 if current_indentation != next_indentation and line_start.find('}') == -1:
                     data = {'expected': next_indentation, 'found': current_indentation}
-                    self.add_error("INDENTATION_ERROR", temp_line_num + 1, data=data)
+                    #self.add_error("BLOCK_INDENTATION", temp_line_num + 1, data=data)
+                    self.add_error("BLOCK_INDENTATION")
                 if clean_lines.lines[temp_line_num].find("{") != -1:
                     if data_structure_tracker.in_switch:
                         data_structure_tracker.add_switch_brace("{")
@@ -399,13 +406,14 @@ class StyleRubric(object):
         except ParseException:
             return
 
-    def line_width_check(self, line):
+    def check_line_width(self, line):
         max_length = 80
         current_length = len(line)
         if current_length > max_length:
-            self.add_error("LINE_WIDTH", data={'length': current_length})
+            #self.add_error("LINE_WIDTH", data={'length': current_length})
+            self.add_error("LINE_WIDTH")
 
-    def check_RME(self, lines):
+    def check_missing_rme(self, lines):
         requires = effects = modifies = False
         #Check if there's a complete RME in the last 10 lines
         for line_num in range(self.current_line_num - 10, self.current_line_num):
