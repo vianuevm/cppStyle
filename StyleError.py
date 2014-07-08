@@ -102,7 +102,7 @@ class StyleError(object):
                                                                                                              self.get_data().get("found")),
             "OPERATOR_CONSISTENCY": "Your spacing around operators is inconsistent. Pick left, right or both for spacing and stick to it.",
             "POINTER_REFERENCE_SPACING": "Your use of spacing surrounding '*' and '&' is inconsistent.",
-            "MISSING_RME": "All functions should contain an RME describing their functionality.",
+            "MISSING_RME": "{} is missing a complete RME.".format(self.get_data().get("function")),
         }[label]
 
 

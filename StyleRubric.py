@@ -418,16 +418,21 @@ class StyleRubric(object):
             self.add_error("LINE_WIDTH", data={'length': current_length})
 
     def check_RME(self, lines):
-        requires = effects = modifies = False
-        #Check if there's a complete RME in the last 10 lines
-        for line_num in range(self.current_line_num - 10, self.current_line_num):
-            code = lines[line_num].lower()
-            if re.search('requires', code): requires = True
-            if re.search('effects', code): effects = True
-            if re.search('modifies', code): modifies = True
-        # If it's not there, maybe they defined it in a header file. Finish this once headers are saved
-        if not (requires and effects and modifies):
-            self.add_error("MISSING_RME")
+        function = Word(alphanums + '_')
+        function_syntax = function + Literal('(')
+        parsed = function_syntax.searchString(lines[self.current_line_num]).asList()
+        function_name = parsed[0][0]
+        if function_name != 'main':
+            requires = effects = modifies = False
+            #Check if there's a complete RME in the last 10 lines
+            for line_num in range(self.current_line_num - 10, self.current_line_num):
+                code = lines[line_num].lower()
+                if re.search('requires', code): requires = True
+                if re.search('effects', code): effects = True
+                if re.search('modifies', code): modifies = True
+            # If it's not there, maybe they defined it in a header file. Finish this once headers are saved
+            if not (requires and effects and modifies):
+                self.add_error("MISSING_RME", data={'function': function_name})
 
     def clean_file(self, filename):
         try:
