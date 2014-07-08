@@ -1,8 +1,9 @@
 from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
-from style_grader_classes import DefaultFilters, DataStructureTracker, OperatorSpace, SpacingTracker
+from style_grader_classes import DataStructureTracker, SpacingTracker
 from style_grader_functions import check_if_function, get_arguments, check_operator_regex, check_if_break_statement, check_if_switch_statement
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables, srange
-from StyleError import *
+from StyleError import StyleError
+from ConfigParser import ConfigParser
 import codecs
 import copy
 import getopt
@@ -19,56 +20,34 @@ class StyleRubric(object):
     This class sets all variable aspects of grading (whitespace, gotos etc)
     """
     def __init__(self):
-        
-        self.permitted_includes = []
-        self.student_files = []
-        self.total_errors = 0
-        self.filters = DefaultFilters()
-        self.error_types = {}
+        config = ConfigParser()
+        config.read('rubric.ini')
+        self.spacer = SpacingTracker()
+        self.permitted_includes = list()
+        self.student_files = list()
         # A list of StyleError objects generated from student's code
-        self.error_tracker = []
-        self.output_format = "emacs" #TODO: If this can be something other than 'emacs', should load from config file
+        self.error_tracker = list()
+        self.error_types = dict()
         self.reset_for_new_file()
         self.braces_error = False #To prevent multiple braces errors
         self.in_switch = False
-        self.spacer = SpacingTracker()
-
+        self.total_errors = 0
 
     def reset_for_new_file(self):
         self.outside_main = True
         self.egyptian = False
         self.notEgyptian = False
 
-    def set_total_errors(self, errors): 
-        #NOTE: Potential issue if total_errors does not match count held by self.error_types. Might be fine, haven't read all yet
-        self.total_errors = errors
-
-    def set_filters(self, filters): #TODO: You are going to need to figure out what this will do and how
-        self.filters = filters
-
-    def set_output_format(self, format):
-        self.output_format = format
-
     def reset_error_count(self):
         self.total_errors = 0
         self.error_types = {}
 
-    def set_inside_main(self):
-        self.outside_main = False
-
-    def is_outside_main(self):
-        return self.outside_main
-
-
     def add_error(self, label, line=0, column=0, data={}):
-        #Naming convention adds clarity
         self.total_errors += 1
         if label not in self.error_types:
             self.error_types[label] = 0
-
         if not line:
             line = self.current_line_num + 1
-
         self.error_types[label] += 1
         self.error_tracker.append(StyleError(1, label, line, column_num=column, data=data))
 
@@ -196,9 +175,9 @@ class StyleRubric(object):
     def check_non_const_global(self, code):
         inside = Literal("int main")
         if len(inside.searchString(code)):
-            self.set_inside_main()
+            self.outside_main = False
 
-        if self.is_outside_main():
+        if self.outside_main:
             function = check_if_function(code)
             variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
             special_keywords = LineStart()+Literal("using") | LineStart()+Literal("class") | LineStart()+Literal("struct")
@@ -233,7 +212,7 @@ class StyleRubric(object):
                     if_statement and code.find('{') != -1:
 
                 self.set_egyptian_style(True)
-            elif not self.is_outside_main():
+            elif not self.outside_main:
                 if not self.braces_error:
                     self.add_error("BRACES_ERROR")
                     self.braces_error = True
@@ -264,11 +243,11 @@ class StyleRubric(object):
         else:
             return
 
-        if function or self.is_outside_main():
+        if function or self.outside_main:
             if indentation_size != 0:
                 data = {'expected': 0, 'found': indentation_size}
                 self.add_error("INDENTATION_ERROR", data=data)
-            if self.is_outside_main():
+            if self.outside_main:
                 return
 
         #TODO: Need to check indentation ON the same line as the function still

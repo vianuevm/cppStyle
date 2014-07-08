@@ -4,12 +4,12 @@ class StyleError(object):
     """
 
     def __init__(self):
-        self.data = {}
+        self.data = dict()
         self.line_num = 0
         self.column_num = 0
-        self.message = ""
         self.points_worth = 0
         self.type = "ERROR"
+        self.message = ""
 
     def __init__(self, points, label, line_num=0, column_num=0, type="ERROR", data={}):
         """
@@ -31,9 +31,9 @@ class StyleError(object):
     def __str__(self):
         output_str = ''
         if self.get_line_number():
-            output_str += '{}'.format(self.get_line_number())
+            output_str += str(self.get_line_number())
             if self.get_column_number():
-                output_str += ':{}'.format(self.get_column_number())
+                output_str += ':' + str(self.get_column_number())
             output_str += '  '
         output_str += str(self.get_message())
         return output_str
@@ -98,8 +98,8 @@ class StyleError(object):
             "STRINGSTREAM": "We disallow the use of stringstreams in this course to ensure mastery of other IO methods.",
             "UNNECESSARY_INCLUDE": "You have included a library we do not allow.",
             "FIRST_CHAR": "First character of a {} name must be capitalized. Expected: {}, found: {}".format(self.get_data().get("keyword"),
-                                                                                                                   self.get_data().get("expected"),
-                                                                                                                   self.get_data().get("found")),
+                                                                                                             self.get_data().get("expected"),
+                                                                                                             self.get_data().get("found")),
             "OPERATOR_CONSISTENCY": "Your spacing around operators is inconsistent. Pick left, right or both for spacing and stick to it.",
             "POINTER_REFERENCE_SPACING": "Your use of spacing surrounding '*' and '&' is inconsistent.",
             "MISSING_RME": "All functions should contain an RME describing their functionality.",
