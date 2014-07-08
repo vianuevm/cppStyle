@@ -82,7 +82,6 @@ class StyleRubric(object):
         self.check_statements_per_line(clean_lines)
         #check to see if the line contains a goto function
         self.check_goto(code)
-        #Check for mixed tabs/spaces and log error #TODO: This can wait
         #Check for #define statements
         self.check_define_statement(code) 
         #Check for "== true" statements
