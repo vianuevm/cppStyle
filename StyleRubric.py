@@ -23,7 +23,6 @@ class StyleRubric(object):
         config = ConfigParser()
         config.read('rubric.ini')
         self.student_files = config.get('FILES', 'student_files').split(',')
-        print "files: {}".format(self.student_files)
         self.permitted_includes = config.get('FILES', 'permitted_includes').split(',')
         # A list of StyleError objects generated from student's code
         self.error_tracker = list()
@@ -205,11 +204,9 @@ class StyleRubric(object):
 
     def check_for_stringstreams(self, code):
         match = Literal("#")+Literal("include")+Literal("<sstream>")
-        try:
-            result = match.parseString(code)
-            self.add_error("STRINGSTREAM")
-        except ParseException:
-            pass
+        try: result = match.parseString(code)
+        except ParseException: pass
+        else: self.add_error("STRINGSTREAM")
 
     def check_continue_statements(self, code):
         quotedContinue = '"'+SkipTo(Literal("continue"))+"continue"+SkipTo(Literal('"'))+'"'
@@ -239,15 +236,13 @@ class StyleRubric(object):
             special_keywords = LineStart()+Literal("using") | LineStart()+Literal("class") | LineStart()+Literal("struct")
             constant = LineStart()+Optional("static")+Literal("const")
             if not function and len(variable.searchString(code)) and \
-                not len(special_keywords.searchString(code)) and \
-                not len(constant.searchString(code)):
+               not len(special_keywords.searchString(code)) and \
+               not len(constant.searchString(code)):
                 self.add_error("GLOBAL_VARIABLE")
 
     def set_egyptian_style(self, egyptian_bool):
-        if egyptian_bool:
-            self.egyptian = True
-        else:
-            self.notEgyptian = True
+        if egyptian_bool: self.egyptian = True
+        else: self.notEgyptian = True
 
     def check_brace_consistency(self, clean_lines):
         code = clean_lines.lines[self.current_line_num]
@@ -286,6 +281,7 @@ class StyleRubric(object):
                     self.braces_error = True
 
     def check_function_block_indentation(self, clean_lines):
+        #TODO: Load from config file? 
         tab_size = 4
         code = clean_lines.lines[self.current_line_num]
         stripped_code = code.strip()
@@ -294,34 +290,30 @@ class StyleRubric(object):
         else_if_statement = re.search(r'^else\s*\(', code)
         else_statement = re.search(r'^else\s+', code)
         switch_statement = re.search(r'^switch\s*\(', stripped_code)
-
         indentation = re.search(r'^( *)\S', code)
         if indentation:
             indentation = indentation.group()
             indentation_size = len(indentation) - len(indentation.strip())
         else:
             return
-
         if function or self.outside_main:
             if indentation_size != 0:
                 data = {'expected': 0, 'found': indentation_size}
                 self.add_error("INDENTATION_ERROR", data=data)
             if self.outside_main:
                 return
-
         #TODO: Need to check indentation ON the same line as the function still
         if function:
             #if not egyptian style
             if code.find('{') == -1:
                 second_line = clean_lines.lines[self.current_line_num + 1]
-
                 if code.find('{'):
                     temp_line_num = self.current_line_num + 1
                     data_structure_tracker = DataStructureTracker()
                     data_structure_tracker.brace_stack.append('{')
                     self.process_current_blocks_indentation(indentation, tab_size, code,
-                                             clean_lines, data_structure_tracker,
-                                             temp_line_num)
+                                                            clean_lines, data_structure_tracker,
+                                                            temp_line_num)
                 else:
                     #TODO Figure out what it means to not have braces in the right place
                     pass
@@ -330,8 +322,8 @@ class StyleRubric(object):
                 data_structure_tracker = DataStructureTracker()
                 data_structure_tracker.brace_stack.append('{')
                 self.process_current_blocks_indentation(indentation, tab_size, code,
-                                                   clean_lines, data_structure_tracker,
-                                                   temp_line_num)
+                                                        clean_lines, data_structure_tracker,
+                                                        temp_line_num)
         else:
             return
 
@@ -366,17 +358,17 @@ class StyleRubric(object):
         indentation = re.search(r'^( *)\S', clean_lines.lines[temp_line_num])
         indentation = indentation.group()
         indentation_size = len(indentation) - len(indentation.strip())
-        data_structure_tracker.set_is_in_block(True)
+        data_structure_tracker.in_block = True
         next_indentation = indentation_size + tab_size
-        while data_structure_tracker.check_is_in_block():
+        while data_structure_tracker.in_block:
             temp_line_num += 1
             current_indentation = re.search(r'^( *)\S',
                                             clean_lines.lines[temp_line_num])
             switch_statement = check_if_switch_statement(clean_lines.lines[temp_line_num])
             if(switch_statement):
-                data_structure_tracker.set_in_switch((True))
+                data_structure_tracker.in_switch = True
             is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
-            if is_break_statement and not data_structure_tracker.is_in_switch():
+            if is_break_statement and not data_structure_tracker.in_switch:
                 self.add_error("UNNECESSARY_BREAK", line=temp_line_num + 1)
             if current_indentation:
                 line_start = current_indentation.group()
@@ -385,22 +377,18 @@ class StyleRubric(object):
                     data = {'expected': next_indentation, 'found': current_indentation}
                     self.add_error("INDENTATION_ERROR", temp_line_num + 1, data=data)
                 if clean_lines.lines[temp_line_num].find("{") != -1:
-                    if data_structure_tracker.is_in_switch():
+                    if data_structure_tracker.in_switch:
                         data_structure_tracker.add_switch_brace("{")
                     data_structure_tracker.add_brace("{")
                     next_indentation = current_indentation + tab_size
                 elif clean_lines.lines[temp_line_num].find("}") != -1:
-                    if data_structure_tracker.is_in_switch():
+                    if data_structure_tracker.in_switch:
                         data_structure_tracker.pop_switch_brace()
                     data_structure_tracker.pop_brace()
                     next_indentation = next_indentation - tab_size
 
     def check_unnecessary_include(self, code):
-        statement = Literal('include')
-        pound = Literal('#')
-        outer = Literal('<')
-        library = Word(alphanums)
-        grammar = pound + statement + outer + library
+        grammar = Literal('#') + Literal('include') + Literal('<') + Word(alphanums)
         try:
             grammar.parseString(code)
             begin = code.find("<")
@@ -433,9 +421,8 @@ class StyleRubric(object):
         try:
             dirty_text = codecs.open(filename, 'r', 'utf8', 'replace').read().split('\n')
             newline = False
-            x = 0
             ending = ''
-            for x in range(x, len(dirty_text)):
+            for x in range(0, len(dirty_text)):
                 if len(dirty_text[x]) > 0:
                     ending = dirty_text[x][-1]
                 if ending == '\r':

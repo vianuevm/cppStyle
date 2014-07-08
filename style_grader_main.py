@@ -9,7 +9,6 @@ def main():
                                          codecs.getreader('utf8'),
                                          codecs.getwriter('utf8'),
                                          'replace')
-   
     #TODO: Should use argparse here 
     args = get_arguments(sys.argv[1:])
     rubric = StyleRubric()
