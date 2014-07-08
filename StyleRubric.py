@@ -19,6 +19,7 @@ class StyleRubric(object):
     This class sets all variable aspects of grading (whitespace, gotos etc)
     """
     def __init__(self):
+        
         self.permitted_includes = []
         self.student_files = []
         self.total_errors = 0
@@ -105,11 +106,6 @@ class StyleRubric(object):
             
             self.add_error("COMMAND_ERROR")
         
-    def line_width_check(self, line):
-        max_length = 80
-        current_length = len(line)
-        if current_length > max_length:
-            self.add_error("LINE_WIDTH", data={'length': current_length})
 
     def operator_spacing(self, code):
         # Check normal operators
@@ -120,7 +116,6 @@ class StyleRubric(object):
                 self.add_error("OPERATOR_SPACE_ERROR", column=column_num, data=data)
         # Check ampersands
         for match in re.findall('.&.', code):
-            print match
             if '&' in [match[0], match[2]]:
                 continue
             elif match[0] == ' ':
@@ -139,7 +134,6 @@ class StyleRubric(object):
                     self.spacer.amps_right = True
         # Check asterisks
         for match in re.findall('.\*+.', code):
-            print match
             if match[0] == ' ' and match[-1] != ' ':
                 if self.spacer.asts_right:
                     self.add_error('OPERATOR_CONSISTENCY')
@@ -384,8 +378,6 @@ class StyleRubric(object):
         #check to see if the line contains a goto function
         self.check_go_to(code)
         #Check for mixed tabs/spaces and log error #TODO: This can wait
-        #Check line width
-        self.line_width_check(code)
         #Check for #define statements
         self.check_define_statements(code) 
         #Check for "== true" statements
@@ -408,17 +400,39 @@ class StyleRubric(object):
         self.check_function_block_indentation(clean_lines)
         #Check for braces being consistent (egyptian or non-egyptian)
         self.check_brace_consistency(clean_lines)
+    
+    def line_width_check(self, line):
+        max_length = 80
+        current_length = len(line)
+        if current_length > max_length:
+            self.add_error("LINE_WIDTH", data={'length': current_length})
 
+    def check_RME(self, lines):
+        requires = effects = modifies = False
+        #Check if there's a complete RME in the last 10 lines
+        for line_num in range(self.current_line_num - 10, self.current_line_num):
+            code = lines[line_num].lower()
+            if re.search('requires', code): requires = True
+            if re.search('effects', code): effects = True
+            if re.search('modifies', code): modifies = True
+        # If it's not there, maybe they defined it in a header file. Finish this once headers are saved
+        if not (requires and effects and modifies):
+            self.add_error("MISSING_RME")
+
+    def parse_comments_for_line(self, lines):
+        text = lines[self.current_line_num]
+        #Check line width
+        self.line_width_check(text)
+        #Check RMEs
+        if check_if_function(text):
+            self.check_RME(lines)
 
     def check_unnecessary_include(self, code):
-
         statement = Literal('include')
         pound = Literal('#')
         outer = Literal('<')
         library = Word(alphanums)
-
         grammar = pound + statement + outer + library
-
         try:
             grammar.parseString(code)
             begin = code.find("<")
@@ -431,7 +445,6 @@ class StyleRubric(object):
 
     def grade_student_file(self, filename):
         print "Grading student submission: {}".format(filename)
-
         # This avoids getting the period character
         location = filename.find('.') + 1
         extension = filename[location:]
@@ -442,10 +455,14 @@ class StyleRubric(object):
         error = ""
         RemoveMultiLineComments(filename, cleaned_file, error)
         clean_lines = CleansedLines(cleaned_file)
+        full_lines = open(filename, 'rU').readlines()
         code = clean_lines.lines
         for line_num in range(len(code)):
             self.current_line_num = line_num
             self.parse_current_line_of_code(clean_lines)
+        for line_num in range(len(full_lines)):
+            self.current_line_num = line_num
+            self.parse_comments_for_line(full_lines)
         self.check_ast_amp_consistency()
 
     def clean_file(self, filename):
