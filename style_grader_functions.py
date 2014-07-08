@@ -11,12 +11,9 @@ def check_if_function(code):
     function_close = Literal("}")
     function_declaration = return_type + function_name + "(" + Optional(args) + ")"
     grammar = function_declaration + Optional(function_open)
-
-    try:
-        grammar.parseString(code)
+    if len(grammar.searchString(code)):
         return True
-    except ParseException:
-        return False
+    return False
 
 def check_if_switch_statement(code):
     statement = Word('switch')

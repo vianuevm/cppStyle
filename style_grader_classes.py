@@ -7,6 +7,17 @@ class DefaultFilters(object):
 #Todo: Define filters through command line arguments
 
 
+class SpacingTracker(object):
+    """
+    Just a set of booleans to track spacing, modular in case this gets expanded.
+    """
+    def __init__(self):
+        self.asts_left = False
+        self.asts_right = False
+        self.amps_left = False
+        self.amps_right = False
+        self.amps_both = False
+
 class DataStructureTracker(object):
     """
     Counter object to track braces so we know whether or not we're inside a code block.
