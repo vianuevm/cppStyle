@@ -9,25 +9,12 @@ def main():
                                          codecs.getreader('utf8'),
                                          codecs.getwriter('utf8'),
                                          'replace')
-    # Quick fix for now - ultimately this should be handled using argparse (TODO)
-    if len(sys.argv) == 1:
-        # No files were provided
-        sys.stderr.write("Error: No files provided\n")
-        # Should print usage info here, but argparse will autogen that - skipping this until that's decided
-        sys.stderr.write("<Generic usage info>\n")
-    
+   
+    #TODO: Should use argparse here 
     args = get_arguments(sys.argv[1:])
     rubric = StyleRubric()
 
-    if "student_files" in args.iterkeys():
-        rubric.student_file_names = args["student_files"]
-        rubric.student_file_names = rubric.clean_file(rubric.student_file_names)
-
-    if "includes" in args.iterkeys():
-        rubric.permitted_includes = args["includes"]
-        rubric.permitted_includes = rubric.clean_file(rubric.permitted_includes)
-
-    for filename in rubric.student_file_names:
+    for filename in rubric.student_files:
         rubric.reset_for_new_file() # Fixes issue with multiple command-line arguments
         rubric.grade_student_file(filename)
 
