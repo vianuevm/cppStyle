@@ -41,9 +41,9 @@ class RegressionTesting(unittest.TestCase):
         self.rubric.grade_student_file('testing_file.cpp')
         sys.stdout, sys.stderr = tempout, temperr  
     
-    @load_code_segment(1,20)
+    @load_code_segment(1,10)
     def test_num_of_commands(self): self.assertEqual(self.rubric.error_types['COMMAND_ERROR'], 3)
-    @load_code_segment(1,20)
+    @load_code_segment(11,20)
     def test_valid_return(self): self.assertEqual(self.rubric.error_types['BOOL_VALUE'], 2)
 
 if __name__ == '__main__':
