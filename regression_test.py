@@ -25,7 +25,7 @@ def load_code_segment(start, end):
             testfile = open('testing_file.cpp', 'w+')
             source = open('hello_reg_test.cpp', 'rU').readlines()
             for i in range(start-1, end-1):
-                testfile.write(source[i] + '\n')
+                testfile.write(source[i])
             testfile.close()
             return func(self, *args, **kwargs)
         return fn
@@ -35,12 +35,17 @@ class RegressionTesting(unittest.TestCase):
 
     def setUp(self):
         # Redirect stdout/err since it's annoying
-        tempout,temperr = sys.stdout, sys.stderr
-        sys.stdout = sys.stderr = open(os.devnull, 'w')
+        #tempout,temperr = sys.stdout, sys.stderr
+        #sys.stdout = sys.stderr = open(os.devnull, 'w')
+        print
         self.rubric = StyleRubric()
         self.rubric.grade_student_file('testing_file.cpp')
-        sys.stdout, sys.stderr = tempout, temperr  
-    
+        for error in self.rubric.error_tracker:
+            print error
+        #sys.stdout, sys.stderr = tempout, temperr  
+
+    @load_code_segment(21,53)
+    def test_good_file(self): self.assertTrue(not len(self.rubric.error_tracker))    
     @load_code_segment(1,10)
     def test_num_of_commands(self): self.assertEqual(self.rubric.error_types['COMMAND_ERROR'], 3)
     @load_code_segment(11,20)
