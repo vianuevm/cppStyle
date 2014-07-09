@@ -4,7 +4,10 @@ from StyleRubric import *
 
 #TODO: Set up standard error to print properly
 def main():
-    
+
+    """
+    Adding something so revert is happy
+    """
     sys.stderr = codecs.StreamReaderWriter(sys.stderr,
                                          codecs.getreader('utf8'),
                                          codecs.getwriter('utf8'),
