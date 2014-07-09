@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from style_grader_functions import print_success
 from StyleRubric import StyleRubric
 
 def main():
