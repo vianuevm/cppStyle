@@ -76,16 +76,16 @@ class StyleError(object):
 
     def get_error_message(self, label):
         return {
-            "OPERATOR_SPACE_ERROR": "Incorrect spacing around {}".format(self.get_data().get('operator')),
-            "INDENTATION_ERROR": "Incorrect indentation. Expected: {}, found: {}.".format(self.get_data().get('expected'), self.get_data().get('found')),
-            "COMMAND_ERROR": "There should only be one command (statement) on each line.",
+            "OPERATOR_SPACING": "Incorrect spacing around {}".format(self.get_data().get('operator')),
+            "BLOCK_INDENTATION": "Incorrect indentation. Expected: {}, found: {}.".format(self.get_data().get('expected'), self.get_data().get('found')),
+            "STATEMENTS_PER_LINE": "There should only be one command (statement) on each line.",
             "IF_ELSE_ERROR": "Every If-Else statement should have brackets.",
-            "GLOBAL_VARIABLE": "You should never have a non-const global variable.",
+            "NON_CONST_GLOBAL": "You should never have a non-const global variable.",
             "FUNCTION_LENGTH_ERROR": "Your function is too long. Break it up into separate functions.",
             "LINE_WIDTH": "Line of {} characters exceeded the limit of 80.".format(self.get_data().get('length')),
-            "BOOL_VALUE": "You need to return true or false, instead of an actual number.",
+            "INT_FOR_BOOL": "You need to return true or false, instead of an actual number.",
             "MAGIC_NUMBER": "Store numbers in variables, so that you can give them meaningful names.",
-            "BRACES_ERROR": "Your braces should be either Egyptian or block style, pick one.",
+            "BRACE_CONSISTENCY": "Your braces should be either Egyptian or block style, pick one.",
             "SPACING_ERROR": "Use tabs or spaces, not both.",
             "UNNECESSARY_BREAK": "Breaks should ONLY be used in switch statements. Fix your logic.",
             "GOTO": "Never use the goto function.",
@@ -101,8 +101,8 @@ class StyleError(object):
                                                                                                              self.get_data().get("expected"),
                                                                                                              self.get_data().get("found")),
             "OPERATOR_CONSISTENCY": "Your spacing around operators is inconsistent. Pick left, right or both for spacing and stick to it.",
-            "POINTER_REFERENCE_SPACING": "Your use of spacing surrounding '*' and '&' is inconsistent.",
-            "MISSING_RME": "All functions should contain an RME describing their functionality.",
+            "POINTER_REFERENCE_CONSISTENCY": "Your use of spacing surrounding '*' and '&' is inconsistent.",
+            "MISSING_RME": "{} is missing a complete RME.".format(self.get_data().get("function")),
         }[label]
 
 

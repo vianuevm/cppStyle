@@ -1,9 +1,8 @@
-from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums
+from pyparsing import Literal, Word, Optional, ParseException, alphanums
 import getopt
 import re
 
 def check_if_function(code):
-
     return_type = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
     function_name = Word(alphanums + '_' + ':')
     args = Word(alphanums + ',' + ' ' + '_')
@@ -25,6 +24,40 @@ def check_if_switch_statement(code):
     except ParseException:
         return False
 
+def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, temp_line_num):
+    indentation = re.search(r'^( *)\S', clean_lines.lines[temp_line_num])
+    results = list()
+    indentation = indentation.group()
+    indentation_size = len(indentation) - len(indentation.strip())
+    data_structure_tracker.in_block = True
+    next_indentation = indentation_size + tab_size
+    while data_structure_tracker.in_block:
+        temp_line_num += 1
+        current_indentation = re.search(r'^( *)\S',
+                                        clean_lines.lines[temp_line_num])
+        switch_statement = check_if_switch_statement(clean_lines.lines[temp_line_num])
+        if(switch_statement):
+            data_structure_tracker.in_switch = True
+        is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
+        if is_break_statement and not data_structure_tracker.in_switch:
+            results.append({'label': 'UNNECESSARY_BREAK', 'line': temp_line_num + 1})
+        if current_indentation:
+            line_start = current_indentation.group()
+            current_indentation = len(line_start) - len(line_start.strip())
+            if current_indentation != next_indentation and line_start.find('}') == -1:
+                data = {'expected': next_indentation, 'found': current_indentation}
+                results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
+            if clean_lines.lines[temp_line_num].find("{") != -1:
+                if data_structure_tracker.in_switch:
+                    data_structure_tracker.add_switch_brace("{")
+                data_structure_tracker.add_brace("{")
+                next_indentation = current_indentation + tab_size
+            elif clean_lines.lines[temp_line_num].find("}") != -1:
+                if data_structure_tracker.in_switch:
+                    data_structure_tracker.pop_switch_brace()
+                data_structure_tracker.pop_brace()
+                next_indentation = next_indentation - tab_size
+    return results
 
 def check_if_break_statement(code):
 
@@ -35,24 +68,6 @@ def check_if_break_statement(code):
         return True
     except ParseException:
         return False
-
-def get_arguments(argv):
-    try:
-        (opts, args) = getopt.getopt(argv, "i:s:f:", "")
-    except getopt.GetoptError:
-        print('Invalid arguments.')
-
-    args = {}
-
-    for o, a in opts:
-        if o == "-i":
-            args["includes"] = a
-        elif o == "-s":
-            args["student_files"] = a
-        elif o == "-f":
-            args["filters"] = a
-
-    return args
 
 def check_operator_regex(code, operator):
     """
@@ -89,5 +104,5 @@ def check_operator_regex(code, operator):
     else:
         return 0
 
-def printSuccess():
+def print_success():
     print '\033[32mNo errors have been found :)\033[0m'
