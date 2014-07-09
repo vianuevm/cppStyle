@@ -3,7 +3,7 @@ Style Grader class with instance-method plugin-based functionality.
 '''
 
 import codecs
-from configparser import ConfigParser
+from ConfigParser import ConfigParser
 from collections import defaultdict
 import sys
 
@@ -48,8 +48,8 @@ class StyleRubric(object):
     def load_functions(self, module):
         functions = list()
         group = module.__name__.upper()
-        for check in self.config[group]:
-            if self.config[group][check].lower() == 'yes':
+        for check in self.config.options(group):
+            if self.config.get(group, check).lower() == 'yes':
                 functions.append(getattr(module, 'check_'+check))
         return functions
 
@@ -84,9 +84,9 @@ class StyleRubric(object):
             for function in self.multi_line_checks: function(self, clean_lines)
         # COMMENT CHECKS #TODO
         for self.current_line_num, text in enumerate(raw_data):
-            if self.config['COMMENT_CHECKS']['line_width'] == 'yes':
+            if self.config.get('COMMENT_CHECKS', 'line_width').lower() == 'yes':
                 getattr(comment_checks, 'check_line_width')(self, text)
             if check_if_function(text):
-                if self.config['COMMENT_CHECKS']['missing_rme'] == 'yes':
+                if self.config.get('COMMENT_CHECKS', 'missing_rme').lower() == 'yes':
                     getattr(comment_checks, 'check_missing_rme')(self, raw_data)
         for function in self.misc_checks: function(self)
