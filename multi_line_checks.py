@@ -1,19 +1,7 @@
-from cpplint import RemoveMultiLineComments, CleansedLines, GetPreviousNonBlankLine
-from style_grader_classes import DataStructureTracker, SpacingTracker
-from style_grader_functions import check_if_function, get_arguments, check_operator_regex, check_if_break_statement, check_if_switch_statement, indent_helper
-from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, printables, srange
-from StyleError import StyleError
-from ConfigParser import ConfigParser
-import codecs
-import copy
-import getopt
-import math  # for log
-import os
+from cpplint import GetPreviousNonBlankLine
+from style_grader_classes import DataStructureTracker
+from style_grader_functions import check_if_function,  indent_helper
 import re
-import sre_compile
-import string
-import sys
-import unicodedata
 
 def check_statements_per_line(self, clean_lines):
     cleansed_line = clean_lines.lines[self.current_line_num]
@@ -46,7 +34,7 @@ def check_brace_consistency(self, clean_lines):
             switch_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
                 if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1:
 
-            self.notEgyptian = True
+            self.not_egyptian = True
         elif function and code.find('{') != -1 or \
                 else_if_statement and code.find('{') != -1 or\
                 else_statement and code.find('{') != -1 or\
@@ -60,7 +48,7 @@ def check_brace_consistency(self, clean_lines):
                 self.braces_error = True
 
         #if both of these are true, they are not consistent, therefore error.
-        if self.notEgyptian:
+        if self.not_egyptian:
             if self.egyptian and not self.braces_error:
                 self.add_error(label="BRACE_CONSISTENCY")
                 self.braces_error = True
@@ -69,12 +57,7 @@ def check_block_indentation(self, clean_lines):
     #TODO: Load from config file? 
     tab_size = 4
     code = clean_lines.lines[self.current_line_num]
-    stripped_code = code.strip()
     function = check_if_function(code)
-    if_statement = re.search(r'^if\s*\(\s*', stripped_code)
-    else_if_statement = re.search(r'^else\s*\(', code)
-    else_statement = re.search(r'^else\s+', code)
-    switch_statement = re.search(r'^switch\s*\(', stripped_code)
     indentation = re.search(r'^( *)\S', code)
     if indentation:
         indentation = indentation.group()
@@ -91,12 +74,11 @@ def check_block_indentation(self, clean_lines):
     if function:
         #if not egyptian style
         if code.find('{') == -1:
-            second_line = clean_lines.lines[self.current_line_num + 1]
             if code.find('{'):
                 temp_line_num = self.current_line_num + 1
                 data_structure_tracker = DataStructureTracker()
                 data_structure_tracker.brace_stack.append('{')
-                results = indent_helper(indentation, tab_size, code, clean_lines, 
+                results = indent_helper(indentation, tab_size, clean_lines, 
                                         data_structure_tracker, temp_line_num)
                 for error in results:
                     self.add_error(**error)
@@ -107,7 +89,7 @@ def check_block_indentation(self, clean_lines):
             temp_line_num = self.current_line_num
             data_structure_tracker = DataStructureTracker()
             data_structure_tracker.brace_stack.append('{')
-            results = indent_helper(indentation, tab_size, code, clean_lines, 
+            results = indent_helper(indentation, tab_size, clean_lines, 
                                     data_structure_tracker, temp_line_num)
             for error in results:
                 self.add_error(**error)

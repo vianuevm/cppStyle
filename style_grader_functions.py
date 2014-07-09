@@ -1,9 +1,8 @@
-from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums
+from pyparsing import Literal, Word, Optional, ParseException, alphanums
 import getopt
 import re
 
 def check_if_function(code):
-
     return_type = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
     function_name = Word(alphanums + '_' + ':')
     args = Word(alphanums + ',' + ' ' + '_')
@@ -25,8 +24,7 @@ def check_if_switch_statement(code):
     except ParseException:
         return False
 
-def indent_helper(indentation, tab_size, code, clean_lines,
-                                       data_structure_tracker, temp_line_num):
+def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, temp_line_num):
     indentation = re.search(r'^( *)\S', clean_lines.lines[temp_line_num])
     results = list()
     indentation = indentation.group()
@@ -71,24 +69,6 @@ def check_if_break_statement(code):
     except ParseException:
         return False
 
-def get_arguments(argv):
-    try:
-        (opts, args) = getopt.getopt(argv, "i:s:f:", "")
-    except getopt.GetoptError:
-        print('Invalid arguments.')
-
-    args = {}
-
-    for o, a in opts:
-        if o == "-i":
-            args["includes"] = a
-        elif o == "-s":
-            args["student_files"] = a
-        elif o == "-f":
-            args["filters"] = a
-
-    return args
-
 def check_operator_regex(code, operator):
     """
     If an error has been found, return the column number of the operator, else return 0
@@ -124,5 +104,5 @@ def check_operator_regex(code, operator):
     else:
         return 0
 
-def printSuccess():
+def print_success():
     print '\033[32mNo errors have been found :)\033[0m'

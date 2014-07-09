@@ -141,7 +141,7 @@ def check_unnecessary_include(self, code):
         begin = code.find("<")
         end = code.find(">")
         included_library = code[begin + 1:end]
-        if included_library not in self.permitted_includes:
+        if included_library not in self.includes:
             self.add_error(label="UNNECESSARY_INCLUDE")
     except ParseException:
         return
