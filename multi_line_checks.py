@@ -1,6 +1,6 @@
 from cpplint import GetPreviousNonBlankLine
 from style_grader_classes import DataStructureTracker
-from style_grader_functions import check_if_function,  indent_helper
+from style_grader_functions import check_if_function,  indent_helper, check_if_struct_or_class
 import re
 
 def check_statements_per_line(self, clean_lines):
@@ -58,6 +58,7 @@ def check_block_indentation(self, clean_lines):
     tab_size = 4
     code = clean_lines.lines[self.current_line_num]
     function = check_if_function(code)
+    struct_or_class = check_if_struct_or_class(code)
     indentation = re.search(r'^( *)\S', code)
     if indentation:
         indentation = indentation.group()
@@ -68,10 +69,10 @@ def check_block_indentation(self, clean_lines):
         if indentation_size != 0:
             data = {'expected': 0, 'found': indentation_size}
             self.add_error(label="BLOCK_INDENTATION", data=data)
-        if self.outside_main:
-            return
+        # if self.outside_main:
+        #     return
     #TODO: Need to check indentation ON the same line as the function still
-    if function:
+    if (function and not self.outside_main) or struct_or_class:
         #if not egyptian style
         if code.find('{') == -1:
             if code.find('{'):

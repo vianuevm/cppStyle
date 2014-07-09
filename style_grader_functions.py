@@ -1,4 +1,4 @@
-from pyparsing import Literal, Word, Optional, ParseException, alphanums
+from pyparsing import Literal, Word, Optional, ParseException, alphanums, Keyword
 import getopt
 import re
 
@@ -68,6 +68,17 @@ def check_if_break_statement(code):
         return True
     except ParseException:
         return False
+
+def check_if_struct_or_class(code):
+    class_type = Keyword('class')
+    struct_type = Keyword('struct')
+    name = Word(alphanums + '_')
+    end = Literal('{')
+    statement = (class_type + name + end | struct_type + name + end)
+
+    if len(statement.searchString(code)):
+        return True
+    return False
 
 def check_operator_regex(code, operator):
     """
