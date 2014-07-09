@@ -28,8 +28,8 @@ def main():
     print "Total Errors: " + str(rubric.total_errors)
     for x, y in rubric.error_types.items():
         print x, y
-
- #function called on each filename function(fileName, rubric)
+ 
+#function called on each filename function(fileName, rubric)
 
 #print / send results
 if __name__ == '__main__':
