@@ -1,4 +1,4 @@
-//Test num_of_commands
+//Test num_of_commands-----------------------
 s++; e++;
 x = 5 + 3 / 7; 1; 34;
 w = 
@@ -8,7 +8,7 @@ myFn();
 code on
 two lines;
 
-//Test valid_return
+//Test valid_return---------------------------
 bool myFn(void) {
     return 4;
 bool myFn(void) {return 0;}
@@ -18,7 +18,7 @@ bool myFn(void) {
 bool myFn(void) {return true;}
 
 
-/**
+/*
  * good.cpp
  *
  * First Last
@@ -40,6 +40,7 @@ using namespace std;
 void greet(void)
 {
     cout << "o hai world!" << endl;
+    cout << "o hai world!" << endl;
 }
 
 int main(int argc, const char * argv[])
@@ -50,4 +51,43 @@ int main(int argc, const char * argv[])
 
     return 0;
 }
-
+//if_else_good-----------------------------
+int main() {
+    if(x == 5) {
+        cout << "yes!" << endl;
+    }
+    else {
+        cout << "yes!" << endl;
+    }
+    if (x == 5)
+    {
+        cout << "yes!" << endl;
+    }
+    else if (x == 5)
+    {
+        cout << "elif" << endl;
+    }
+    else
+    {
+        cout << "else" << endl;
+    }
+    if (x == 5) { cout << "yes!" << endl; }
+    else { cout << "else" << endl; }
+}
+//if_else_bad-----------------------------
+int main() {
+    if (x == 5) cout << "no" << endl;
+    else if (x == 3) 
+        cout << "no";
+    else {
+        cout << "maybe?"
+    }
+    else cout << "no!";
+}
+//equals_true----------------------------
+if (x == true) {
+if (blah == true)
+if (function.call(arguments, secondarg) == true)
+if (check->across_pointer.call(5, args) == true)
+if (true == check->across_pointer.call(5, args))
+//-----------------------------------

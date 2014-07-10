@@ -77,7 +77,7 @@ class StyleRubric(object):
     def add_error(self, label=None, line=0, column=0, data=dict()):
         self.total_errors += 1
         self.error_types[label] += 1
-        line = line if line else self.current_line_num
+        line = line if line else self.current_line_num + 1
         self.error_tracker.append(StyleError(1, label, line, column_num=column, data=data))
 
     def grade_student_file(self, filename):
