@@ -15,20 +15,24 @@ int& x;
 
 struct person
 {
-    int age;
-    int id;
+    public:
+        int age;
+        int id;
 }
 
 struct Person
 {
-    int age;
-    int id;
+    private:
+        int age;
+        int id;
 }
 
 class Student
 {
-    int id;
-    string dorm;
+    public:
+        int id;
+    private:
+        string dorm(string room, string isSmall);
 }
 
 class sTUDENT

@@ -22,6 +22,14 @@ class DataStructureTracker(object):
         self.length_so_far = 0
         self.in_switch = False
         self.switch_brace_stack = []
+        self.in_class_or_struct = False
+        self.in_public_or_private = False
+        self.class_or_struct_brace_stack = []
+        self.class_or_struct_brace_index = 0
+
+    def add_object_brace(self, brace):
+        self.class_or_struct_brace_stack.append(brace)
+        self.class_or_struct_brace_index += 1
 
     def add_switch_brace(self, brace):
         self.switch_brace_stack.append(brace)
@@ -42,3 +50,10 @@ class DataStructureTracker(object):
         self.switch_brace_index -= 1
         if self.switch_brace_index == 0:
             self.in_switch = False
+
+    def pop_object_brace(self):
+        self.class_or_struct_brace_stack.pop()
+        self.class_or_struct_brace_index -= 1
+        if self.class_or_struct_brace_index == 0:
+            self.in_class_or_struct = False
+

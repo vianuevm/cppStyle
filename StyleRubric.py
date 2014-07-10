@@ -44,6 +44,19 @@ class StyleRubric(object):
         self.multi_line_checks = self.load_functions(multi_line_checks)
         self.comment_checks = self.load_functions(comment_checks)
         self.misc_checks = self.load_functions(misc_checks)
+        self.global_in_object = False;
+        self.global_object_braces = []
+        self.global_in_object_index = 0
+
+
+    def add_global_brace(self, brace):
+        self.global_object_braces.append(brace)
+        self.global_in_object_index += 1
+
+    def pop_global_brace(self):
+        self.global_object_braces.pop()
+        if self.global_in_object_index == 0:
+            self.global_in_object = False
 
     def load_functions(self, module):
         functions = list()

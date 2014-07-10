@@ -57,6 +57,15 @@ def check_block_indentation(self, clean_lines):
     #TODO: Load from config file? 
     tab_size = 4
     code = clean_lines.lines[self.current_line_num]
+
+    if check_if_struct_or_class(code):
+        self.global_in_object = True
+
+    if self.global_in_object and code.find('{') != -1:
+        self.add_global_brace('{')
+    elif self.global_in_object and code.find('}') != -1:
+        self.pop_global_brace()
+
     function = check_if_function(code)
     struct_or_class = check_if_struct_or_class(code)
     indentation = re.search(r'^( *)\S', code)
@@ -65,12 +74,11 @@ def check_block_indentation(self, clean_lines):
         indentation_size = len(indentation) - len(indentation.strip())
     else:
         return
-    if function or self.outside_main:
-        if indentation_size != 0:
-            data = {'expected': 0, 'found': indentation_size}
-            self.add_error(label="BLOCK_INDENTATION", data=data)
-        # if self.outside_main:
-        #     return
+
+    if function and indentation_size != 0 and not self.global_in_object:
+        data = {'expected': 0, 'found': indentation_size}
+        self.add_error(label="BLOCK_INDENTATION", data=data)
+
     #TODO: Need to check indentation ON the same line as the function still
     if (function and not self.outside_main) or struct_or_class:
         #if not egyptian style
@@ -79,8 +87,15 @@ def check_block_indentation(self, clean_lines):
                 temp_line_num = self.current_line_num + 1
                 data_structure_tracker = DataStructureTracker()
                 data_structure_tracker.brace_stack.append('{')
+                if check_if_struct_or_class(code):
+                    data_structure_tracker.in_class_or_struct = True
+                if self.global_in_object:
+                    self.add_global_brace('{')
+                    data_structure_tracker.add_object_brace('{')
+
                 results = indent_helper(indentation, tab_size, clean_lines, 
                                         data_structure_tracker, temp_line_num)
+
                 for error in results:
                     self.add_error(**error)
             else:
@@ -89,6 +104,11 @@ def check_block_indentation(self, clean_lines):
         else:
             temp_line_num = self.current_line_num
             data_structure_tracker = DataStructureTracker()
+
+            if check_if_struct_or_class(code):
+                data_structure_tracker.add_object_brace("{")
+                data_structure_tracker.in_class_or_struct = True
+
             data_structure_tracker.brace_stack.append('{')
             results = indent_helper(indentation, tab_size, clean_lines, 
                                     data_structure_tracker, temp_line_num)

@@ -31,37 +31,75 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
     indentation_size = len(indentation) - len(indentation.strip())
     data_structure_tracker.in_block = True
     next_indentation = indentation_size + tab_size
+
     while data_structure_tracker.in_block:
         temp_line_num += 1
         current_indentation = re.search(r'^( *)\S',
                                         clean_lines.lines[temp_line_num])
+
         switch_statement = check_if_switch_statement(clean_lines.lines[temp_line_num])
-        if(switch_statement):
+
+        if switch_statement:
             data_structure_tracker.in_switch = True
+
         is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
+
         if is_break_statement and not data_structure_tracker.in_switch:
             results.append({'label': 'UNNECESSARY_BREAK', 'line': temp_line_num + 1})
+
         if current_indentation:
             line_start = current_indentation.group()
             current_indentation = len(line_start) - len(line_start.strip())
+
             if current_indentation != next_indentation and line_start.find('}') == -1:
-                data = {'expected': next_indentation, 'found': current_indentation}
-                results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
+
+                if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and
+                   data_structure_tracker.in_class_or_struct):
+                    next_indentation -= tab_size
+                else:
+                    data = {'expected': next_indentation, 'found': current_indentation}
+                    results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
+
             if clean_lines.lines[temp_line_num].find("{") != -1:
                 if data_structure_tracker.in_switch:
                     data_structure_tracker.add_switch_brace("{")
+                if data_structure_tracker.in_class_or_struct:
+                    data_structure_tracker.add_object_brace("{")
                 data_structure_tracker.add_brace("{")
                 next_indentation = current_indentation + tab_size
+
             elif clean_lines.lines[temp_line_num].find("}") != -1:
                 if data_structure_tracker.in_switch:
                     data_structure_tracker.pop_switch_brace()
+                if data_structure_tracker.in_class_or_struct:
+                    data_structure_tracker.pop_object_brace()
                 data_structure_tracker.pop_brace()
                 next_indentation = next_indentation - tab_size
+
+            if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and
+                   data_structure_tracker.in_class_or_struct):
+                next_indentation += tab_size
+
+
     return results
+
+
+def check_if_public_or_private(code):
+
+    private = Keyword('private:')
+    public = Keyword('public:')
+
+    grammar = (private | public)
+
+    if len(grammar.searchString(code)) >= 1:
+        return True
+    else:
+        return False
+
 
 def check_if_break_statement(code):
 
-    statement = Word('break')
+    statement = Keyword('break')
     grammar = statement + Optional(" ") + ";"
     try:
         grammar.parseString(code)
@@ -73,8 +111,7 @@ def check_if_struct_or_class(code):
     class_type = Keyword('class')
     struct_type = Keyword('struct')
     name = Word(alphanums + '_')
-    end = Literal('{')
-    statement = (class_type + name + end | struct_type + name + end)
+    statement = (class_type + name | struct_type + name)
 
     if len(statement.searchString(code)):
         return True
