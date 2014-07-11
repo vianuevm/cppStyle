@@ -10,7 +10,7 @@ Overview
         rubric.grade_student_file(filename)
 ------------------------------------------------------
 
-**Rubric.ini: This file is how you tell the program WHAT files to grade.  So if you're debugging, or switch to a new file to grade or whatever, you have to change the first line:
+- NOTE: rubric.ini: This file is how you tell the program WHAT files to grade.  So if you're debugging, or switch to a new file to grade or whatever, you have to change the first line:
 
 [FILES]
 student_files=hello.cpp
