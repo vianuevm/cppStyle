@@ -31,7 +31,7 @@ Step 1) The software opens ALL student files. (style_grader_main.py)
 
 Step 2) The software loops through all files, calling "grade_student_file" function on all files. (style_grader_main.py)
 
-Step 3) Once you call grade_student_file, you enter the StyleRubric class's function and begin grading one file.
+Step 3) Once you call grade_student_file, you enter the StyleRubric class's function and begin grading one file. (StyleRubric.py)
 
 Step 4) The grade_student_file function has two main objective:
   - Clean up the file (remove comments) and make sure it's properly formatted
@@ -40,7 +40,7 @@ Step 4) The grade_student_file function has two main objective:
 
 ** Important side rant: This is probably the most important design decision made - the file is analyzed on a line by line bases, so only one line at a time is judged for style.  If a multi_line_check finds a function, class, struct etc. then it will perform a sweep of that entire code block for indentation and bracing checks.  But that decision is based entirely on the parsing and analysis of a single line at a time.  This paradigm is to be held in any further development. **
 
-Step 5) As stated previously, we are now checking each line through all of the style checking functions in StyleRubric and single_line and multi_line python files.  This is the line doing that magic:
+Step 5) As stated previously, we are now checking each line through all of the style checking functions in StyleRubric.py and single_line_check.py and multi_line_check.py python files.  This is the line doing that magic:
 
 ==========================================================================================================================
        for self.current_line_num, code in enumerate(clean_code):
