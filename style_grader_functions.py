@@ -15,13 +15,19 @@ def check_if_function(code):
     return False
 
 def check_if_switch_statement(code):
-    statement = Word('switch')
+    statement = Keyword('switch')
     args = Word(alphanums + '_')
     grammar = statement + Optional(" ") + "(" + args + ")"
     try:
         grammar.parseString(code)
         return True
     except ParseException:
+        return False
+def check_if_case_arg(code):
+    statement = Keyword('case')
+    if len(statement.searchString(code)):
+        return True
+    else:
         return False
 
 def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, temp_line_num):
@@ -52,13 +58,17 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
             current_indentation = len(line_start) - len(line_start.strip())
 
             if current_indentation != next_indentation and line_start.find('}') == -1:
+                #check for public: private: and case: exceptions
+                if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and \
+                        data_structure_tracker.in_class_or_struct) or \
+                        (check_if_case_arg(clean_lines.lines[temp_line_num]) and \
+                        data_structure_tracker.in_switch):
 
-                if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and
-                   data_structure_tracker.in_class_or_struct):
                     next_indentation -= tab_size
                 else:
                     data = {'expected': next_indentation, 'found': current_indentation}
                     results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
+
 
             if clean_lines.lines[temp_line_num].find("{") != -1:
                 if data_structure_tracker.in_switch:
@@ -69,6 +79,7 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                 next_indentation = current_indentation + tab_size
 
             elif clean_lines.lines[temp_line_num].find("}") != -1:
+                end_switch = data_structure_tracker.in_switch
                 if data_structure_tracker.in_switch:
                     data_structure_tracker.pop_switch_brace()
                 if data_structure_tracker.in_class_or_struct:
@@ -76,8 +87,15 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                 data_structure_tracker.pop_brace()
                 next_indentation = next_indentation - tab_size
 
+                if end_switch and not data_structure_tracker.in_switch:
+                    next_indentation = current_indentation
+
             if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and
                    data_structure_tracker.in_class_or_struct):
+                next_indentation += tab_size
+
+            if check_if_case_arg(clean_lines.lines[temp_line_num]) \
+                    and data_structure_tracker.in_switch:
                 next_indentation += tab_size
 
 
@@ -86,8 +104,8 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
 
 def check_if_public_or_private(code):
 
-    private = Keyword('private:')
-    public = Keyword('public:')
+    private = Keyword('private')
+    public = Keyword('public')
 
     grammar = (private | public)
 

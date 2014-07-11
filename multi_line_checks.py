@@ -28,20 +28,23 @@ def check_brace_consistency(self, clean_lines):
     #TODO: Clean this line up
 
     if function or if_statement or else_statement or switch_statement:
-        if function and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-            else_if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-            else_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-            switch_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-                if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1:
 
-            self.not_egyptian = True
-        elif function and code.find('{') != -1 or \
+        if function and code.find('{') != -1 or \
                 else_if_statement and code.find('{') != -1 or\
                 else_statement and code.find('{') != -1 or\
                 switch_statement and code.find('{') != -1 or\
                 if_statement and code.find('{') != -1:
 
             self.egyptian = True
+
+        elif function and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
+            else_if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
+            else_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
+            switch_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
+                if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1:
+
+            self.not_egyptian = True
+
         elif not self.outside_main:
             if not self.braces_error:
                 self.add_error(label="BRACE_CONSISTENCY")
