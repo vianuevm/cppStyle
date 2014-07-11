@@ -4,7 +4,9 @@ This is a guide for those hoping to contribute who may begin and think - that's 
 Overview
 ==========================================================================================================================
 
-1) style_grader_main: The small file that drives it all.  This file, in a nutshell, opens up the list of all student files, and for each file, the grader puts it through the code parsing process.  
+
+1)style_grader_main: The small file that drives it all.  This file, in a nutshell, opens up the list of all student files, and for each file, the grader puts it through the code parsing process.  
+
 ------------------------------------------------------
     for filename in rubric.student_files:
         rubric.grade_student_file(filename)
