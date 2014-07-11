@@ -4,12 +4,17 @@ This is a guide for those hoping to contribute who may begin and think - that's 
 Overview
 ==========================================================================================================================
 
-1) style_grader_main: The small file that drives it all.  This file, in a nutshell, opens up the list of all student files, and for each file, the grader puts it through the code parsing process.  If you want to know how it is knowing what files to get etc. check out rubric.ini file.
-
+1) style_grader_main: The small file that drives it all.  This file, in a nutshell, opens up the list of all student files, and for each file, the grader puts it through the code parsing process.  
 ------------------------------------------------------
     for filename in rubric.student_files:
         rubric.grade_student_file(filename)
 ------------------------------------------------------
+
+**Rubric.ini: This file is how you tell the program WHAT files to grade.  So if you're debugging, or switch to a new file to grade or whatever, you have to change the first line:
+
+[FILES]
+student_files=hello.cpp
+
 
 2) style_grader_classes: This holds the smaller classes that do not need their own file.  In addition to these, StyleError.py and StyleRubric.py have separate folder, as their functions and data constitute a huge portion of the project.
 
