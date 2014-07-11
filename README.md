@@ -15,7 +15,6 @@ Overview
 2) style_grader_classes: This holds the smaller classes that do not need their own file.  In addition to these, StyleError.py and StyleRubric.py have separate folder, as their functions and data constitute a huge portion of the project.
 
 - Note: A large portion of the software's functions exist in StyleRubric and StyleError.
-- Note Again: 
 
 3) style_grader_functions: These are functions in addition to the StyleRubric and StyleError functions that drive the program.
 
