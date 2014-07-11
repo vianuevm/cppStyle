@@ -5,7 +5,7 @@ Overview
 ==========================================================================================================================
 
 
-1)style_grader_main: The small file that drives it all.  This file, in a nutshell, opens up the list of all student files, and for each file, the grader puts it through the code parsing process.  
+1) style_grader_main.py: The small file that drives it all.  This file, in a nutshell, opens up the list of all student files, and for each file, the grader puts it through the code parsing process.  
 
 ------------------------------------------------------
     for filename in rubric.student_files:
@@ -18,11 +18,11 @@ Overview
 student_files=hello.cpp
 
 
-2) style_grader_classes: This holds the smaller classes that do not need their own file.  In addition to these, StyleError.py and StyleRubric.py have separate folder, as their functions and data constitute a huge portion of the project.
+2) style_grader_classes.py: This holds the smaller classes that do not need their own file.  In addition to these, StyleError.py and StyleRubric.py have separate folder, as their functions and data constitute a huge portion of the project.
 
 - Note: A large portion of the software's functions exist in StyleRubric and StyleError.
 
-3) style_grader_functions: These are functions in addition to the StyleRubric and StyleError functions that drive the program.
+3) style_grader_functions.py: These are functions in addition to the StyleRubric and StyleError functions that drive the program.
 
 
 Additional Files:
