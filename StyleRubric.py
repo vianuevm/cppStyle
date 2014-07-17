@@ -41,6 +41,8 @@ class StyleRubric(object):
         self.student_files = self.config.get('FILES', 'student_files').split(',')
         self.includes = self.config.get('FILES', 'permitted_includes').split(',')
         self.all_rme = set()
+        self.min_comments_ratio = float(self.config.get('SETTINGS', 'min_comments_ratio'))
+        self.max_line_length = int(self.config.get('SETTINGS', 'max_line_length'))
         self.single_line_checks = self.load_functions(single_line_checks)
         self.multi_line_checks = self.load_functions(multi_line_checks)
         self.comment_checks = self.load_functions(comment_checks)
@@ -77,11 +79,11 @@ class StyleRubric(object):
         self.current_file = filename
         self.error_tracker[filename] = list()
 
-    def add_error(self, label=None, line=0, column=0, data=dict()):
+    def add_error(self, label=None, line=-1, column=0, type='ERROR', data=dict()):
         self.total_errors += 1
         self.error_types[label] += 1
-        line = line if line else self.current_line_num + 1
-        self.error_tracker[self.current_file].append(StyleError(1, label, line, column_num=column, data=data))
+        line = line if (line != -1) else self.current_line_num + 1
+        self.error_tracker[self.current_file].append(StyleError(1, label, line, column_num=column, type=type, data=data))
 
     def grade_student_file(self, filename):
         self.reset_for_new_file(filename)
@@ -104,6 +106,8 @@ class StyleRubric(object):
             if check_if_function(text):
                 if self.config.get('COMMENT_CHECKS', 'missing_rme').lower() == 'yes':
                     getattr(comment_checks, 'check_missing_rme')(self, raw_data)
+        if self.config.get('COMMENT_CHECKS', 'min_comments').lower() == 'yes':
+            getattr(comment_checks, 'check_min_comments')(self, raw_data, clean_code)
         for function in self.misc_checks: function(self)
         self.error_tracker[filename].sort()
 

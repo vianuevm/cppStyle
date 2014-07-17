@@ -36,6 +36,13 @@ class StyleError(object):
                 output_str += ':' + str(self.get_column_number())
             output_str += '  '
         output_str += str(self.get_message())
+        if self.type == 'WARNING':
+            output_str = '\033[33m' + output_str + '\033[0m'
+        '''
+        printing in red
+        elif self.type == 'ERROR':
+            output_str = '\033[31m' + output_str + '\033[0m'
+        '''
         return output_str
 
     def __gt__(self, other):
@@ -103,6 +110,10 @@ class StyleError(object):
             "OPERATOR_CONSISTENCY": "Your spacing around operators is inconsistent. Pick left, right or both for spacing and stick to it.",
             "POINTER_REFERENCE_CONSISTENCY": "Your use of spacing surrounding '*' and '&' is inconsistent.",
             "MISSING_RME": "{} is missing a complete RME.".format(self.get_data().get("function")),
+            "MIN_COMMENTS": "Potentially too few comments. Found {} {} of comments in {} {} of code.".format(self.get_data().get("comments"),
+                                                                                                            'line' if self.get_data().get("comments") == 1 else 'lines',
+                                                                                                            self.get_data().get("lines"),
+                                                                                                            'line' if self.get_data().get("lines") == 1 else 'lines'),
         }[label]
 
 
