@@ -76,7 +76,7 @@ class StyleError(object):
 
     def get_error_message(self, label):
         return {
-            "OPERATOR_SPACING": "Incorrect spacing around {}".format(self.get_data().get('operator')),
+            "OPERATOR_SPACING": "Incorrect spacing around {}.".format(self.get_data().get('operator')),
             "BLOCK_INDENTATION": "Incorrect indentation. Expected: {}, found: {}.".format(self.get_data().get('expected'), self.get_data().get('found')),
             "STATEMENTS_PER_LINE": "There should only be one command (statement) on each line.",
             "IF_ELSE_ERROR": "Every If-Else statement should have brackets.",
@@ -97,7 +97,7 @@ class StyleError(object):
             "MAIN_SYNTAX": "Your declaration of main() does not adhere to conventional stylistic guidelines.",
             "STRINGSTREAM": "We disallow the use of stringstreams in this course to ensure mastery of other IO methods.",
             "UNNECESSARY_INCLUDE": "You have included a library we do not allow.",
-            "FIRST_CHAR": "First character of a {} name must be capitalized. Expected: {}, found: {}".format(self.get_data().get("keyword"),
+            "FIRST_CHAR": "First character of a {} name must be capitalized. Expected: {}, found: {}.".format(self.get_data().get("keyword"),
                                                                                                              self.get_data().get("expected"),
                                                                                                              self.get_data().get("found")),
             "OPERATOR_CONSISTENCY": "Your spacing around operators is inconsistent. Pick left, right or both for spacing and stick to it.",
