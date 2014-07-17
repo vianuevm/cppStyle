@@ -129,6 +129,12 @@ int main(void bloogy)
         }
     }
 
+    int array[8];
+    int xyz = 1;
+    cout << array[xyz++] << endl;
+
+    int negative = -2;
+
 
     return true ? 1 : 0;
 }

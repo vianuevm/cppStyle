@@ -2,7 +2,7 @@ import re
 from pyparsing import Word, Literal, alphanums
 
 def check_line_width(self, line):
-    max_length = 80
+    max_length = self.max_line_length
     current_length = len(line)
     if current_length > max_length:
         self.add_error(label="LINE_WIDTH", data={'length': current_length})
@@ -20,6 +20,17 @@ def check_missing_rme(self, lines):
             if re.search('requires', code): requires = True
             if re.search('effects', code): effects = True
             if re.search('modifies', code): modifies = True
-        # If it's not there, maybe they defined it in a header file. #TODO
-        if not (requires and effects and modifies):
+        # If it's not there, maybe they defined it in a header file. #TODO: check only #included files
+        if (function_name not in self.all_rme) and not (requires and effects and modifies):
             self.add_error("MISSING_RME", data={'function': function_name})
+        elif (requires and effects and modifies):
+            self.all_rme.add(function_name)
+
+def check_min_comments(self, all_lines, clean_lines):
+    num_lines = len(all_lines) + 1
+    num_comments = 0
+    for index, line in enumerate(all_lines):
+        if line != clean_lines[index]:
+            num_comments += 1
+    if num_comments < num_lines * self.min_comments_ratio:
+        self.add_error(label='MIN_COMMENTS', line=0, type="WARNING", data={'comments': num_comments, 'lines': num_lines})
