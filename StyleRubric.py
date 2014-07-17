@@ -9,7 +9,7 @@ import sys
 
 from cpplint import CleansedLines, RemoveMultiLineComments
 
-from style_grader_functions import check_if_function
+from style_grader_functions import check_if_function, print_success
 from style_grader_classes import SpacingTracker
 from StyleError import StyleError
 import comment_checks
@@ -104,14 +104,13 @@ class StyleRubric(object):
                 if self.config.get('COMMENT_CHECKS', 'missing_rme').lower() == 'yes':
                     getattr(comment_checks, 'check_missing_rme')(self, raw_data)
         for function in self.misc_checks: function(self)
-
-    def sort_errors(self):
-        for errors in self.error_tracker.itervalues():
-            errors.sort()
+        self.error_tracker[filename].sort()
 
     def print_errors(self):
         for filename, errors in self.error_tracker.iteritems():
             print 'Grading {}...'.format(filename)
+            if not len(errors):
+                print_success()
             for error in errors:
                 print error
             print
