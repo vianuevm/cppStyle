@@ -17,10 +17,7 @@ using namespace std;
  * Modifies: stdout.
  * Effects:  Greets the world.
  */
-void greet(void)
-{
-    cout << "o hai world!" << endl;
-}
+void greet(void);
 
 int main(int argc, const char * argv[])
 {
@@ -29,4 +26,9 @@ int main(int argc, const char * argv[])
     cout << "bye." << endl;
 
     return 0;
+}
+
+void greet(void)
+{
+    cout << "o hai world!" << endl;
 }

@@ -11,6 +11,8 @@ def main():
     if not rubric.error_tracker:
         print_success()
 
+    rubric.error_tracker.sort()
+
     # print all errors
     for error in rubric.error_tracker:
         print error
