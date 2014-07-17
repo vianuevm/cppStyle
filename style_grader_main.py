@@ -8,10 +8,6 @@ def main():
     for filename in rubric.student_files:
         rubric.grade_student_file(filename)
 
-    if not rubric.error_tracker:
-        print_success()
-
-    rubric.sort_errors()
     rubric.print_errors()
 
 #For debugging purposes only
