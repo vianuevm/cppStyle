@@ -145,16 +145,19 @@ def check_operator_regex(code, operator):
     if re.search(regex_one, code) or re.search(regex_two, code):
         left_not_wspace = re.search(regex_one, code)
         right_not_wspace = re.search(regex_two, code)
+
         if right_not_wspace and left_not_wspace:
             left_code = left_not_wspace.group()
             right_code = right_not_wspace.group()
             left_symbol = left_code[-2]
             right_symbol = right_code[1]
-            operator = right_symbol[0]
+            operator = right_code[0]
             if operator == '+' or operator == '-':
                 if right_symbol == '-' or right_symbol == '=' or right_symbol == '+':
                     return 0
                 if left_symbol == '-' or left_symbol == '=' or left_symbol == '+':
+                    return 0
+                if left_code[0] == '(' and (right_code[-1] ==')' or (right_code[-2] == ')' and right_code[-1] == ';')):
                     return 0
             elif operator == '/':
                 if right_symbol == '=':
@@ -164,9 +167,23 @@ def check_operator_regex(code, operator):
                     return 0
                 if right_symbol or left_symbol == '=':
                     return 0
+
             else:
                 # return column number of the error
                 return right_not_wspace.regs[0][0] + 1
+        elif right_not_wspace or left_not_wspace:
+            if left_not_wspace:
+                left_code = left_not_wspace.group()
+                left_symbol = left_code[-2]
+                operator = left_code[-1]
+                if left_symbol != operator or left_symbol != '=':
+                    return left_not_wspace.regs[0][0] + 1
+            else:
+                right_code = right_not_wspace.group()
+                right_symbol = right_code[1]
+                operator = right_symbol[0]
+                if right_symbol != operator or right_symbol != '=' or right_symbol != '(':
+                    return right_not_wspace.regs[0][0] + 1
     else:
         return 0
 
