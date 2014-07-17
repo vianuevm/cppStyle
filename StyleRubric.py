@@ -35,7 +35,7 @@ class StyleRubric(object):
         ''' Load functionality based on config file specifications '''
         self.config = ConfigParser()
         self.config.read('rubric.ini')
-        self.error_tracker = list()
+        self.error_tracker = dict()
         self.error_types = defaultdict(int)
         self.total_errors = 0
         self.student_files = self.config.get('FILES', 'student_files').split(',')
@@ -66,23 +66,24 @@ class StyleRubric(object):
                 functions.append(getattr(module, 'check_'+check))
         return functions
 
-    def reset_for_new_file(self):
+    def reset_for_new_file(self, filename):
         self.spacer = SpacingTracker()
         self.outside_main = True
         self.egyptian = False
         self.not_egyptian = False
         self.braces_error = False #To prevent multiple braces errors
         self.in_switch = False
+        self.current_file = filename
+        self.error_tracker[filename] = list()
 
     def add_error(self, label=None, line=0, column=0, data=dict()):
         self.total_errors += 1
         self.error_types[label] += 1
         line = line if line else self.current_line_num + 1
-        self.error_tracker.append(StyleError(1, label, line, column_num=column, data=data))
+        self.error_tracker[self.current_file].append(StyleError(1, label, line, column_num=column, data=data))
 
     def grade_student_file(self, filename):
-        self.reset_for_new_file()
-        print 'Grading student submission: {}'.format(filename)
+        self.reset_for_new_file(filename)
         extension = filename.split('.')[-1]
         if extension not in ['h', 'cpp']:
             sys.stderr.write('Incorrect file type\n')
@@ -103,3 +104,14 @@ class StyleRubric(object):
                 if self.config.get('COMMENT_CHECKS', 'missing_rme').lower() == 'yes':
                     getattr(comment_checks, 'check_missing_rme')(self, raw_data)
         for function in self.misc_checks: function(self)
+
+    def sort_errors(self):
+        for errors in self.error_tracker.itervalues():
+            errors.sort()
+
+    def print_errors(self):
+        for filename, errors in self.error_tracker.iteritems():
+            print 'Grading {}...'.format(filename)
+            for error in errors:
+                print error
+            print
