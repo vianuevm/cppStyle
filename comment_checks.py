@@ -20,6 +20,8 @@ def check_missing_rme(self, lines):
             if re.search('requires', code): requires = True
             if re.search('effects', code): effects = True
             if re.search('modifies', code): modifies = True
-        # If it's not there, maybe they defined it in a header file. #TODO
-        if not (requires and effects and modifies):
+        # If it's not there, maybe they defined it in a header file. #TODO: check only #included files
+        if (function_name not in self.all_rme) and not (requires and effects and modifies):
             self.add_error("MISSING_RME", data={'function': function_name})
+        elif (requires and effects and modifies):
+            self.all_rme.add(function_name)

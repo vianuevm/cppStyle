@@ -40,6 +40,7 @@ class StyleRubric(object):
         self.total_errors = 0
         self.student_files = self.config.get('FILES', 'student_files').split(',')
         self.includes = self.config.get('FILES', 'permitted_includes').split(',')
+        self.all_rme = set()
         self.single_line_checks = self.load_functions(single_line_checks)
         self.multi_line_checks = self.load_functions(multi_line_checks)
         self.comment_checks = self.load_functions(comment_checks)
