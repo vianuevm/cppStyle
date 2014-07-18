@@ -7,8 +7,10 @@ def main():
 
     for filename in rubric.student_files:
         rubric.grade_student_file(filename)
+        rubric.outside_main = True
 
-    rubric.print_errors()
+    #if you are not outside main, then it means you found a main
+    rubric.print_errors(not rubric.outside_main)
 
 #For debugging purposes only
     print "Total Errors: " + str(rubric.total_errors)

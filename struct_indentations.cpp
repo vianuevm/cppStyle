@@ -1,7 +1,4 @@
-int myFunk(int one, int two)
-{
-    cout << "I'm awful at programming!";
-}
+int myFunk(int one, int two);
 
 int main()
 {

@@ -50,6 +50,7 @@ class StyleRubric(object):
         self.global_in_object = False;
         self.global_object_braces = []
         self.global_in_object_index = 0
+        self.file_has_a_main = {}
 
 
     def add_global_brace(self, brace):
@@ -110,12 +111,16 @@ class StyleRubric(object):
             getattr(comment_checks, 'check_min_comments')(self, raw_data, clean_code)
         for function in self.misc_checks: function(self)
         self.error_tracker[filename].sort()
+        self.file_has_a_main[filename] = not self.outside_main
 
-    def print_errors(self):
+    def print_errors(self, found_a_main):
         for filename, errors in self.error_tracker.iteritems():
             print 'Grading {}...'.format(filename)
             if not len(errors):
                 print_success()
             for error in errors:
-                print error
+                if error.message == error.get_error_message("DEFINITION_ABOVE_MAIN") and not self.file_has_a_main[filename]:
+                    continue
+                else:
+                    print error
             print

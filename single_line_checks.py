@@ -11,7 +11,7 @@ def check_function_def_above_main(self, code):
     if len(inside.searchString(code)):
         return
     elif function and not prototype and self.outside_main:
-            self.add_error(label = "DEFINITON_ABOVE_MAIN")
+            self.add_error(label = "DEFINITION_ABOVE_MAIN")
 
 
 def check_int_for_bool(self, code):

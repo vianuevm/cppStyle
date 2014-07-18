@@ -114,7 +114,7 @@ class StyleError(object):
                                                                                                             'line' if self.get_data().get("comments") == 1 else 'lines',
                                                                                                             self.get_data().get("lines"),
                                                                                                             'line' if self.get_data().get("lines") == 1 else 'lines'),
-            "DEFINITON_ABOVE_MAIN": "Your function definitions should never be above main.  Keep them below main or in a separate cpp file.",
+            "DEFINITION_ABOVE_MAIN": "Your function definitions should never be above main.  Keep them below main or in a separate cpp file.",
         }[label]
 
 
