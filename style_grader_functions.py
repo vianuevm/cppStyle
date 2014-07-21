@@ -14,6 +14,18 @@ def check_if_function(code):
         return True
     return False
 
+def check_if_function_prototype(code):
+    return_type = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
+    function_name = Word(alphanums + '_' + ':')
+    args = Word(alphanums + ',' + ' ' + '_')
+    function_open = Literal("{")
+    function_close = Literal("}")
+    function_declaration = return_type + function_name + "(" + Optional(args) + ")" + Optional(" ") + ";"
+    grammar = function_declaration + Optional(function_open)
+    if len(grammar.searchString(code)):
+        return True
+    return False
+
 def check_if_switch_statement(code):
     statement = Keyword('switch')
     args = Word(alphanums + '_')

@@ -1,6 +1,18 @@
-from style_grader_functions import check_if_function, check_operator_regex
+from style_grader_functions import check_if_function, check_operator_regex, check_if_function_prototype
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, srange
 import re
+
+
+def check_function_def_above_main(self, code):
+    prototype = check_if_function_prototype(code)
+    function = check_if_function(code)
+    inside = Literal("int main")
+
+    if len(inside.searchString(code)):
+        return
+    elif function and not prototype and self.outside_main:
+            self.add_error(label = "DEFINITION_ABOVE_MAIN")
+
 
 def check_int_for_bool(self, code):
     returnVal = Literal("return")
@@ -105,6 +117,7 @@ def check_non_const_global(self, code):
            not len(special_keywords.searchString(code)) and \
            not len(constant.searchString(code)):
             self.add_error(label="NON_CONST_GLOBAL")
+
 
 
 def check_main_syntax(self, code):
