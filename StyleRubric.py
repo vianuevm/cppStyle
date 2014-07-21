@@ -90,11 +90,11 @@ class StyleRubric(object):
         self.error_tracker[self.current_file].append(StyleError(1, label, line, column_num=column, type=type, data=data))
 
     def grade_student_file(self, filename):
-        self.reset_for_new_file(filename)
         extension = filename.split('.')[-1]
         if extension not in ['h', 'cpp']:
-            sys.stderr.write('Incorrect file type\n')
+            sys.stderr.write('Failed to parse {}: incorrect file type.\n'.format(filename))
             return
+        self.reset_for_new_file(filename)
         data = safely_open(filename)
         raw_data = safely_open(filename)
         RemoveMultiLineComments(filename, data, '')
