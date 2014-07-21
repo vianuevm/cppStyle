@@ -118,6 +118,13 @@ class StyleRubric(object):
 
     def adjust_errors(self):
         # adjust missing RME error if RME is in a #included header file
+        self.adjust_missing_rme()
+        self.adjust_definitions_above_main()
+
+
+        # TODO: adjust definition above main
+
+    def adjust_missing_rme(self):
         for filename in self.missing_rme.iterkeys():
             extension = filename.split('.')[-1]
             if extension == 'cpp':
@@ -131,22 +138,31 @@ class StyleRubric(object):
                         if self.all_rme.get(full_header_filename) and (missing_rme in self.all_rme.get(full_header_filename)):
                             for error in self.error_tracker[filename]:
                                 # TODO: heck error label/type
-                                if error.get_data().get('function_signature') == missing_rme:
+                                if error.message == error.get_error_message('MISSING_RME') and \
+                                    error.get_data().get('function_signature') == missing_rme:
                                     self.error_types['MISSING_RME'] -= 1
                                     self.total_errors -= 1
                                     self.error_tracker[filename].remove(error)
 
-        # TODO: adjust definition above main
+    def adjust_definitions_above_main(self):
+        for filename in self.error_tracker.iterkeys():
+            if not self.file_has_a_main[filename]:
+                # remove error
+                errors_to_keep = list()
+                for error in self.error_tracker[filename]:
+                    if error.message == error.get_error_message('DEFINITION_ABOVE_MAIN'):
+                        self.error_types['DEFINITION_ABOVE_MAIN'] -= 1
+                        self.total_errors -= 1
+                    else:
+                        errors_to_keep.append(error)
+                self.error_tracker[filename] = errors_to_keep
 
 
-    def print_errors(self, found_a_main):
+    def print_errors(self):
         for filename, errors in self.error_tracker.iteritems():
             print 'Grading {}...'.format(filename)
             if not len(errors):
                 print_success()
             for error in errors:
-                if error.message == error.get_error_message("DEFINITION_ABOVE_MAIN") and not self.file_has_a_main[filename]:
-                    continue
-                else:
-                    print error
+                print error
             print
