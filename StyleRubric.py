@@ -40,7 +40,8 @@ class StyleRubric(object):
         self.total_errors = 0
         self.student_files = self.config.get('FILES', 'student_files').split(',')
         self.includes = self.config.get('FILES', 'permitted_includes').split(',')
-        self.all_rme = set()
+        self.all_rme = dict()
+        self.missing_rme = dict()
         self.min_comments_ratio = float(self.config.get('SETTINGS', 'min_comments_ratio'))
         self.max_line_length = int(self.config.get('SETTINGS', 'max_line_length'))
         self.single_line_checks = self.load_functions(single_line_checks)
@@ -79,6 +80,8 @@ class StyleRubric(object):
         self.in_switch = False
         self.current_file = filename
         self.error_tracker[filename] = list()
+        self.all_rme[filename] = set()
+        self.missing_rme[filename] = set()
 
     def add_error(self, label=None, line=-1, column=0, type='ERROR', data=dict()):
         self.total_errors += 1
