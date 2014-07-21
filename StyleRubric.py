@@ -9,7 +9,7 @@ import sys
 
 from cpplint import CleansedLines, RemoveMultiLineComments
 
-from style_grader_functions import check_if_function, print_success, code_contains_local_include
+from style_grader_functions import check_if_function, print_success
 from style_grader_classes import SpacingTracker
 from StyleError import StyleError
 import comment_checks
@@ -40,6 +40,7 @@ class StyleRubric(object):
         self.total_errors = 0
         self.student_files = self.config.get('FILES', 'student_files').split(',')
         self.includes = self.config.get('FILES', 'permitted_includes').split(',')
+        self.local_includes = dict()
         self.all_rme = dict()
         self.missing_rme = dict()
         self.min_comments_ratio = float(self.config.get('SETTINGS', 'min_comments_ratio'))
@@ -82,6 +83,7 @@ class StyleRubric(object):
         self.error_tracker[filename] = list()
         self.all_rme[filename] = set()
         self.missing_rme[filename] = set()
+        self.local_includes[filename] = list()
 
     def add_error(self, label=None, line=-1, column=0, type='ERROR', data=dict()):
         self.total_errors += 1
@@ -121,9 +123,6 @@ class StyleRubric(object):
         self.adjust_missing_rme()
         self.adjust_definitions_above_main()
 
-
-        # TODO: adjust definition above main
-
     def adjust_missing_rme(self):
         for filename in self.missing_rme.iterkeys():
             extension = filename.split('.')[-1]
@@ -133,11 +132,10 @@ class StyleRubric(object):
                 short_header_filename = full_header_filename.split('/')[-1]
 
                 # check if header is #included
-                if code_contains_local_include('CHANGE THIS LATER', short_header_filename):
+                if short_header_filename in self.local_includes[filename]:
                     for missing_rme in self.missing_rme[filename]:
-                        if self.all_rme.get(full_header_filename) and (missing_rme in self.all_rme.get(full_header_filename)):
+                        if missing_rme in self.all_rme.get(full_header_filename):
                             for error in self.error_tracker[filename]:
-                                # TODO: heck error label/type
                                 if error.message == error.get_error_message('MISSING_RME') and \
                                     error.get_data().get('function_signature') == missing_rme:
                                     self.error_types['MISSING_RME'] -= 1

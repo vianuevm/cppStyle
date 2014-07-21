@@ -146,7 +146,6 @@ def check_first_char(self, code):
                                  "found": str(parsed[0][1])})
             return
 
-
 def check_unnecessary_include(self, code):
     grammar = Literal('#') + Literal('include') + Literal('<') + Word(alphanums)
     try:
@@ -156,6 +155,19 @@ def check_unnecessary_include(self, code):
         included_library = code[begin + 1:end]
         if included_library not in self.includes:
             self.add_error(label="UNNECESSARY_INCLUDE")
+    except ParseException:
+        return
+
+def check_local_include(self, code):
+    grammar = Literal('#') + Literal('include') + Literal('"') + Word(alphanums)
+    try:
+        grammar.parseString(code)
+        begin = code.find('"')
+        included_file = code[begin + 1:]
+        end = included_file.find('"')
+        included_file = included_file[:end]
+        if included_file not in self.includes:
+            self.local_includes[self.current_file].append(included_file)
     except ParseException:
         return
 
