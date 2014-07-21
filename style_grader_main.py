@@ -9,6 +9,8 @@ def main():
         rubric.grade_student_file(filename)
         rubric.outside_main = True
 
+    rubric.adjust_errors()
+
     #if you are not outside main, then it means you found a main
     rubric.print_errors(not rubric.outside_main)
 

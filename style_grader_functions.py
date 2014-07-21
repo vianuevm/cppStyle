@@ -199,5 +199,10 @@ def check_operator_regex(code, operator):
     else:
         return 0
 
+def code_contains_local_include(code, included_file):
+    # TODO: implement me!
+    # Returns true if code contains a #include directive including included_file.
+    return True
+
 def print_success():
     print '\033[32mNo errors have been found :)\033[0m'

@@ -9,7 +9,7 @@ import sys
 
 from cpplint import CleansedLines, RemoveMultiLineComments
 
-from style_grader_functions import check_if_function, print_success
+from style_grader_functions import check_if_function, print_success, code_contains_local_include
 from style_grader_classes import SpacingTracker
 from StyleError import StyleError
 import comment_checks
@@ -115,6 +115,29 @@ class StyleRubric(object):
         for function in self.misc_checks: function(self)
         self.error_tracker[filename].sort()
         self.file_has_a_main[filename] = not self.outside_main
+
+    def adjust_errors(self):
+        # adjust missing RME error if RME is in a #included header file
+        for filename in self.missing_rme.iterkeys():
+            extension = filename.split('.')[-1]
+            if extension == 'cpp':
+                name = filename.split('.')[0]
+                full_header_filename = name + '.h'
+                short_header_filename = full_header_filename.split('/')[-1]
+
+                # check if header is #included
+                if code_contains_local_include('CHANGE THIS LATER', short_header_filename):
+                    for missing_rme in self.missing_rme[filename]:
+                        if self.all_rme.get(full_header_filename) and (missing_rme in self.all_rme.get(full_header_filename)):
+                            for error in self.error_tracker[filename]:
+                                # TODO: heck error label/type
+                                if error.get_data().get('function_signature') == missing_rme:
+                                    self.error_types['MISSING_RME'] -= 1
+                                    self.total_errors -= 1
+                                    self.error_tracker[filename].remove(error)
+
+        # TODO: adjust definition above main
+
 
     def print_errors(self, found_a_main):
         for filename, errors in self.error_tracker.iteritems():
