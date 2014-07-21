@@ -7,11 +7,13 @@ def check_function_def_above_main(self, code):
     prototype = check_if_function_prototype(code)
     function = check_if_function(code)
     inside = Literal("int main")
-
     if len(inside.searchString(code)):
         return
     elif function and not prototype and self.outside_main:
-            self.add_error(label = "DEFINITION_ABOVE_MAIN")
+        function_syntax = Word(alphanums + '_') + Literal('(')
+        parsed = function_syntax.searchString(code).asList()
+        function_name = parsed[0][0]
+        self.add_error(label = "DEFINITION_ABOVE_MAIN", data={'function': function_name})
 
 
 def check_int_for_bool(self, code):

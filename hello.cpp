@@ -45,6 +45,11 @@ int x = 0;
 
 int prototype(int one, void two);
 
+double implementation(void)
+{
+    return 1.0;
+}
+
   void main();
 main();
 
