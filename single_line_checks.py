@@ -7,11 +7,13 @@ def check_function_def_above_main(self, code):
     prototype = check_if_function_prototype(code)
     function = check_if_function(code)
     inside = Literal("int main")
-
     if len(inside.searchString(code)):
         return
     elif function and not prototype and self.outside_main:
-            self.add_error(label = "DEFINITION_ABOVE_MAIN")
+        function_syntax = Word(alphanums + '_') + Literal('(')
+        parsed = function_syntax.searchString(code).asList()
+        function_name = parsed[0][0]
+        self.add_error(label = "DEFINITION_ABOVE_MAIN", data={'function': function_name})
 
 
 def check_int_for_bool(self, code):
@@ -146,7 +148,6 @@ def check_first_char(self, code):
                                  "found": str(parsed[0][1])})
             return
 
-
 def check_unnecessary_include(self, code):
     grammar = Literal('#') + Literal('include') + Literal('<') + Word(alphanums)
     try:
@@ -156,6 +157,19 @@ def check_unnecessary_include(self, code):
         included_library = code[begin + 1:end]
         if included_library not in self.includes:
             self.add_error(label="UNNECESSARY_INCLUDE")
+    except ParseException:
+        return
+
+def check_local_include(self, code):
+    grammar = Literal('#') + Literal('include') + Literal('"') + Word(alphanums)
+    try:
+        grammar.parseString(code)
+        begin = code.find('"')
+        included_file = code[begin + 1:]
+        end = included_file.find('"')
+        included_file = included_file[:end]
+        if included_file not in self.includes:
+            self.local_includes[self.current_file].append(included_file)
     except ParseException:
         return
 

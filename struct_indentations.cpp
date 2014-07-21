@@ -6,3 +6,8 @@ int main()
 
     return 0;
 }
+
+int myFunk(int one, int two)
+{
+    // nothing
+}

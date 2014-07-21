@@ -12,6 +12,7 @@ def check_missing_rme(self, lines):
     function_syntax = function + Literal('(')
     parsed = function_syntax.searchString(lines[self.current_line_num]).asList()
     function_name = parsed[0][0]
+    function_signature = lines[self.current_line_num].strip().replace(';','').strip()
     if function_name != 'main':
         requires = effects = modifies = False
         #Check if there's a complete RME in the last 10 lines
@@ -20,11 +21,16 @@ def check_missing_rme(self, lines):
             if re.search('requires', code): requires = True
             if re.search('effects', code): effects = True
             if re.search('modifies', code): modifies = True
-        # If it's not there, maybe they defined it in a header file. #TODO: check only #included files
-        if (function_name not in self.all_rme) and not (requires and effects and modifies):
-            self.add_error("MISSING_RME", data={'function': function_name})
-        elif (requires and effects and modifies):
-            self.all_rme.add(function_name)
+        # If it's not there, maybe they defined it in a header file.
+        if not (requires and effects and modifies) and (function_signature not in self.all_rme[self.current_file]):
+            # error only in this case
+            # prevent double-counting
+            if function_signature not in self.missing_rme[self.current_file]:
+                self.add_error("MISSING_RME", data={'function': function_name, 'function_signature': function_signature})
+                self.missing_rme[self.current_file].add(function_signature)
+
+        elif function_signature not in self.all_rme[self.current_file]:
+            self.all_rme[self.current_file].add(function_signature)
 
 def check_min_comments(self, all_lines, clean_lines):
     num_lines = len(all_lines) + 1
