@@ -52,63 +52,68 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
 
     while data_structure_tracker.in_block:
         temp_line_num += 1
-        current_indentation = re.search(r'^( *)\S',
+        try:
+            current_indentation = re.search(r'^( *)\S',
                                         clean_lines.lines[temp_line_num])
 
-        switch_statement = check_if_switch_statement(clean_lines.lines[temp_line_num])
 
-        if switch_statement:
-            data_structure_tracker.in_switch = True
+            switch_statement = check_if_switch_statement(clean_lines.lines[temp_line_num])
 
-        is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
+            if switch_statement:
+                data_structure_tracker.in_switch = True
 
-        if is_break_statement and not data_structure_tracker.in_switch:
-            results.append({'label': 'UNNECESSARY_BREAK', 'line': temp_line_num + 1})
+            is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
 
-        if current_indentation:
-            line_start = current_indentation.group()
-            current_indentation = len(line_start) - len(line_start.strip())
+            if is_break_statement and not data_structure_tracker.in_switch:
+                results.append({'label': 'UNNECESSARY_BREAK', 'line': temp_line_num + 1})
 
-            if current_indentation != next_indentation and line_start.find('}') == -1:
-                #check for public: private: and case: exceptions
-                if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and \
-                        data_structure_tracker.in_class_or_struct) or \
-                        (check_if_case_arg(clean_lines.lines[temp_line_num]) and \
-                        data_structure_tracker.in_switch):
+            if current_indentation:
+                line_start = current_indentation.group()
+                current_indentation = len(line_start) - len(line_start.strip())
 
-                    next_indentation -= tab_size
-                else:
-                    data = {'expected': next_indentation, 'found': current_indentation}
-                    results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
+                if current_indentation != next_indentation and line_start.find('}') == -1:
+                    #check for public: private: and case: exceptions
+                    if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and \
+                            data_structure_tracker.in_class_or_struct) or \
+                            (check_if_case_arg(clean_lines.lines[temp_line_num]) and \
+                            data_structure_tracker.in_switch):
+
+                        next_indentation -= tab_size
+                    else:
+                        data = {'expected': next_indentation, 'found': current_indentation}
+                        results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
 
 
-            if clean_lines.lines[temp_line_num].find("{") != -1:
-                if data_structure_tracker.in_switch:
-                    data_structure_tracker.add_switch_brace("{")
-                if data_structure_tracker.in_class_or_struct:
-                    data_structure_tracker.add_object_brace("{")
-                data_structure_tracker.add_brace("{")
-                next_indentation = current_indentation + tab_size
+                if clean_lines.lines[temp_line_num].find("{") != -1:
+                    if data_structure_tracker.in_switch:
+                        data_structure_tracker.add_switch_brace("{")
+                    if data_structure_tracker.in_class_or_struct:
+                        data_structure_tracker.add_object_brace("{")
+                    data_structure_tracker.add_brace("{")
+                    next_indentation = current_indentation + tab_size
 
-            elif clean_lines.lines[temp_line_num].find("}") != -1:
-                end_switch = data_structure_tracker.in_switch
-                if data_structure_tracker.in_switch:
-                    data_structure_tracker.pop_switch_brace()
-                if data_structure_tracker.in_class_or_struct:
-                    data_structure_tracker.pop_object_brace()
-                data_structure_tracker.pop_brace()
-                next_indentation = next_indentation - tab_size
+                if clean_lines.lines[temp_line_num].find("}") != -1:
+                    end_switch = data_structure_tracker.in_switch
+                    if data_structure_tracker.in_switch:
+                        data_structure_tracker.pop_switch_brace()
+                    if data_structure_tracker.in_class_or_struct:
+                        data_structure_tracker.pop_object_brace()
+                    data_structure_tracker.pop_brace()
+                    next_indentation = next_indentation - tab_size
 
-                if end_switch and not data_structure_tracker.in_switch:
-                    next_indentation = current_indentation
+                    if end_switch and not data_structure_tracker.in_switch:
+                        next_indentation = current_indentation
 
-            if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and
-                   data_structure_tracker.in_class_or_struct):
-                next_indentation += tab_size
+                if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and
+                       data_structure_tracker.in_class_or_struct):
+                    next_indentation += tab_size
 
-            if check_if_case_arg(clean_lines.lines[temp_line_num]) \
-                    and data_structure_tracker.in_switch:
-                next_indentation += tab_size
+                if check_if_case_arg(clean_lines.lines[temp_line_num]) \
+                        and data_structure_tracker.in_switch:
+                    next_indentation += tab_size
+
+        except IndexError:
+            data_structure_tracker.in_block = False
 
 
     return results

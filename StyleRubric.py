@@ -6,6 +6,7 @@ import codecs
 from ConfigParser import ConfigParser
 from collections import defaultdict
 import sys
+from copy import deepcopy
 
 from cpplint import CleansedLines, RemoveMultiLineComments
 
@@ -27,6 +28,7 @@ def safely_open(filename):
     except IOError:
         sys.stderr.write('This file could not be read: "%s."  '
                          'Please check filename and resubmit \n' % filename)
+        return
 
 class StyleRubric(object):
     '''
@@ -98,27 +100,28 @@ class StyleRubric(object):
         if extension not in ['h', 'cpp']:
             sys.stderr.write('Failed to parse {}: incorrect file type.\n'.format(filename))
             return
-        self.reset_for_new_file(filename)
         data = safely_open(filename)
-        raw_data = safely_open(filename)
-        RemoveMultiLineComments(filename, data, '')
-        clean_lines = CleansedLines(data)
-        clean_code = clean_lines.lines
-        for self.current_line_num, code in enumerate(clean_code):
-            for function in self.single_line_checks: function(self, code)
-            for function in self.multi_line_checks: function(self, clean_lines)
-        # COMMENT CHECKS #TODO
-        for self.current_line_num, text in enumerate(raw_data):
-            if self.config.get('COMMENT_CHECKS', 'line_width').lower() == 'yes':
-                getattr(comment_checks, 'check_line_width')(self, text)
-            if check_if_function(text):
-                if self.config.get('COMMENT_CHECKS', 'missing_rme').lower() == 'yes':
-                    getattr(comment_checks, 'check_missing_rme')(self, raw_data)
-        if self.config.get('COMMENT_CHECKS', 'min_comments').lower() == 'yes':
-            getattr(comment_checks, 'check_min_comments')(self, raw_data, clean_code)
-        for function in self.misc_checks: function(self)
-        self.error_tracker[filename].sort()
-        self.file_has_a_main[filename] = not self.outside_main
+        if data:
+            self.reset_for_new_file(filename)
+            raw_data = deepcopy(data)
+            RemoveMultiLineComments(filename, data, '')
+            clean_lines = CleansedLines(data)
+            clean_code = clean_lines.lines
+            for self.current_line_num, code in enumerate(clean_code):
+                for function in self.single_line_checks: function(self, code)
+                for function in self.multi_line_checks: function(self, clean_lines)
+            # COMMENT CHECKS #TODO
+            for self.current_line_num, text in enumerate(raw_data):
+                if self.config.get('COMMENT_CHECKS', 'line_width').lower() == 'yes':
+                    getattr(comment_checks, 'check_line_width')(self, text)
+                if check_if_function(text):
+                    if self.config.get('COMMENT_CHECKS', 'missing_rme').lower() == 'yes':
+                        getattr(comment_checks, 'check_missing_rme')(self, raw_data)
+            if self.config.get('COMMENT_CHECKS', 'min_comments').lower() == 'yes':
+                getattr(comment_checks, 'check_min_comments')(self, raw_data, clean_code)
+            for function in self.misc_checks: function(self)
+            self.error_tracker[filename].sort()
+            self.file_has_a_main[filename] = not self.outside_main
 
     def adjust_errors(self):
         for function in self.adjustments:
