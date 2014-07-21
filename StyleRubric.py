@@ -16,6 +16,7 @@ import comment_checks
 import multi_line_checks
 import misc_checks
 import single_line_checks
+import adjustments
 
 def safely_open(filename):
     try:
@@ -49,6 +50,7 @@ class StyleRubric(object):
         self.multi_line_checks = self.load_functions(multi_line_checks)
         self.comment_checks = self.load_functions(comment_checks)
         self.misc_checks = self.load_functions(misc_checks)
+        self.adjustments = self.load_functions(adjustments, prefix='adjust')
         self.global_in_object = False;
         self.global_object_braces = []
         self.global_in_object_index = 0
@@ -64,12 +66,12 @@ class StyleRubric(object):
         if self.global_in_object_index == 0:
             self.global_in_object = False
 
-    def load_functions(self, module):
+    def load_functions(self, module, prefix='check'):
         functions = list()
         group = module.__name__.upper()
         for check in self.config.options(group):
             if self.config.get(group, check).lower() == 'yes':
-                functions.append(getattr(module, 'check_'+check))
+                functions.append(getattr(module, prefix + '_' + check))
         return functions
 
     def reset_for_new_file(self, filename):
@@ -119,42 +121,8 @@ class StyleRubric(object):
         self.file_has_a_main[filename] = not self.outside_main
 
     def adjust_errors(self):
-        # adjust missing RME error if RME is in a #included header file
-        self.adjust_missing_rme()
-        self.adjust_definitions_above_main()
-
-    def adjust_missing_rme(self):
-        for filename in self.missing_rme.iterkeys():
-            extension = filename.split('.')[-1]
-            if extension == 'cpp':
-                name = filename.split('.')[0]
-                full_header_filename = name + '.h'
-                short_header_filename = full_header_filename.split('/')[-1]
-
-                # check if header is #included
-                if short_header_filename in self.local_includes[filename]:
-                    for missing_rme in self.missing_rme[filename]:
-                        if missing_rme in self.all_rme.get(full_header_filename):
-                            for error in self.error_tracker[filename]:
-                                if error.message == error.get_error_message('MISSING_RME') and \
-                                    error.get_data().get('function_signature') == missing_rme:
-                                    self.error_types['MISSING_RME'] -= 1
-                                    self.total_errors -= 1
-                                    self.error_tracker[filename].remove(error)
-
-    def adjust_definitions_above_main(self):
-        for filename in self.error_tracker.iterkeys():
-            if not self.file_has_a_main[filename]:
-                # remove error
-                errors_to_keep = list()
-                for error in self.error_tracker[filename]:
-                    if error.message == error.get_error_message('DEFINITION_ABOVE_MAIN'):
-                        self.error_types['DEFINITION_ABOVE_MAIN'] -= 1
-                        self.total_errors -= 1
-                    else:
-                        errors_to_keep.append(error)
-                self.error_tracker[filename] = errors_to_keep
-
+        for function in self.adjustments:
+            function(self)
 
     def print_errors(self):
         for filename, errors in self.error_tracker.iteritems():
