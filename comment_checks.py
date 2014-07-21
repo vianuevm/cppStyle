@@ -35,8 +35,14 @@ def check_missing_rme(self, lines):
 def check_min_comments(self, all_lines, clean_lines):
     num_lines = len(all_lines) + 1
     num_comments = 0
+    blank_lines_at_end = 0
     for index, line in enumerate(all_lines):
         if line != clean_lines[index]:
             num_comments += 1
+        if line[0] == u'\n':
+            blank_lines_at_end += 1
+        else:
+            blank_lines_at_end = 0
+    num_lines -= (blank_lines_at_end + 1)
     if num_comments < num_lines * self.min_comments_ratio:
         self.add_error(label='MIN_COMMENTS', line=0, type="WARNING", data={'comments': num_comments, 'lines': num_lines})
