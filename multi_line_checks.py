@@ -29,32 +29,37 @@ def check_brace_consistency(self, clean_lines):
 
     if function or if_statement or else_statement or switch_statement:
 
-        if function and code.find('{') != -1 or \
-                else_if_statement and code.find('{') != -1 or\
-                else_statement and code.find('{') != -1 or\
-                switch_statement and code.find('{') != -1 or\
-                if_statement and code.find('{') != -1:
+        try:
+            if function and code.find('{') != -1 or \
+                    else_if_statement and code.find('{') != -1 or\
+                    else_statement and code.find('{') != -1 or\
+                    switch_statement and code.find('{') != -1 or\
+                    if_statement and code.find('{') != -1:
 
-            self.egyptian = True
+                self.egyptian = True
 
-        elif function and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-            else_if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-            else_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-            switch_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-                if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1:
+            elif function and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
+                else_if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
+                else_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
+                switch_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
+                    if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1:
 
-            self.not_egyptian = True
+                self.not_egyptian = True
 
-        elif not self.outside_main:
-            if not self.braces_error:
-                self.add_error(label="BRACE_CONSISTENCY")
-                self.braces_error = True
+            elif not self.outside_main:
+                if not self.braces_error:
+                    self.add_error(label="BRACE_CONSISTENCY")
+                    self.braces_error = True
 
-        #if both of these are true, they are not consistent, therefore error.
-        if self.not_egyptian:
-            if self.egyptian and not self.braces_error:
-                self.add_error(label="BRACE_CONSISTENCY")
-                self.braces_error = True
+            #if both of these are true, they are not consistent, therefore error.
+            if self.not_egyptian:
+                if self.egyptian and not self.braces_error:
+                    self.add_error(label="BRACE_CONSISTENCY")
+                    self.braces_error = True
+
+        except IndexError:
+            # cannot access next line of end of file, rubric properties don't matter
+            return
 
 def check_block_indentation(self, clean_lines):
     #TODO: Load from config file? 
