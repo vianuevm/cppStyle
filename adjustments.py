@@ -11,7 +11,9 @@ def adjust_rme_in_header(self):
             # check if header is #included
             if short_header_filename in self.local_includes[filename]:
                 for missing_rme in self.missing_rme[filename]:
-                    if missing_rme in self.all_rme.get(full_header_filename):
+                    # remove error if RME is present or missing (to avoid double-counting) in the header file
+                    if missing_rme in self.all_rme.get(full_header_filename) or \
+                        missing_rme in self.missing_rme.get(full_header_filename):
                         for error in self.error_tracker[filename]:
                             if error.message == error.get_error_message('MISSING_RME') and \
                                 error.get_data().get('function_signature') == missing_rme:
