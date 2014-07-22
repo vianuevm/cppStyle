@@ -16,7 +16,10 @@ def check_missing_rme(self, lines):
     if function_name != 'main':
         requires = effects = modifies = False
         #Check if there's a complete RME in the last 10 lines
-        for line_num in range(self.current_line_num - 10, self.current_line_num):
+        start = self.current_line_num - 10
+        if start < 0:
+            start = 0
+        for line_num in range(start, self.current_line_num):
             code = lines[line_num].lower()
             if re.search('requires', code): requires = True
             if re.search('effects', code): effects = True
