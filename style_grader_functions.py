@@ -84,7 +84,11 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                         results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
 
 
-                if clean_lines.lines[temp_line_num].find("{") != -1:
+                if clean_lines.lines[temp_line_num].find("{") != -1 and clean_lines.lines[temp_line_num].find("}") != -1:
+                    # nothing to adjust
+                    continue
+
+                elif clean_lines.lines[temp_line_num].find("{") != -1:
                     if data_structure_tracker.in_switch:
                         data_structure_tracker.add_switch_brace("{")
                     if data_structure_tracker.in_class_or_struct:
@@ -92,7 +96,7 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                     data_structure_tracker.add_brace("{")
                     next_indentation = current_indentation + tab_size
 
-                if clean_lines.lines[temp_line_num].find("}") != -1:
+                elif clean_lines.lines[temp_line_num].find("}") != -1:
                     end_switch = data_structure_tracker.in_switch
                     if data_structure_tracker.in_switch:
                         data_structure_tracker.pop_switch_brace()

@@ -7,6 +7,7 @@ from ConfigParser import ConfigParser
 from collections import defaultdict
 import sys
 from copy import deepcopy
+from glob import glob
 
 from cpplint import CleansedLines, RemoveMultiLineComments
 
@@ -41,7 +42,7 @@ class StyleRubric(object):
         self.error_tracker = dict()
         self.error_types = defaultdict(int)
         self.total_errors = 0
-        self.student_files = self.config.get('FILES', 'student_files').split(',')
+        self.student_files = self.load_filenames(self.config.get('FILES', 'student_files').split(','))
         self.includes = self.config.get('FILES', 'permitted_includes').split(',')
         self.local_includes = dict()
         self.all_rme = dict()
@@ -75,6 +76,13 @@ class StyleRubric(object):
             if self.config.get(group, check).lower() == 'yes':
                 functions.append(getattr(module, prefix + '_' + check))
         return functions
+
+    def load_filenames(self, paths):
+        all_files = list()
+        for path in paths:
+            files = glob(path)
+            all_files.extend(files)
+        return all_files
 
     def reset_for_new_file(self, filename):
         self.spacer = SpacingTracker()
