@@ -17,17 +17,17 @@ def check_function_def_above_main(self, code):
 
 
 def check_int_for_bool(self, code):
-    returnVal = Literal("return")
-    if len(returnVal.searchString(code)): 
-       # make sure it's not the end of a word
-        list_of_line = code.split(' ')
-        if len(list_of_line) > 2:
-            #TODO Figure out what you want to take off with a more than one statement on return line
-            pass
-        else:
-            code = code[6:].strip()
-            if code.isdigit():
-                self.add_error(label="INT_FOR_BOOL")
+    if check_if_function(code):
+        function_regex = re.compile("^\s*(\w+)\s+(\w+)")
+        match = function_regex.search(code)
+        if match:
+            self.current_function = (match.group(1), match.group(2))
+    current_function = getattr(self, "current_function", ("", ""))
+
+    return_regex = re.compile("\s*return\s+(\w+)")
+    match = return_regex.search(code)
+    if match and match.group(1).isdigit() and current_function[0] == "bool":
+        self.add_error(label="INT_FOR_BOOL")
 
 def check_operator_spacing(self, code):
     # Check normal operators
