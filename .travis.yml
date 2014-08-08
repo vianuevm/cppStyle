@@ -1,6 +1,6 @@
 language: python
 python: "2.7"
-install: pip install pyparsing configparser pytest coveralls coverage
+install: pip install pyparsing configparser pytest coveralls coverage pytest-cov
 script: py.test --cov . regression_test.py
 after_success:
     - coveralls
