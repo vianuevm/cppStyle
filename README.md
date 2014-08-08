@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/stevemer/183style.png?branch=master)](https://travis-ci.org/stevemer/183style)
-[![Coverage Status](https://coveralls.io/repos/stevemer/183style/badge.png)](https://coveralls.io/r/stevemer/183style)
+[![Coverage Status](https://coveralls.io/repos/stevemer/183style/badge.png?branch=master)](https://coveralls.io/r/stevemer/183style?branch=master)
 [![Stories in Ready](https://badge.waffle.io/stevemer/183style.png?label=ready&title=Ready)](http://waffle.io/stevemer/183style)
 
 183_style_grader
