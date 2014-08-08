@@ -66,11 +66,10 @@ def check_operator_spacing(self, code):
             self.spacer.asts_right = True
 
 def check_equals_true(self, code):
-    variable = Word(alphanums)
     keyword = Literal("true") | Literal("false")
-    statement_parser = Group(variable + "==" + keyword) | Group(keyword + "==" + variable)
+    statement_parser = Group("==" + keyword) | Group(keyword + "==")
     if len(statement_parser.searchString(code)):
-        self.add_error(label="EQUALS_TRUE") 
+        self.add_error(label="EQUALS_TRUE")
 
 def check_goto(self, code):
     match = Literal("goto")

@@ -4,20 +4,6 @@ from StyleRubric import *
 import unittest
 import sys, os
 
-'''
-The basics of Python's unittest module:
-Each test should begin with test_
-Name each test after the function being tested
-3 general ways to check results:
-    self.assertEqual()
-    self.assertTrue()
-    self.assertRaises()
-'''
-
-'''
-Decorator to load the appropriate lines so there's no error collision.
-Use it as @load_code_segment(start_line, end_line) to load code lines in range [start_line, end_line)
-'''
 def load_code_segment(filename):
     def wrapper(func):
         def fn(self, *args, **kwargs):
@@ -39,20 +25,21 @@ class RegressionTesting(unittest.TestCase):
 
     def tearDown(self):
         #For debugging FAILs
-        print "-- RESULTS ------------------"
-        for x,y in self.rubric.error_types.items():
-            print x,y
-        print "-----------------------------\n\n"
+        #jprint "-- RESULTS ------------------"
+        #for x,y in self.rubric.error_types.items():
+        #    print x,y
+        #print "-----------------------------\n\n"
+        pass
 
 
-    @load_code_segment('good.cpp')
-    def test_good_file(self): self.assertTrue(not len(self.rubric.error_tracker))
-    @load_code_segment('num_of_commands.cpp')
-    def test_statements_per_line(self): self.assertEqual(self.rubric.error_types['STATEMENTS_PER_LINE'], 3)
-    @load_code_segment('test_valid_return.cpp')
-    def test_int_for_bool(self): self.assertEqual(self.rubric.error_types['INT_FOR_BOOL'], 2)
-    @load_code_segment('if_else_good.cpp')
-    def test_good_if_else(self): self.assertRaises(KeyError, self.rubric.error_types.get, 'IF_ELSE_ERROR')
+    #@load_code_segment('good.cpp')
+    #def test_good_file(self): self.assertTrue(not len(self.rubric.error_tracker))
+    #@load_code_segment('num_of_commands.cpp')
+    #def test_statements_per_line(self): self.assertEqual(self.rubric.error_types['STATEMENTS_PER_LINE'], 3)
+    #@load_code_segment('test_valid_return.cpp')
+    #def test_int_for_bool(self): self.assertEqual(self.rubric.error_types['INT_FOR_BOOL'], 2)
+    #@load_code_segment('if_else_good.cpp')
+    #def test_good_if_else(self): self.assertRaises(KeyError, self.rubric.error_types.get, 'IF_ELSE_ERROR')
     #@load_code_segment('if_else_bad.cpp')
     #def test_bad_if_else(self): self.assertEqual(3, self.rubric.error_types['IF_ELSE_ERROR'])
     @load_code_segment('equals_true.cpp')
