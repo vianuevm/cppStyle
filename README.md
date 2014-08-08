@@ -1,4 +1,4 @@
-![Logo](seal.png) 183style
+183style <img style="float: right" src="seal.png" />
 ==========================================================================================================================
 
 [![Build Status](https://travis-ci.org/stevemer/183style.png?branch=master)](https://travis-ci.org/stevemer/183style)
