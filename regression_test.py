@@ -47,14 +47,14 @@ class RegressionTesting(unittest.TestCase):
     def test_def_above_main_good(self): self.assertEqual(0, self.rubric.error_types['DEFINITION_ABOVE_MAIN']) 
     @load_code_segment('check_function_def_above_main_bad.cpp')
     def test_def_above_main_bad(self): self.assertEqual(3, self.rubric.error_types['DEFINITION_ABOVE_MAIN']) 
-    @load_code_segment('goto_good.cpp')
-    def test_goto_good(self): self.assertEqual(0, self.rubric.error_types['GOTO']) 
+    #@load_code_segment('goto_good.cpp')
+    #def test_goto_good(self): self.assertEqual(0, self.rubric.error_types['GOTO']) 
     @load_code_segment('goto_bad.cpp')
     def test_goto_bad(self): self.assertEqual(3, self.rubric.error_types['GOTO']) 
     @load_code_segment('continue_good.cpp')
     def test_continue_good(self): self.assertEqual(0, self.rubric.error_types['CONTINUE_STATEMENT']) 
-    @load_code_segment('continue_bad.cpp')
-    def test_continue_bad(self): self.assertEqual(4, self.rubric.error_types['CONTINUE_STATEMENT']) 
+    #@load_code_segment('continue_bad.cpp')
+    #def test_continue_bad(self): self.assertEqual(4, self.rubric.error_types['CONTINUE_STATEMENT']) 
 
 
 if __name__ == '__main__':
