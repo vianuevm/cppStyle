@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Yelp/Testify.png?branch=master)](https://travis-ci.org/stevemer/183_style_grader)
+
 183_style_grader
 ==========================================================================================================================
 This is a guide for those hoping to contribute who may begin and think - that's a lot of files!  The project is broken down into three main categories (subject to change for a web app)
