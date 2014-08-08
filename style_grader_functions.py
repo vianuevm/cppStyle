@@ -3,9 +3,9 @@ import getopt
 import re
 
 def check_if_function(code):
-    return_type = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
-    function_name = Word(alphanums + '_' + ':')
-    args = Word(alphanums + ',' + ' ' + '_')
+    return_type = Word(alphanums + '_[]') # Bad style to have "_" but syntactically valid
+    function_name = Word(alphanums + '_:')
+    args = Word(alphanums + ',_[] ')
     function_open = Literal("{")
     function_close = Literal("}")
     function_declaration = return_type + function_name + "(" + Optional(args) + ")"
@@ -15,9 +15,9 @@ def check_if_function(code):
     return False
 
 def check_if_function_prototype(code):
-    return_type = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
-    function_name = Word(alphanums + '_' + ':')
-    args = Word(alphanums + ',' + ' ' + '_')
+    return_type = Word(alphanums + '_[]') # Bad style to have "_" but syntactically valid
+    function_name = Word(alphanums + '_:')
+    args = Word(alphanums + ',_[] ')
     function_open = Literal("{")
     function_close = Literal("}")
     function_declaration = return_type + function_name + "(" + Optional(args) + ")" + Optional(" ") + ";"
