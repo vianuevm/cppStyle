@@ -1,16 +1,4 @@
 language: python
-python:
-  - "2.6"
-  - "2.7"
-  - "3.2"
-  - "3.3"
-# command to install dependencies
-install:
-  - "pip install -r requirements.txt"
-# command to run tests
-script: regression_test.py
-
-language: python
 python: "2.7"
 install: pip install pyparsing configparser pytest
-script: py.test -q regression_test.py
+script: coverage run --source py.test -q regression_test.py

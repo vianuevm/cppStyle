@@ -89,7 +89,8 @@ def check_stringstream(self, code):
 
 def check_continue(self, code):
     quoted_continue = '"'+SkipTo(Literal("continue"))+"continue"+SkipTo(Literal('"'))+'"'
-    if len(Literal("continue").searchString(code)) and not len(quoted_continue.searchString(code)):
+    continue_regex = re.compile("\s+continue\s+")
+    if continue_regex.search(code) and not len(quoted_continue.searchString(code)):
         self.add_error(label="CONTINUE_STATEMENT")
 
 def check_ternary_operator(self, code):

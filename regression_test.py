@@ -25,12 +25,11 @@ class RegressionTesting(unittest.TestCase):
 
     def tearDown(self):
         #For debugging FAILs
-        #jprint "-- RESULTS ------------------"
+        #print "-- RESULTS ------------------"
         #for x,y in self.rubric.error_types.items():
         #    print x,y
         #print "-----------------------------\n\n"
         pass
-
 
     @load_code_segment('good.cpp')
     def test_good_file(self): self.assertTrue(not len(self.rubric.error_types))
@@ -45,9 +44,17 @@ class RegressionTesting(unittest.TestCase):
     @load_code_segment('equals_true.cpp')
     def test_equals_true(self): self.assertEqual(5, self.rubric.error_types['EQUALS_TRUE']) 
     @load_code_segment('check_function_def_above_main_good.cpp')
-    def test_check_function_def_above_main(self): self.assertEqual(0, self.rubric.error_types['DEFINITION_ABOVE_MAIN']) 
+    def test_def_above_main_good(self): self.assertEqual(0, self.rubric.error_types['DEFINITION_ABOVE_MAIN']) 
     @load_code_segment('check_function_def_above_main_bad.cpp')
-    def test_check_function_def_above_main(self): self.assertEqual(3, self.rubric.error_types['DEFINITION_ABOVE_MAIN']) 
+    def test_def_above_main_bad(self): self.assertEqual(3, self.rubric.error_types['DEFINITION_ABOVE_MAIN']) 
+    @load_code_segment('goto_good.cpp')
+    def test_goto_good(self): self.assertEqual(0, self.rubric.error_types['GOTO']) 
+    @load_code_segment('goto_bad.cpp')
+    def test_goto_bad(self): self.assertEqual(3, self.rubric.error_types['GOTO']) 
+    @load_code_segment('continue_good.cpp')
+    def test_continue_good(self): self.assertEqual(0, self.rubric.error_types['CONTINUE_STATEMENT']) 
+    @load_code_segment('continue_bad.cpp')
+    def test_continue_bad(self): self.assertEqual(4, self.rubric.error_types['CONTINUE_STATEMENT']) 
 
 
 if __name__ == '__main__':
