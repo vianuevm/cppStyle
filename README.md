@@ -13,7 +13,33 @@
 
 For now, just ```git clone``` the repository - eventually this will be packaged and added to PyPI.
 
-##Getting Started
+##Getting Started with 183style
 
 We'll let you know as soon as we know!
+
+##Release Notes
+
+ReadTheDocs coming soon, once things actually work well enough to merit documentation.
+
+##Development
+
+183style is still in development, and contributions are welcome! Fork away and have at it. Here's how the package works at the moment:
+
+1) style_grader_main.py (driver) creates a StyleRubric, which does the heavy lifting.
+
+2) The StyleRubric calls "grade_student_file" function on all files.
+
+3) The grade_student_file function pulls all enabled functions out of rubric.ini, looks them up in their respective files and plugs them in for grading.
+
+4) Then this happens:
+
+       for self.current_line_num, code in enumerate(clean_code):
+            for function in self.single_line_checks: function(self, code)
+            for function in self.multi_line_checks: function(self, clean_lines)
+            ...
+            
+
+5) If/when an error is discovered, the StyleRubric class adds an instance of the StyleError class to its ever growing list of errors.  This list is eventually returned as the final result.
+
+
 
