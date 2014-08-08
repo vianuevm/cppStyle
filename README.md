@@ -1,5 +1,5 @@
 [![Stories in Ready](https://badge.waffle.io/stevemer/183_style_grader.png?label=ready&title=Ready)](https://waffle.io/stevemer/183_style_grader)
-[![Build Status](https://travis-ci.org/Yelp/Testify.png?branch=master)](https://travis-ci.org/stevemer/183_style_grader)
+[![Build Status](https://travis-ci.org/stevemer/183_style_grader.png?branch=master)](https://travis-ci.org/stevemer/183_style_grader)
 [![Coverage Status](https://img.shields.io/coveralls/stevemer/183_style_grader.svg)](https://coveralls.io/r/stevemer/183_style_grader)
 
 183_style_grader
