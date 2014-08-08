@@ -32,12 +32,12 @@ class RegressionTesting(unittest.TestCase):
         pass
 
 
-    #@load_code_segment('good.cpp')
-    #def test_good_file(self): self.assertTrue(not len(self.rubric.error_tracker))
-    #@load_code_segment('num_of_commands.cpp')
-    #def test_statements_per_line(self): self.assertEqual(self.rubric.error_types['STATEMENTS_PER_LINE'], 3)
-    #@load_code_segment('test_valid_return.cpp')
-    #def test_int_for_bool(self): self.assertEqual(self.rubric.error_types['INT_FOR_BOOL'], 2)
+    @load_code_segment('good.cpp')
+    def test_good_file(self): self.assertTrue(not len(self.rubric.error_tracker))
+    @load_code_segment('num_of_commands.cpp')
+    def test_statements_per_line(self): self.assertEqual(self.rubric.error_types['STATEMENTS_PER_LINE'], 3)
+    @load_code_segment('test_valid_return.cpp')
+    def test_int_for_bool(self): self.assertEqual(self.rubric.error_types['INT_FOR_BOOL'], 2)
     #@load_code_segment('if_else_good.cpp')
     #def test_good_if_else(self): self.assertRaises(KeyError, self.rubric.error_types.get, 'IF_ELSE_ERROR')
     #@load_code_segment('if_else_bad.cpp')
