@@ -5,6 +5,7 @@ Style Grader class with instance-method plugin-based functionality.
 import codecs
 from ConfigParser import ConfigParser
 from collections import defaultdict
+import os
 import sys
 from copy import deepcopy
 from glob import glob
@@ -19,6 +20,8 @@ import multi_line_checks
 import misc_checks
 import single_line_checks
 import adjustments
+
+LOCAL_DIR = os.path.dirname(os.path.realpath(__file__))
 
 def safely_open(filename):
     try:
@@ -38,7 +41,7 @@ class StyleRubric(object):
     def __init__(self):
         ''' Load functionality based on config file specifications '''
         self.config = ConfigParser()
-        self.config.read('rubric.ini')
+        self.config.read(LOCAL_DIR+'/rubric.ini')
         self.error_tracker = dict()
         self.error_types = defaultdict(int)
         self.total_errors = 0
@@ -71,7 +74,7 @@ class StyleRubric(object):
 
     def load_functions(self, module, prefix='check'):
         functions = list()
-        group = module.__name__.upper()
+        group = module.__name__.split('.')[-1].upper()
         for check in self.config.options(group):
             if self.config.get(group, check).lower() == 'yes':
                 functions.append(getattr(module, prefix + '_' + check))

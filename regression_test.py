@@ -1,7 +1,7 @@
 #!/usr/bin/python
-from style_grader_functions import *
-from StyleRubric import *
-import unittest
+from eecs183style.style_grader_functions import *
+from eecs183style.StyleRubric import *
+import unittest, pytest
 import sys, os
 
 def load_code_segment(filename):
