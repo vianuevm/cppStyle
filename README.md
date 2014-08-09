@@ -3,6 +3,7 @@
 
 [![Build Status](https://travis-ci.org/stevemer/183style.png?branch=master)](https://travis-ci.org/stevemer/183style)
 [![Coverage Status](https://coveralls.io/repos/stevemer/183style/badge.png?branch=master)](https://coveralls.io/r/stevemer/183style?branch=master)
+[![Open bugs](https://badge.waffle.io/pybuilder/pybuilder.png?label=bug&title=Open%20Bugs)](https://waffle.io/pybuilder/pybuilder)
 [![Stories in Ready](https://badge.waffle.io/stevemer/183style.png?label=ready&title=Ready)](http://waffle.io/stevemer/183style)
 
 
@@ -26,11 +27,9 @@ ReadTheDocs coming soon, once things actually work well enough to merit document
 
 1) style_grader_main.py (driver) creates a StyleRubric, which does the heavy lifting.
 
-2) The StyleRubric calls "grade_student_file" function on all files.
+2) StyleRubric.load_functions pulls all enabled functionalities out of rubric.ini, looks them up in their respective files and plugs them in for grading.
 
-3) The grade_student_file function pulls all enabled functions out of rubric.ini, looks them up in their respective files and plugs them in for grading.
-
-4) Then this happens:
+3) The StyleRubric then calls "grade_student_file" function on all files:
 
        for self.current_line_num, code in enumerate(clean_code):
             for function in self.single_line_checks: function(self, code)
@@ -38,7 +37,7 @@ ReadTheDocs coming soon, once things actually work well enough to merit document
             ...
             
 
-5) If/when an error is discovered, the StyleRubric class adds an instance of the StyleError class to its ever growing list of errors.  This list is eventually returned as the final result.
+4) If/when an error is discovered, the StyleRubric class adds an instance of the StyleError class to its ever growing list of errors.  This list is eventually returned as the final result.
 
 
 
