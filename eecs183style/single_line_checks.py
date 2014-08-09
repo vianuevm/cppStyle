@@ -92,10 +92,9 @@ def check_continue(self, code):
         self.add_error(label="CONTINUE_STATEMENT")
 
 def check_ternary_operator(self, code):
-    # This is really easy - ternary operators require the conditional operator "?",
-    # which has no other application in C++. Since we're parsing out comments, it's as easy as:
-    quoted_ternary = '"'+SkipTo(Literal("?"))+"?"+SkipTo(Literal('"'))+'"'
-    if len(Literal("?").searchString(code)) and not len(quoted_ternary.searchString(code)):
+    q_ternary = re.compile('\".*\?.*\"')
+    r_ternary = re.compile('\?')
+    if r_ternary.search(code) and not q_ternary.search(code):
         self.add_error(label="TERNARY_OPERATOR")
 
 def check_while_true(self, code):
