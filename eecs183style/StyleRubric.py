@@ -12,7 +12,7 @@ from glob import glob
 
 from cpplint import CleansedLines, RemoveMultiLineComments
 
-from style_grader_functions import check_if_function, print_success
+from style_grader_functions import check_if_function, print_success, get_indent_level
 from style_grader_classes import SpacingTracker
 from StyleError import StyleError
 import comment_checks
@@ -61,6 +61,7 @@ class StyleRubric(object):
         self.global_object_braces = []
         self.global_in_object_index = 0
         self.file_has_a_main = {}
+        self.current_file_indentation = 4
 
 
     def add_global_brace(self, brace):
@@ -99,6 +100,7 @@ class StyleRubric(object):
         self.all_rme[filename] = set()
         self.missing_rme[filename] = set()
         self.local_includes[filename] = list()
+        self.current_file_indentation = get_indent_level(open(filename, 'rU'))
 
     def add_error(self, label=None, line=-1, column=0, type='ERROR', data=dict()):
         self.total_errors += 1

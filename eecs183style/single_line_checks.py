@@ -2,7 +2,6 @@ from style_grader_functions import check_if_function, check_operator_regex, chec
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, srange
 import re
 
-
 def check_function_def_above_main(self, code):
     prototype = check_if_function_prototype(code)
     function = check_if_function(code)
@@ -14,7 +13,6 @@ def check_function_def_above_main(self, code):
         parsed = function_syntax.searchString(code).asList()
         function_name = parsed[0][0]
         self.add_error(label = "DEFINITION_ABOVE_MAIN", data={'function': function_name})
-
 
 def check_int_for_bool(self, code):
     if check_if_function(code):

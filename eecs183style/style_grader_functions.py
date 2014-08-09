@@ -1,6 +1,21 @@
-from pyparsing import Literal, Word, Optional, ParseException, alphanums, Keyword
+from collections import Counter
 import getopt
 import re
+
+from pyparsing import Literal, Word, Optional, ParseException, alphanums, Keyword
+
+class EmptyFileException(object):
+    pass
+
+def get_indent_level(filename):
+    data = filename.readlines()
+    indent_re = re.compile('^\s+\w')
+    results = []
+    for line in data:
+        match = indent_re.search(line)
+        if match:
+            results.append(len(match.group(0))-1)
+    return Counter(results).most_common(1)[0] if results else 4
 
 def check_if_function(code):
     return_type = Word(alphanums + '_[]') # Bad style to have "_" but syntactically valid
