@@ -72,8 +72,10 @@ def check_equals_true(self, code):
         self.add_error(label="EQUALS_TRUE")
 
 def check_goto(self, code):
-    match = Literal("goto")
-    if len(match.searchString(code)):
+    # Hacky but gets the job done for now - has holes though
+    q_goto = re.compile('\".*goto.*\"')
+    r_goto = re.compile('(?:\s+|^|\{)goto\s+')
+    if r_goto.search(code) and not q_goto.search(code):
         self.add_error(label="GOTO")
 
 def check_define_statement(self, code):
@@ -90,7 +92,7 @@ def check_stringstream(self, code):
 def check_continue(self, code):
     # Hacky but gets the job done for now - has holes though
     q_continue = re.compile('\".*continue.*\"')
-    r_continue = re.compile('\s+continue\s*;')
+    r_continue = re.compile('(?:\s+|^|\{)continue\s*;')
     if r_continue.search(code) and not q_continue.search(code):
         self.add_error(label="CONTINUE_STATEMENT")
 
