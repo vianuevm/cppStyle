@@ -117,13 +117,11 @@ def check_non_const_global(self, code):
            not len(constant.searchString(code)):
             self.add_error(label="NON_CONST_GLOBAL")
 
-
-
 def check_main_syntax(self, code):
     #Return value for main is optional in C++11
     parser = Literal("int")+Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")
     if len(parser.searchString(code)):
-        main_prefix = Literal("main")+Literal("(")
+        main_prefix = Literal("int")+Literal("main")+Literal("(")
         full_use = Literal("int")+"argc"+","+Optional("const")+"char"+"*"+"argv"+"["+"]"+")"
         # 3 options for main() syntax
         if not len((main_prefix+Literal(")")).searchString(code)) and \

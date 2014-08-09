@@ -67,6 +67,14 @@ class RegressionTesting(unittest.TestCase):
     def test_while_true_good(self): self.assertEqual(0, self.rubric.error_types['WHILE_TRUE']) 
     @load_code_segment('while_true_bad.cpp')
     def test_while_true_bad(self): self.assertEqual(3, self.rubric.error_types['WHILE_TRUE']) 
+    #@load_code_segment('global_good.cpp')
+    #def test_global_good(self): self.assertEqual(0, self.rubric.error_types['NON_CONST_GLOBAL']) 
+    #@load_code_segment('global_bad.cpp')
+    #def test_global_bad(self): self.assertEqual(3, self.rubric.error_types['NON_CONST_GLOBAL']) 
+    @load_code_segment('main_good.cpp')
+    def test_main_good(self): self.assertEqual(0, self.rubric.error_types['MAIN_SYNTAX']) 
+    @load_code_segment('main_bad.cpp')
+    def test_main_bad(self): self.assertEqual(2, self.rubric.error_types['MAIN_SYNTAX']) 
 
 
 if __name__ == '__main__':
