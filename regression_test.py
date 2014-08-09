@@ -75,6 +75,10 @@ class RegressionTesting(unittest.TestCase):
     def test_main_good(self): self.assertEqual(0, self.rubric.error_types['MAIN_SYNTAX']) 
     @load_code_segment('main_bad.cpp')
     def test_main_bad(self): self.assertEqual(2, self.rubric.error_types['MAIN_SYNTAX']) 
+    @load_code_segment('first_char_good.cpp')
+    def test_first_char_good(self): self.assertEqual(0, self.rubric.error_types['FIRST_CHAR']) 
+    @load_code_segment('first_char_bad.cpp')
+    def test_first_char_bad(self): self.assertEqual(6, self.rubric.error_types['FIRST_CHAR']) 
 
 
 if __name__ == '__main__':
