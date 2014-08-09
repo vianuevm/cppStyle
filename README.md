@@ -68,4 +68,5 @@ Open Source Used:
 ==========================================================================================================================
   - The Style Grader takes advantage of google's cpplint for helping to parse some of the code, as well as stripping the code of garbage/comments
   -  PyParsing is used in cases where RegEx is not powerful enough to capture complex grammar (function prototypes, headers)
+  - This project used Miguel Grindberg's microblog open source project as a base point for the backend web service.  He has an awesome tutorial on Flask web development here: http://blog.miguelgrinberg.com/
 
