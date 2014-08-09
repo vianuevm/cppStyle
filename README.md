@@ -1,4 +1,64 @@
 183_style_grader
+
+
+
+How to set up web app for development: (under construction, hold yer horses)
+
+1) clone the git hub repository
+2) download pip if you do not have it (tool to install python dependencies)
+3) You will also need to run the command: pip install virtualenv
+4) You will need to create a virtual environment:
+
+In Mac/Linux:
+In the app directory: 
+-- virtualenv ENV
+-- cd source ENV/bin/activate
+
+In Windows (dos)
+In the app directory
+-- virtualenv ENV
+-- cd ENV\Scripts
+-- activate
+
+4) You need to run the command: pip install -r requirements.txt
+
+this will download the following:
+
+flask==0.9
+flask-login
+flask-openid
+flask-mail==0.7.6
+sqlalchemy==0.7.9
+flask-sqlalchemy==0.16
+sqlalchemy-migrate==0.7.2
+flask-whooshalchemy==0.55a
+flask-wtf==0.8.4
+pytz==2013b
+flask-babel==0.8
+flup
+
+5) in the root directory you will need to create a database
+-- ./db_create.py
+-- ./db_upgrade.py
+
+6) In the root directory run the application:
+
+-- ./run.py 
+
+7) Go to http://127.0.0.1:5000
+
+
+
+
+
+
+
+
+
+
+
+
+
 ==========================================================================================================================
 This is a guide for those hoping to contribute who may begin and think - that's a lot of files!  The project is broken down into three main categories (subject to change for a web app)
 Overview
