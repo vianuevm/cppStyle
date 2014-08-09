@@ -10,7 +10,7 @@ import sys
 from copy import deepcopy
 from glob import glob
 
-from cpplint import CleansedLines, RemoveMultiLineComments
+from cpplint.cpplint import CleansedLines, RemoveMultiLineComments
 
 from style_grader_functions import check_if_function, print_success, get_indent_level
 from style_grader_classes import SpacingTracker

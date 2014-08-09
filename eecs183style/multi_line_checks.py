@@ -1,4 +1,4 @@
-from cpplint import GetPreviousNonBlankLine
+from cpplint.cpplint import GetPreviousNonBlankLine
 from style_grader_classes import DataStructureTracker
 from style_grader_functions import check_if_function,  indent_helper, check_if_struct_or_class
 import re
