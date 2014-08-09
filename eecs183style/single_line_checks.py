@@ -79,8 +79,9 @@ def check_goto(self, code):
         self.add_error(label="GOTO")
 
 def check_define_statement(self, code):
-    match = Literal("#")+Literal("define")
-    if len(match.searchString(code)):
+    q_define = re.compile('\".*(?:\s+|^)#\s*define\s+.*\"')
+    r_define = re.compile('(?:\s+|^)#\s*define\s+')
+    if r_define.search(code) and not q_define.search(code):
         self.add_error(label="DEFINE_STATEMENT")
 
 def check_stringstream(self, code):

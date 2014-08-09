@@ -55,6 +55,10 @@ class RegressionTesting(unittest.TestCase):
     def test_continue_good(self): self.assertEqual(0, self.rubric.error_types['CONTINUE_STATEMENT']) 
     @load_code_segment('continue_bad.cpp')
     def test_continue_bad(self): self.assertEqual(4, self.rubric.error_types['CONTINUE_STATEMENT']) 
+    @load_code_segment('define_good.cpp')
+    def test_define_good(self): self.assertEqual(0, self.rubric.error_types['DEFINE_STATEMENT']) 
+    @load_code_segment('define_bad.cpp')
+    def test_define_bad(self): self.assertEqual(2, self.rubric.error_types['DEFINE_STATEMENT']) 
 
 
 if __name__ == '__main__':
