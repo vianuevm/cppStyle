@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/stevemer/183style.png?branch=master)](https://travis-ci.org/stevemer/183style)
 [![Coverage Status](https://coveralls.io/repos/stevemer/183style/badge.png?branch=master)](https://coveralls.io/r/stevemer/183style?branch=master)
-[![Open bugs](https://badge.waffle.io/pybuilder/pybuilder.png?label=bug&title=Open%20Bugs)](https://waffle.io/pybuilder/pybuilder)
+[![Open bugs](https://badge.waffle.io/stevemer/183style.png?label=bug&title=Open%20Bugs)](https://waffle.io/stevemer/183style)
 [![Stories in Ready](https://badge.waffle.io/stevemer/183style.png?label=ready&title=Ready)](http://waffle.io/stevemer/183style)
 
 
