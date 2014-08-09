@@ -63,6 +63,10 @@ class RegressionTesting(unittest.TestCase):
     def test_ternary_good(self): self.assertEqual(0, self.rubric.error_types['TERNARY_OPERATOR']) 
     @load_code_segment('ternary_bad.cpp')
     def test_ternary_bad(self): self.assertEqual(3, self.rubric.error_types['TERNARY_OPERATOR']) 
+    @load_code_segment('while_true_good.cpp')
+    def test_while_true_good(self): self.assertEqual(0, self.rubric.error_types['WHILE_TRUE']) 
+    @load_code_segment('while_true_bad.cpp')
+    def test_while_true_bad(self): self.assertEqual(3, self.rubric.error_types['WHILE_TRUE']) 
 
 
 if __name__ == '__main__':
