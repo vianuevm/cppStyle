@@ -84,12 +84,6 @@ def check_define_statement(self, code):
     if r_define.search(code) and not q_define.search(code):
         self.add_error(label="DEFINE_STATEMENT")
 
-def check_stringstream(self, code):
-    match = Literal("#")+Literal("include")+Literal("<sstream>")
-    try: match.parseString(code)
-    except ParseException: pass
-    else: self.add_error(label="STRINGSTREAM")
-
 def check_continue(self, code):
     # Hacky but gets the job done for now - has holes though
     q_continue = re.compile('\".*continue.*\"')
