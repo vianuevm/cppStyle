@@ -1,14 +1,12 @@
 from app import db
 
-ROLE_USER = 0
-ROLE_ADMIN = 1
+FALSE = 0
+TRUE = 1
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    nickname = db.Column(db.String(64), unique = True)
-    email = db.Column(db.String(120), unique = True)
-    role = db.Column(db.SmallInteger, default = ROLE_USER)
-    posts = db.relationship('Post', backref = 'author', lazy = 'dynamic')
+    passed_grader = db.Column(db.SmallInteger, Default = FALSE)
+    posts = db.relationship('Post', backref = 'passed_grader', lazy = 'dynamic')
 
     def is_authenticated(self):
         return True
@@ -27,7 +25,7 @@ class User(db.Model):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    body = db.Column(db.String(140))
+    passed_grader = db.Column(db.SmallInterger)
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
