@@ -5,10 +5,11 @@ from app import app, db, lm, oid
 from forms import LoginForm
 from models import User, ROLE_USER, ROLE_ADMIN
 from werkzeug import secure_filename
+from style_grader_main import main
 
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 # These are the extension that we are accepting to be uploaded
-app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+app.config['ALLOWED_EXTENSIONS'] = set(['cpp', 'h'])
 
 @app.before_request
 def before_request():
@@ -23,6 +24,7 @@ def allowed_file(filename):
 @login_required
 def index():
     user = g.user
+
     if request.method == 'POST':
         # Get the FileStorage instance from request
         file = request.files['file']
@@ -53,8 +55,11 @@ def upload():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
+    online_file = os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename)
+    ar = []
+    ar.append((online_file))
+    x = main(True, ar)
+    return x
 
 @app.route('/login', methods = ['GET', 'POST'])
 @oid.loginhandler
