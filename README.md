@@ -1,5 +1,5 @@
 183_style_grader
-
+** Note to anyone unfamiliar with the project - there is heavy construction/reorganization going on this month to migrate it to a web application form.  
 
 
 How to set up web app for development: (under construction, hold yer horses)
