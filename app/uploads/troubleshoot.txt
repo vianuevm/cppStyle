@@ -1,7 +1,0 @@
-Trouble Shooting Errors (Build or Otherwise Weird)
-
-1) Check SVN and try to commit.  Check to see what file has been changed.  Revert if necessary.
-2) If that's not it, check Java log in tomcat (Cygwin cd trunk/tomcat/logs tail -200 wsd_error.log)
-3) If it's language related, check your environment variable to make sure it is correct
-4) Check DBUtils to make sure you are pointed to the right server
-5) You might have to run some SQL server packs or something that updates SQL, especially if you haven't been there in awhile.
