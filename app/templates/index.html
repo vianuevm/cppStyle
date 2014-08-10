@@ -8,72 +8,81 @@
           rel="stylesheet">
     <link href="../static/presentation/index.css"
           rel="stylesheet">
+
   </head>
   <body>
-    <div class="container">
-        <nav class="navbar navbar-inverse" role="navigation">
-          <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#"> EECS 183 </a>
+    <div class="navbar-wrapper"> 
+     <div class="container">
+      <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#"> EECS 183 </a>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+              <li><a href="{{ url_for('logout') }}">Logout</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                 <ul class="dropdown-menu" role="menu">
+                  <li><a href="https://github.com/vianuevm/183_style_grader">Source Code</a></li>
+                  <li><a href="#">Authors</a></li>
+                  <li><a href="#">About</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+    <div id="myCarousel" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="../static/img/epic.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+          
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="https://github.com/vianuevm/183_style_grader">Source Code</a></li>
-                    <li><a href="#">Authors</a></li>
-                    <li><a href="#">About</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
-        <div class="jumbotron">
-          <h1>Style Grader 1.0</h1>
+          </div>
         </div>
-       </br>
-        <div>
-            <form action="upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="file"><br />
-                <input type="submit" value="Upload">
-            </form>
-            <!--<form action="upload" method="post" enctype="multipart/form-data">-->
-                <!--<input id="uploadFile" placeholder="Choose File" disabled="disabled" />-->
-                <!--<div class="fileUpload btn btn-primary">-->
-                    <!--<span>Upload</span>-->
-                    <!--<input id="uploadBtn" type="file" class="upload" />-->
-                <!--</div>-->
-                <!--<input type="submit" value="submit">-->
-            <!--</form>-->
+        <div class="item">
+          <img src="../static/img/epic.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+            </div>
+          </div>
         </div>
+        <div class="item">
+          <img src="../static/img/mhacks.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div><!-- /.carousel -->      
+    </br>
+    <div class="container">
+      <h4 class="text-muted">
+        Style Grader 1.0
+      </h4> 
+      <hr>
+        <form action="upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file"><br />
+            <input type="submit" value="Upload">
+        </form>
     </div>
     <div class="container">
       <div class="header">
         <h5 class="text-muted">By Mike Vianueva (backend/frontend), Steve Merrit (backend), Maxim Aleska (backend)</h5>
       </div>
       <hr/>
-      <div>
-
-
-      </div>
     </div>
-      <script>
-        document.getElementById("uploadBtn").onchange = function () {
-            document.getElementById("uploadFile").value = this.value;
-        };
-    </script>
   </body>
 </html>
 {% endblock %}
