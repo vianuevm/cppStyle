@@ -1,0 +1,77 @@
+html
+{
+	min-width: 510px;
+	/* sticky footer */
+	position: relative;
+	min-height: 100%;
+}
+
+body
+{
+	/* sticky footer */
+    margin-bottom: 40px;
+}
+
+#footer
+{
+	font-size: smaller;
+	font-weight: 300;
+	color: white;
+
+	/* surround with whitespace */
+    margin: 16px 0px;
+
+    /* sticky footer */
+    position: absolute;
+    max-width: 100%;
+    display: inline;
+    height: 48px;
+    bottom: 0;
+	padding-top: 16px;
+}
+
+#main-container
+{
+	max-width: 800px;
+}
+
+/*
+ * Header
+ */
+.navigation
+{
+	padding: 8px;
+	margin-bottom: 64px;
+}
+
+.masthead-brand
+{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.masthead-nav > li
+{
+  display: inline-block;
+}
+.masthead-nav > li + li
+{
+  margin-left: 20px;
+}
+.masthead-nav > li > a
+{
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 2px solid transparent;
+}
+
+@media (min-width: 400px) {
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+  }
+}

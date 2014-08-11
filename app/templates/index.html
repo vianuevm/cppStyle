@@ -2,35 +2,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<html lang="en">
-  <head>
-    <link href="/static/presentation/index.css"
-          rel="stylesheet">
-  </head>
-  <body>
-    </br>
-    <div class="styleContainer container">
-        <h1 class="styleHeader">
-        Style Grader 1.0
-      </h1>
-    </div>
-    <div class=" headerContainer container">
-
-      <form action="upload" method="post" enctype="multipart/form-data">
-        <input type="file" data-filename-placement="inside" title="Upload" multiple="" name="file[]" class="span3 btn-primary" /><br /> <br>
-        <button type="submit" class="btn btn-primary">
-          <i class="icon-user icon-white"></i> Submit for Grading
-        </button>
-        <br>
-        <br>
-        <a href="{{ url_for('logout') }}" class="btn btn-primary">Log Out</a>
-      </form>
-    </div>
-    <div class="container footerContainer">
-      <div class="header">
-        <h5>Photo by: <a href="https://www.flickr.com/photos/michigan-engineering">Joseph Xu </a></h5>
-      </div>
-    </div>
+	<link href="/static/presentation/index.css" rel="stylesheet">
+	
+	<div class="panel panel-default" id="main-panel">
+		<div class="panel-heading">
+			<h3 class="panel-title">183style 1.0</h3>
+		</div>
+		<div class="panel-body">
+			<div class="description">
+				<p>Welcome to <b>183style</b>, EECS 183's automatic style grader.</p>
+			</div>
+			<hr>
+			<form role="form" action="upload" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<input type="file" id="code-input" data-filename-placement="inside" title="Select files" multiple name="file[]" class="btn-primary" />
+				</div>
+				<button type="submit" id="code-submission" class="btn btn-primary" disabled>Submit to 183style</button>
+			</form>
+		</div>
+	</div>
+	<div id="footer">
+		<h5>Photo by: <a href="https://www.flickr.com/photos/michigan-engineering">Joseph Xu</a></h5>
+	</div>
+    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
     <script src="/static/behavior/bootstrap-file-input/bootstrap.file-input.js"></script>
@@ -39,6 +33,4 @@
         $('input[type=file]').bootstrapFileInput();
       });
     </script>
-  </body>
-</html>
 {% endblock %}
