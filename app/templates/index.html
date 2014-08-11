@@ -12,7 +12,8 @@
   <style>
 
     div.container.headerContainer{
-      margin-top:470px;
+      margin-top:100;
+      margin-left: 120px;
       }
     body {
         background: url(static/img/epic.jpg) no-repeat center center fixed;
@@ -62,22 +63,23 @@
   </div>
 
     </br>
-    <div class="container styleContainer">
-      <h1 class="blurry-text styleHeader">
+    <div class="styleContainer container">
+        <h1 class="styleHeader">
         Style Grader 1.0
       </h1>
     </div>
-    <div class="container">
-        <form class="inputs action="upload" method="post" enctype="multipart/form-data">
-            <input type="file" multiple="" name="file[]" class="span3" /><br />
-            <input type="submit" value="Upload"  class="span2">
-        </form>
+    <div class=" headerContainer container">
+
+      <form action="upload" method="post" enctype="multipart/form-data">
+        <input type="file" multiple="" name="file[]" class="span3" /><br />
+        <input type="submit" value="Upload"  class="span2">
+      </form>
     </div>
     <div class="container headerContainer">
-      <div class="header">
-        <h5 class="text-muted">By Mike Vianueva (backend/frontend), Steve Merrit (backend), Maxim Aleska (backend)</h5>
-      </div>
-      <hr/>
+      <!--<div class="header">-->
+        <!--<h5 class="text-muted">By Mike Vianueva (backend/frontend), Steve Merrit (backend), Maxim Aleska (backend)</h5>-->
+      <!--</div>-->
+      <!--<hr/>-->
     </div>
   </body>
 </html>

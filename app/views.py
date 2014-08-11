@@ -19,7 +19,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
 
 @app.route('/',  methods = ['GET'])
-@app.route('/index', methods = ['GET'])
+@app.route('/index', methods = ['GET', 'POST'])
 @login_required
 def index():
     user = g.user
