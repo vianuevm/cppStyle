@@ -19,33 +19,14 @@
   margin-top: 10px;
 }
 
-.carousel {
-  margin-bottom: 60px;
-}
+  h1.styleHeader {
 
-.carousel .container {
-  position: relative;
-  z-index: 9;
-}
+        color: yellow;
+        opacity: .4
+        margin-top: 200px;
+      }
 
-.carousel-control {
-  height: 0px;
-  margin-top: 180;
-  font-size: 120px;
-  text-shadow: 0 1px 1px rgba(0,0,0,.4);
-  background-color: transparent;
-  border: 0;
-  z-index: 10;
-}
-
-.carousel .item {
-  height: 500px;
-}
-.carousel img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  height: 500px;
-}
-
+ div.container.styleContainer {
+    margin-top: 100px;
+    margin-left:100px;
+ }

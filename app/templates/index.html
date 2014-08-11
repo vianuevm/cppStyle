@@ -6,9 +6,31 @@
   <head>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
           rel="stylesheet">
-    <link href="../static/presentation/index.css"
+    <link href="/static/presentation/index.css"
           rel="stylesheet">
 
+  <style>
+
+    div.container.headerContainer{
+      margin-top:470px;
+      }
+    body {
+        background: url(static/img/epic.jpg) no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+     html {
+        width: 98%;
+      }
+
+      .inputs {
+        margin-top: 40px;
+        margin-left: 100px;
+      }
+
+ </style>
   </head>
   <body>
     <div class="navbar-wrapper"> 
@@ -38,46 +60,20 @@
       </nav>
     </div>
   </div>
-    <div id="myCarousel" class="carousel slide">
-      <div class="carousel-inner">
-        <div class="item active">
-          <img src="../static/img/epic.jpg" alt="">
-          <div class="container">
-            <div class="carousel-caption">
-          
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <img src="../static/img/epic.jpg" alt="">
-          <div class="container">
-            <div class="carousel-caption">
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <img src="../static/img/mhacks.jpg" alt="">
-          <div class="container">
-            <div class="carousel-caption">
-            </div>
-          </div>
-        </div>
-      </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
-    </div><!-- /.carousel -->      
+
     </br>
-    <div class="container">
-      <h2 class="styleHeader text-muted">
+    <div class="container styleContainer">
+      <h1 class="blurry-text styleHeader">
         Style Grader 1.0
-      </h2>
-      <hr>
-        <form action="upload" method="post" enctype="multipart/form-data">
-            <input type="file" multiple="" name="file[]" class="span3" /><br />
-            <input type="submit" value="Upload"  class="span2">
-      </form>
+      </h1>
     </div>
     <div class="container">
+        <form class="inputs action="upload" method="post" enctype="multipart/form-data">
+            <input type="file" multiple="" name="file[]" class="span3" /><br />
+            <input type="submit" value="Upload"  class="span2">
+        </form>
+    </div>
+    <div class="container headerContainer">
       <div class="header">
         <h5 class="text-muted">By Mike Vianueva (backend/frontend), Steve Merrit (backend), Maxim Aleska (backend)</h5>
       </div>
