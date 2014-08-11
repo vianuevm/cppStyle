@@ -5,8 +5,11 @@ TRUE = 1
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    passed_grader = db.Column(db.SmallInteger, Default = FALSE)
-    posts = db.relationship('Post', backref = 'passed_grader', lazy = 'dynamic')
+    name = db.Column(db.String(65))
+    passed_grader = db.Column(db.SmallInteger, default = FALSE)
+    email = db.Column(db.String(120), unique = True)
+    umich_id = db.Column(db.Integer, unique = True)
+    posts = db.relationship('Submission')
 
     def is_authenticated(self):
         return True
@@ -21,13 +24,15 @@ class User(db.Model):
         return unicode(self.id)
 
     def __repr__(self):
-        return '<User %r>' % (self.nickname)
+        return '<User %r>' % (self.name)
 
-class Post(db.Model):
+class Submission(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    passed_grader = db.Column(db.SmallInterger)
+    name = db.Column(db.String(65))
+    umich_id = db.Column(db.Integer, unique = True)
+    passed_grader = db.Column(db.SmallInteger, default = False)
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Post %r>' % (self.body)
+        return '<Post %r>' % (self.umich_id)

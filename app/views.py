@@ -3,9 +3,9 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid
 from forms import LoginForm
-from models import User, ROLE_USER, ROLE_ADMIN
+from models import User, Submission
 from werkzeug import secure_filename
-from style_grader_main import main
+from style_grader_main import grader
 
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 # These are the extension that we are accepting to be uploaded
@@ -56,10 +56,20 @@ def upload():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     online_file = os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename)
-    ar = []
-    ar.append((online_file))
-    x = main(True, ar)
-    return x
+    list = []
+    list.append((online_file))
+    response = grader(True, list)
+
+    if response != "":
+        sub = Submission(user_id = g.user.id, passed_grader = False)
+
+    else:
+        sub = Submission(umich_id = g.user.umich_id, user_id = g.user.id, passed_grader = True)
+    db.session.add(sub)
+    db.session.commit()
+
+
+    return response
 
 @app.route('/login', methods = ['GET', 'POST'])
 @oid.loginhandler
@@ -90,7 +100,7 @@ def after_login(resp):
         nickname = resp.nickname
         if nickname is None or nickname == "":
             nickname = resp.email.split('@')[0]
-        user = User(nickname = nickname, email = resp.email, role = ROLE_USER)
+        user = User(email = resp.email, passed_grader = 0)
         db.session.add(user)
         db.session.commit()
     remember_me = False
