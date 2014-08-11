@@ -2,7 +2,7 @@
 from style_grader_functions import print_success
 from StyleRubric import StyleRubric
 
-def grader(online_files):
+def style_grader_driver(online_files):
     rubric = StyleRubric()
     show_errors = []
 
@@ -22,6 +22,6 @@ def grader(online_files):
 
 
     return show_errors
- 
+
 # if __name__ == '__main__':
 #     main()

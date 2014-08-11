@@ -5,7 +5,7 @@ from app import app, db, lm, oid
 from forms import LoginForm
 from models import User, Submission
 from werkzeug import secure_filename
-from style_grader_main import grader
+from style_grader_main import style_grader_driver
 
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 app.config['ALLOWED_EXTENSIONS'] = set(['cpp', 'h'])
@@ -52,7 +52,7 @@ def upload():
         online_file = os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename)
         list_of_online_files.append(online_file)
 
-    response = grader(list_of_online_files)
+    response = style_grader_driver(list_of_online_files)
     if response != []:
         sub = Submission(user_id = g.user.id, passed_grader = False)
     else:
