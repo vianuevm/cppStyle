@@ -2,24 +2,18 @@
 from style_grader_functions import print_success
 from StyleRubric import StyleRubric
 
-def grader(online_submit, online_files):
-
-
+def grader(online_files):
     rubric = StyleRubric()
 
-
-    if online_submit:
-       for filename in online_files:
+    # if online_submit:
+    for filename in online_files:
         rubric.grade_student_file(filename)
-    else:
-        for filename in rubric.student_files:
-            rubric.grade_student_file(filename)
+    # else:
+    #     for filename in rubric.student_files:
+    #         rubric.grade_student_file(filename)
 
     rubric.adjust_errors()
-
     rubric.print_errors()
-
-
 #For debugging purposes only
     show_errors = ""
     print "Total Errors: " + str(rubric.total_errors)
@@ -33,5 +27,5 @@ def grader(online_submit, online_files):
 
     return show_errors
  
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
