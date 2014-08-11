@@ -45,7 +45,7 @@ def upload():
     if file and allowed_file(file.filename):
         # Make the filename safe, remove unsupported chars
         filename = secure_filename(file.filename)
-        # Move the file form the temporal folder to
+        # Move the file form the temporal folder to$
         # the upload folder we setup
         file.save(os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename))
         # Redirect the user to the uploaded_file route, which
@@ -58,13 +58,13 @@ def uploaded_file(filename):
     online_file = os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename)
     list = []
     list.append((online_file))
-    response = grader(True, list)
+    response = grader(list)
 
     if response != "":
         sub = Submission(user_id = g.user.id, passed_grader = False)
 
     else:
-        sub = Submission(umich_id = g.user.umich_id, user_id = g.user.id, passed_grader = True)
+        sub =  Submission(umich_id = g.user.umich_id, user_idr_id = g.user.id, passed_grader = True)
     db.session.add(sub)
     db.session.commit()
 
