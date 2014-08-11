@@ -64,7 +64,8 @@ def uploaded_file(filename):
         sub = Submission(user_id = g.user.id, passed_grader = False)
 
     else:
-        sub =  Submission(umich_id = g.user.umich_id, user_idr_id = g.user.id, passed_grader = True)
+        sub =  Submission(umich_id = g.user.umich_id, user_id = g.user.id, passed_grader = True)
+        
     db.session.add(sub)
     db.session.commit()
 
