@@ -1,37 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-          rel="stylesheet">
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h3 class="text-muted">Uploaded files</h3>
-      </div>
-      <hr/>
-      <div>
-      This is a list of the files you just uploaded, click on them to load/download them
-      <ul>
-        {% for file in filenames %}
-          <li><a href="{{url_for('uploaded_file', filename=file)}}">{{file}}</a></li>
-        {% endfor %}
-      </ul>
-      </div>
-      <div class="header">
-        <h3 class="text-muted">Errors in your Code</h3>
-      </div>
-      <hr/>    
-        <div>
-            <ul class="list-unstyled">
-             {% for error in errors %}
-               <li> {{error}} </li>
-             {% endfor %}
-            </ul>
-        </div>
+<!-- extend base layout -->
+{% extends "base.html" %}
 
-      </div>
-    </div>
-  </body>
-</html>
+{% block content %}
+	<link href="/static/presentation/upload.css" rel="stylesheet">
+		<div class="header">
+			<h3 class="text-muted">Uploaded files</h3>
+		</div>
+		<hr/>
+		<div>
+			This is a list of the files you just uploaded, click on them to load/download them
+			<ul>
+				{% for file in filenames %}
+				  <li><a href="{{url_for('uploaded_file', filename=file)}}">{{file}}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="header">
+			<h3 class="text-muted">Feedback</h3>
+		</div>
+		<hr/>    
+		<div class="output">
+		    <ul class="list-unstyled">
+		     {% for error in errors %}
+		       <li> {{error}} </li>
+		     {% endfor %}
+		    </ul>
+		</div>
+	
+	</div>
  
+{% endblock %}
