@@ -44,15 +44,14 @@ div.container.headerContainer{
   margin-top:0;
   margin-left: 60px;
 }
-body {
+
+body
+{
   background: url(../img/epic.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
-html {
-width: 98%;
 }
 
 .inputs {
@@ -61,10 +60,92 @@ width: 98%;
 }
 
 h1 {
-  color: yellow;
   display: block;
-  font: bold 48px Helvetica;
-  text-transform: uppercase;
   letter-spacing: -1px;
   padding: 50px;
+}
+
+#main-container
+{
+	max-width: 800px;
+}
+
+#main-panel
+{
+	text-align: center;
+	float: none;
+	margin: 48px auto;
+	
+	/* override Bootstrap's 100% width for form controls */
+    width: 480px;
+    background-color: rgba(244,244,244,0.76);
+}
+
+
+
+/* Links */
+a, a:focus, a:hover
+{
+  color: #fff;
+}
+
+/*
+ * Header
+ */
+.navigation
+{
+	padding: 8px;
+	margin-bottom: 64px;
+}
+ 
+.masthead-brand
+{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: white;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.masthead-nav > li
+{
+  display: inline-block;
+}
+.masthead-nav > li + li
+{
+  margin-left: 20px;
+}
+.masthead-nav > li > a
+{
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff; /* IE8 proofing */
+  color: rgba(255,255,255,.75);
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  border-bottom: 2px solid transparent;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus
+{
+  background-color: transparent;
+  border-bottom-color: #a9a9a9;
+  border-bottom-color: rgba(255,255,255,.25);
+}
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus
+{
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  border-bottom-color: #fff;
+}
+
+@media (min-width: 400px) {
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+  }
 }

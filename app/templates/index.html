@@ -3,28 +3,39 @@
 
 {% block content %}
 <html lang="en">
-  <head>
-    <link href="/static/presentation/index.css"
-          rel="stylesheet">
-  </head>
-  <body>
-    </br>
-    <div class="styleContainer container">
-        <h1 class="styleHeader">
-        Style Grader 1.0
-      </h1>
-    </div>
+	<head>
+		<link href="/static/presentation/index.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container" id="main-container">
+			<div class="navigation">
+				<h3 class="masthead-brand">183style</h3>
+				<ul class="nav masthead-nav">
+					<li class="active"><a href="/">Home</a></li>
+					<li><a href="https://github.com/vianuevm/183_style_grader" target="_blank">Source code</a></li>
+					<li><a href="">About</a></li>
+					<li><a href="{{ url_for('logout') }}">Log out</a></li>
+				</ul>
+			</div>
+			<div class="panel panel-default" id="main-panel">
+				<div class="panel-heading">
+					<h3 class="panel-title">183style 1.0</h3>
+				</div>
+				<div class="panel-body">
+					<div class="description">
+						<p>Welcome to <b>183style</b>, EECS 183's automatic style grader.</p>
+					</div>
+					<hr>
+					<form role="form" action="upload" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<input type="file" data-filename-placement="inside" title="Select files" multiple="" name="file[]" class="span3 btn-primary" />
+						</div>
+						<button type="submit" class="btn btn-primary">Submit to 183style</button>
+					</form>
+				</div>
+			</div>
+		</div>
     <div class=" headerContainer container">
-
-      <form action="upload" method="post" enctype="multipart/form-data">
-        <input type="file" data-filename-placement="inside" title="Upload" multiple="" name="file[]" class="span3 btn-primary" /><br /> <br>
-        <button type="submit" class="btn btn-primary">
-          <i class="icon-user icon-white"></i> Submit for Grading
-        </button>
-        <br>
-        <br>
-        <a href="{{ url_for('logout') }}" class="btn btn-primary">Log Out</a>
-      </form>
     </div>
     <div class="container footerContainer">
       <div class="header">
