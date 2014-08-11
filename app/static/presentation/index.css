@@ -19,14 +19,47 @@
   margin-top: 10px;
 }
 
-  h1.styleHeader {
+h1.styleHeader {
+  color: yellow;
+  opacity: .8;
+  margin-top: 10px;
+}
 
-    color: yellow;
-    opacity: .8;
-    margin-top: 10px;
-  }
+div.container.footerContainer {
+  margin-top: 560;
+}
 
- div.container.styleContainer {
-    margin-top: 0;
-    margin-left:0;
- }
+div.container.styleContainer {
+  margin-top: 0;
+  margin-left:0;
+}
+.input {
+  color: blue;
+}
+div.container.headerContainer{
+  margin-top:0;
+  margin-left: 60px;
+}
+body {
+  background: url(../img/epic.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+html {
+width: 98%;
+}
+
+.inputs {
+  margin-top: 40px;
+  margin-left: 100px;
+}
+h1 {
+  color: yellow;
+  display: block;
+  font: bold 48px Helvetica;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding: 50px;
+}
