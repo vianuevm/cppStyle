@@ -10,10 +10,12 @@
           rel="stylesheet">
 
   <style>
-
+  .input {
+    color: blue;
+  }
     div.container.headerContainer{
-      margin-top:100;
-      margin-left: 120px;
+      margin-top:0;
+      margin-left: 60px;
       }
     body {
         background: url(static/img/epic.jpg) no-repeat center center fixed;
@@ -22,46 +24,26 @@
       -o-background-size: cover;
       background-size: cover;
     }
-     html {
-        width: 98%;
-      }
+   html {
+      width: 98%;
+    }
 
-      .inputs {
-        margin-top: 40px;
-        margin-left: 100px;
-      }
+    .inputs {
+      margin-top: 40px;
+      margin-left: 100px;
+    }
+    h1 {
+      color: yellow;
+      display: block;
+      font: bold 48px Helvetica;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      padding: 50px;
+    }
 
  </style>
   </head>
   <body>
-    <div class="navbar-wrapper"> 
-     <div class="container">
-      <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container-fluid">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#"> EECS 183 </a>
-          </div>
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
-              <li><a href="{{ url_for('logout') }}">Logout</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="https://github.com/vianuevm/183_style_grader">Source Code</a></li>
-                  <li><a href="#">Authors</a></li>
-                  <li><a href="#">About</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </div>
-
     </br>
     <div class="styleContainer container">
         <h1 class="styleHeader">
@@ -71,8 +53,10 @@
     <div class=" headerContainer container">
 
       <form action="upload" method="post" enctype="multipart/form-data">
-        <input type="file" multiple="" name="file[]" class="span3" /><br />
-        <input type="submit" value="Upload"  class="span2">
+        <input type="file" title="Upload" multiple="" name="file[]" class="span3 btn-primary" /><br /> <br>
+        <button type="submit" class="btn btn-primary">
+          <i class="icon-user icon-white"></i> Submit for Grading
+        </button>
       </form>
     </div>
     <div class="container headerContainer">
@@ -81,6 +65,14 @@
       <!--</div>-->
       <!--<hr/>-->
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+    <script src="/static/behavior/bootstrap-file-input/bootstrap.file-input.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('input[type=file]').bootstrapFileInput();
+      });
+    </script>
   </body>
 </html>
 {% endblock %}
