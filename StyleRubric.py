@@ -135,11 +135,14 @@ class StyleRubric(object):
         for function in self.adjustments:
             function(self)
 
-    def print_errors(self):
+    def print_errors(self, error_list):
         for filename, errors in self.error_tracker.iteritems():
             print 'Grading {}...'.format(filename)
+            error_list.append('Grading {}...'.format(filename))
             if not len(errors):
                 print_success()
             for error in errors:
                 print error
+                error_list.append("Line number " + str(error))
             print
+        return error_list
