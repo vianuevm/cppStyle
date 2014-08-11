@@ -24,15 +24,24 @@ In the app directory:
 In Windows (in dos):
 
 In the app directory
--- virtualenv ENV
--- cd ENV\Scripts
--- activate
+
+
+a) virtualenv ENV
+
+
+b) cd ENV\Scripts
+
+
+c) activate
 
 4) You need to run the command: pip install -r requirements.txt
 
 5) in the root directory you will need to create a database
--- ./db_create.py
--- ./db_upgrade.py
+
+a) ./db_create.py
+
+
+b) ./db_upgrade.py
 
 6) In the root directory run the application:
 
