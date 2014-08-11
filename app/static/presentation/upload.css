@@ -1,0 +1,26 @@
+.masthead-brand
+{
+	color: black;
+}
+
+.masthead-nav > li > a
+{
+	font-weight: 500;
+	color: black; /* IE8 proofing */
+	color: rgba(24,24,24,0.75);
+	border-bottom: 2px solid transparent;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus
+{
+	background-color: transparent;
+	border-bottom-color: #919191;
+	border-bottom-color: rgba(50,50,50,0.29);
+}
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus
+{
+	color: black;
+	border-bottom-color: black;
+}
