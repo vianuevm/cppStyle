@@ -81,7 +81,13 @@ class RegressionTesting(unittest.TestCase):
     def test_first_char_bad(self): self.assertEqual(6, self.rubric.error_types['FIRST_CHAR']) 
 
 
-if __name__ == '__main__':
+def main():
     print "\n"
     suite = unittest.TestLoader().loadTestsFromTestCase(RegressionTesting)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    if unittest.TextTestRunner(verbosity=2).run(suite).wasSuccessful():
+        return 0
+    else:
+        return 1
+
+if __name__ == "__main__":
+    sys.exit(main())
