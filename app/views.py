@@ -61,7 +61,7 @@ def upload():
     db.session.add(sub)
     db.session.commit()
 
-    return render_template('upload.html', filenames=filenames, errors = response )
+    return render_template('upload.html', filenames=filenames, errors=response )
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
