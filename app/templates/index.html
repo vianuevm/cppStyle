@@ -2,46 +2,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<html lang="en">
-	<head>
-		<link href="/static/presentation/index.css" rel="stylesheet">
-	</head>
-	<body>
-		<div class="container" id="main-container">
-			<div class="navigation">
-				<h3 class="masthead-brand">183style</h3>
-				<ul class="nav masthead-nav">
-					<li class="active"><a href="/">Home</a></li>
-					<li><a href="https://github.com/vianuevm/183_style_grader" target="_blank">Source code</a></li>
-					<li><a href="">About</a></li>
-					<li><a href="{{ url_for('logout') }}">Log out</a></li>
-				</ul>
-			</div>
-			<div class="panel panel-default" id="main-panel">
-				<div class="panel-heading">
-					<h3 class="panel-title">183style 1.0</h3>
-				</div>
-				<div class="panel-body">
-					<div class="description">
-						<p>Welcome to <b>183style</b>, EECS 183's automatic style grader.</p>
-					</div>
-					<hr>
-					<form role="form" action="upload" method="post" enctype="multipart/form-data">
-						<div class="form-group">
-							<input type="file" data-filename-placement="inside" title="Select files" multiple="" name="file[]" class="span3 btn-primary" />
-						</div>
-						<button type="submit" class="btn btn-primary">Submit to 183style</button>
-					</form>
-				</div>
-			</div>
+	<link href="/static/presentation/index.css" rel="stylesheet">
+	
+	<div class="panel panel-default" id="main-panel">
+		<div class="panel-heading">
+			<h3 class="panel-title">183style 1.0</h3>
 		</div>
-    <div class=" headerContainer container">
-    </div>
-    <div class="container footerContainer">
-      <div class="header">
-        <h5>Photo by: <a href="https://www.flickr.com/photos/michigan-engineering">Joseph Xu </a></h5>
-      </div>
-    </div>
+		<div class="panel-body">
+			<div class="description">
+				<p>Welcome to <b>183style</b>, EECS 183's automatic style grader.</p>
+			</div>
+			<hr>
+			<form role="form" action="upload" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<input type="file" id="code-input" data-filename-placement="inside" title="Select files" multiple name="file[]" class="btn-primary" />
+				</div>
+				<button type="submit" id="code-submission" class="btn btn-primary" disabled>Submit to 183style</button>
+			</form>
+		</div>
+	</div>
+	<div id="footer">
+		<h5>Photo by: <a href="https://www.flickr.com/photos/michigan-engineering">Joseph Xu</a></h5>
+	</div>
+    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
     <script src="/static/behavior/bootstrap-file-input/bootstrap.file-input.js"></script>
@@ -50,6 +33,5 @@
         $('input[type=file]').bootstrapFileInput();
       });
     </script>
-  </body>
-</html>
 {% endblock %}
+        
