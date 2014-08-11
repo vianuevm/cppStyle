@@ -27,6 +27,8 @@
         <title>183style</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script src="/static/behavior/scripts.js"></script>
+        <link href="/static/presentation/base.css" rel="stylesheet">
 	</head>
   <body>
     {% with messages = get_flashed_messages() %}
@@ -38,8 +40,18 @@
     </ul>
     {% endif %}
     {% endwith %}
-    <div>
-        {% block content %}{% endblock %}
+    <div class="container" id="main-container">
+	    <div class="navigation">
+			<h3 class="masthead-brand">183style</h3>
+			<ul class="nav masthead-nav">
+				<li><a href="/">Home</a></li>
+				<li><a href="https://github.com/vianuevm/183_style_grader" target="_blank">Source code</a></li>
+				<li><a href="{{ url_for('logout') }}">Log out</a></li>
+			</ul>
+		</div>
+	    <div>
+	        {% block content %}{% endblock %}
+	    </div>
     </div>
     <script src="/static/behavior/bootstrap.min.js"></script>
   </body>
