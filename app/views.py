@@ -8,7 +8,6 @@ from werkzeug import secure_filename
 from style_grader_main import grader
 
 app.config['UPLOAD_FOLDER'] = 'uploads/'
-# These are the extension that we are accepting to be uploaded
 app.config['ALLOWED_EXTENSIONS'] = set(['cpp', 'h'])
 
 @app.before_request
@@ -39,38 +38,35 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    # Get the name of the uploaded file
-    file = request.files['file']
-    # Check if the file is one of the allowed types/extensions
-    if file and allowed_file(file.filename):
-        # Make the filename safe, remove unsupported chars
-        filename = secure_filename(file.filename)
-        # Move the file form the temporal folder to$
-        # the upload folder we setup
-        file.save(os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename))
-        # Redirect the user to the uploaded_file route, which
-        # will basicaly show on the browser the uploaded file
-        return redirect(url_for('uploaded_file',
-                                filename=filename))
+    # Get the name of the uploaded files
+    uploaded_files = request.files.getlist("file[]")
+    filenames = []
+    for file in uploaded_files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename))
+            filenames.append(filename)
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    online_file = os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename)
-    list = []
-    list.append((online_file))
-    response = grader(list)
+    list_of_online_files = []
+    for filename in filenames:
+        online_file = os.path.join("app/" + app.config['UPLOAD_FOLDER'], filename)
+        list_of_online_files.append(online_file)
 
-    if response != "":
+    response = grader(list_of_online_files)
+    if response != []:
         sub = Submission(user_id = g.user.id, passed_grader = False)
-
     else:
         sub =  Submission(umich_id = g.user.umich_id, user_id = g.user.id, passed_grader = True)
-        
+
     db.session.add(sub)
     db.session.commit()
 
+    return render_template('upload.html', filenames=filenames, errors = response )
 
-    return response
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+ return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
 
 @app.route('/login', methods = ['GET', 'POST'])
 @oid.loginhandler
