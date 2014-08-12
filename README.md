@@ -1,7 +1,7 @@
-==========================================================================================================================
-183 Style 1.0 ![alt tag](http://en.wikipedia.org/wiki/Mister_Splashy_Pants#mediaviewer/File:Mr._Splashy_Pants.svg)
+![alt tag](https://raw.github.com/vianuevm/183_style_grader/master/app/static/img/splashy.jpg)
 
-==========================================================================================================================
+#183 Style 1.0 
+
 
 1) Clone the git hub repository.
 
