@@ -107,12 +107,12 @@ def check_non_const_global(self, code):
 
     if self.outside_main:
         function = check_if_function(code)
-        variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
-        special_keywords = LineStart()+Literal("using") | LineStart()+Literal("class") | LineStart()+Literal("struct")
-        constant = LineStart()+Optional("static")+Literal("const")
-        if not function and len(variable.searchString(code)) and \
-           not len(special_keywords.searchString(code)) and \
-           not len(constant.searchString(code)):
+        variables = variables = re.compile("^(?:\w|_)+\s+(?:\w|_|\[|\])+\s*=\s*.+;")
+        keywords = re.compile("^\s*(?:using|class|struct)")
+        constants = re.compile("^\s*(?:static\s+)?const")
+        if not function and variables.search(code) and \
+           not keywords.search(code) and \
+           not constants.search(code):
             self.add_error(label="NON_CONST_GLOBAL")
 
 def check_main_syntax(self, code):
