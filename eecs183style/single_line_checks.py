@@ -9,9 +9,9 @@ def check_function_def_above_main(self, code):
     if len(inside.searchString(code)):
         return
     elif function and not prototype and self.outside_main:
-        function_syntax = Word(alphanums + '_') + Literal('(')
-        parsed = function_syntax.searchString(code).asList()
-        function_name = parsed[0][0]
+        function_regex = re.compile("^\s*(\w+)\s+(\w+)")
+        match = function_regex.search(code)
+        function_name = match.group(2) if match else "NOT_FOUND"
         self.add_error(label = "DEFINITION_ABOVE_MAIN", data={'function': function_name})
 
 def check_int_for_bool(self, code):
@@ -129,17 +129,14 @@ def check_main_syntax(self, code):
 
 def check_first_char(self, code):
     # check if the first char is lower-case alpha or '_'
-    identifier_name = Word(srange("[a-z]") + "_", alphanums + "_")
-    keywords = ("struct", "class")
-    for keyword in keywords:
-        syntax = Literal(keyword) + identifier_name
-        parsed = syntax.searchString(code).asList()
-        if len(parsed):
-            self.add_error(label="FIRST_CHAR",
-                           data={"keyword": keyword,
-                                 "expected": str(parsed[0][1]).capitalize(),
-                                 "found": str(parsed[0][1])})
-            return
+    lowercase = re.compile("(?:^|\s+)(?:class|struct)\s+(?:[a-z]|_)\w+")
+    bad_naming = lowercase.search(code)
+    if bad_naming:
+        result = bad_naming.group(0).split()
+        self.add_error(label="FIRST_CHAR",
+                       data={"keyword": result[0],
+                             "expected": str(result[1]).capitalize(),
+                             "found": str(result[1])})
 
 def check_unnecessary_include(self, code):
     grammar = Literal('#') + Literal('include') + Literal('<') + Word(alphanums)

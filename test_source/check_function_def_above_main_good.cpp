@@ -1,6 +1,6 @@
 using namespace std;
 
-void myFn(void);
+//void myFn(void);
 
 MyStruct my_Function(Garbage &stuff);
 
