@@ -6,11 +6,11 @@
 
 2) Download pip if you do not have it (tool to install python dependencies).
 
-http://pip.readthedocs.org/en/latest/installing.html
+> http://pip.readthedocs.org/en/latest/installing.html
 
 3) You will also need to run the command in the root directory of your project:
 
-pip install virtualenv
+> pip install virtualenv
 
 4) This created a virtual environment for you to use.  You will need to activate the virtual environment:
 
