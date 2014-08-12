@@ -201,7 +201,7 @@ def check_operator_regex(code, operator):
             elif operator == '=':
                 if left_symbol == '+' or left_symbol == '-':
                     return 0
-                if right_symbol or left_symbol == '=':
+                if right_symbol == '=' or left_symbol == '=':
                     return 0
 
             else:
