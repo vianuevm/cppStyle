@@ -1,4 +1,4 @@
-![alt tag](https://raw.github.com/vianuevm/183_style_grader/master/app/static/img/splashy.jpg)
+![alt tag](https://raw.github.com/vianuevm/183_style_grader/master/app/static/img/388.jpg)
 
 #183 Style 1.0 
 
