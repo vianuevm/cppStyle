@@ -2,49 +2,53 @@
 183 Style 1.0 
 ==========================================================================================================================
 
-1) Clone the git hub repository.
+1. Clone the git hub repository.
 
-2) Download pip if you do not have it (tool to install python dependencies).
+2. Download pip if you do not have it (tool to install python dependencies).
 
 http://pip.readthedocs.org/en/latest/installing.html
 
-3) You will also need to run the command in the root directory of your project:
+3. You will also need to run the command in the root directory of your project:
 
 pip install virtualenv
 
-4) This created a virtual environment for you to use.  You will need to activate the virtual environment:
+4. This created a virtual environment for you to use.  You will need to activate the virtual environment:
 
 In Mac/Linux:
 In the root directory type:
 
-a) virtualenv ENV
-b) cd source ENV/bin/activate
+- virtualenv ENV
+-  cd source ENV/bin/activate
 
 In Windows (in dos):
 In the root directory
 
-a) virtualenv ENV
-b) cd ENV\Scripts
-c) activate
+- virtualenv ENV
+- cd ENV\Scripts
+- activate
 
-4) Now you need to run the command: 
+5. Now you need to run the command: 
 
 Windows:
-    venv\Scripts\pip install -r requirements.txt
+'''
+venv\Scripts\pip install -r requirements.txt
+'''
 
 Mac/Linux
-    venv\bin\pip install -r requirements.txt
+'''
+venv\bin\pip install -r requirements.txt
+'''
 
-5) in the root directory you will need to create/setup the database
+6. in the root directory you will need to create/setup the database
 
-a) ./db_create.py
-b) ./db_upgrade.py
+- ./db_create.py
+- ./db_upgrade.py
 
-6) In the root directory run the application:
-
+7. In the root directory run the application:
+'''
     ./run.py 
-
-7) Go to http://127.0.0.1:5000 - You're up and running locally for development!
+'''
+8. Go to http://127.0.0.1:5000 - You're up and running locally for development!
 
 
 Open Source Used:
