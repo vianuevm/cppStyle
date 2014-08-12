@@ -163,3 +163,35 @@ def check_local_include(self, code):
     except ParseException:
         return
 
+
+def check_for_loop_semicolon_spacing(self, code):
+    # Match the semicolons and any whitespace around them.
+    for_loop_regex = re.compile(
+        r"\s*for\s*\([^;]*?(\s*;\s*)[^;]*?(\s*;\s*)[^;]*?\)"
+    )
+    match = for_loop_regex.search(code)
+    if not match:
+        return
+
+    # A 2-tuple of booleans: before-spacing and after-spacing.
+    self.for_loop_spacing = getattr(self, "for_loop_spacing", None)
+
+    semicolons = match.group(1), match.group(2)
+
+    def is_spacing_okay(semicolon):
+        spacing = (
+            semicolon.startswith(" "),
+            semicolon.endswith(" ")
+        )
+
+        if self.for_loop_spacing is None:
+            self.for_loop_spacing = spacing
+            return True
+
+        return spacing == self.for_loop_spacing
+
+    if not all(is_spacing_okay(i) for i in semicolons):
+        self.add_error(
+            label="FOR_LOOP_SEMICOLON_SPACING",
+            data={"line": self.current_line_num}
+        )
