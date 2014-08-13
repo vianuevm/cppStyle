@@ -6,7 +6,7 @@ YAHOO.util.Event.onDOMReady(function() {
         var konami = new Konami();
         konami.pattern = "384069696783495651";
         konami.code = function() {
-            alert("You unlimited submits!");
+            alert("You have unlimited submits!");
         };
         konami.load();
     }
