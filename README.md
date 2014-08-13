@@ -1,16 +1,16 @@
 #183 Style 1.0
 
-###1) Clone the git hub repository.
+1) Clone the git hub repository.
 
-###2) Download pip if you do not have it (tool to install python dependencies).
+2) Download pip if you do not have it (tool to install python dependencies).
 
 - http://pip.readthedocs.org/en/latest/installing.html
 
-###3) You will also need to run the command in the root directory of your project:
+3) You will also need to run the command in the root directory of your project:
 
 - pip install virtualenv
 
-###4) This created a virtual environment for you to use. You will need to activate the virtual environment:
+4) This created a virtual environment for you to use. You will need to activate the virtual environment:
 
 In Mac/Linux:
 
@@ -23,7 +23,7 @@ In Windows (in dos):
 - cd ENV\Scripts
 - activate
 
-###5) Now you need to run the command:
+5) Now you need to run the command:
 
 Windows:
 
@@ -31,15 +31,18 @@ Windows:
 - Mac/Linux
 - venv\bin\pip install -r requirements.txt
 
-###6) in the root directory you will need to create/setup the database
+6) in the root directory you will need to create/setup the database
 
 - ./db_create.py
 - ./db_upgrade.py
 - 
-###7) In the root directory run the application:
+
+7) In the root directory run the application:
+
 - ./run.py
 
-###8) Go to http://127.0.0.1:5000 - You're up and running locally for development!
+8) Go to http://127.0.0.1:5000 - You're up and running locally for development!
+
 
 #Open Source Used:
 
