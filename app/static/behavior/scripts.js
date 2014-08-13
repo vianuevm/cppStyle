@@ -1,3 +1,19 @@
+YAHOO.util.Event.onDOMReady(function() {
+
+    // initialize Konami Code
+    if (typeof(Konami) != "undefined")
+    {
+        var konami = new Konami();
+        konami.pattern = "384069696783495651";
+        konami.code = function() {
+            alert("You unlimited submits!");
+        };
+        konami.load();
+    }
+
+});
+
+
 $(document).ready(function()
 {
 	// hide navigation if not logged in
