@@ -31,12 +31,6 @@ Windows:
 - Mac/Linux
 - venv\bin\pip install -r requirements.txt
 
-6) in the root directory you will need to create/setup the database
-
-- ./db_create.py
-- ./db_upgrade.py
-- 
-
 7) In the root directory run the application:
 
 - ./run.py
