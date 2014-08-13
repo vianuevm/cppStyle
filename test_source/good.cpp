@@ -1,4 +1,4 @@
-/**
+/*
  * good.cpp
  *
  * First Last
@@ -30,5 +30,6 @@ int main(int argc, const char * argv[])
 
 void greet(void)
 {
+    cout << "o hai world!" << endl;
     cout << "o hai world!" << endl;
 }

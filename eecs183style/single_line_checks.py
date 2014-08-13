@@ -2,7 +2,6 @@ from style_grader_functions import check_if_function, check_operator_regex, chec
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, srange
 import re
 
-
 def check_function_def_above_main(self, code):
     prototype = check_if_function_prototype(code)
     function = check_if_function(code)
@@ -10,24 +9,23 @@ def check_function_def_above_main(self, code):
     if len(inside.searchString(code)):
         return
     elif function and not prototype and self.outside_main:
-        function_syntax = Word(alphanums + '_') + Literal('(')
-        parsed = function_syntax.searchString(code).asList()
-        function_name = parsed[0][0]
+        function_regex = re.compile("^\s*(\w+)\s+(\w+)")
+        match = function_regex.search(code)
+        function_name = match.group(2) if match else "NOT_FOUND"
         self.add_error(label = "DEFINITION_ABOVE_MAIN", data={'function': function_name})
 
-
 def check_int_for_bool(self, code):
-    returnVal = Literal("return")
-    if len(returnVal.searchString(code)): 
-       # make sure it's not the end of a word
-        list_of_line = code.split(' ')
-        if len(list_of_line) > 2:
-            #TODO Figure out what you want to take off with a more than one statement on return line
-            pass
-        else:
-            code = code[6:].strip()
-            if code.isdigit():
-                self.add_error(label="INT_FOR_BOOL")
+    if check_if_function(code):
+        function_regex = re.compile("^\s*(\w+)\s+(\w+)")
+        match = function_regex.search(code)
+        if match:
+            self.current_function = (match.group(1), match.group(2))
+    current_function = getattr(self, "current_function", ("", ""))
+
+    return_regex = re.compile("\s*return\s+(\w+)")
+    match = return_regex.search(code)
+    if match and match.group(1).isdigit() and current_function[0] == "bool":
+        self.add_error(label="INT_FOR_BOOL")
 
 def check_operator_spacing(self, code):
     # Check normal operators
@@ -66,38 +64,35 @@ def check_operator_spacing(self, code):
             self.spacer.asts_right = True
 
 def check_equals_true(self, code):
-    variable = Word(alphanums)
     keyword = Literal("true") | Literal("false")
-    statement_parser = Group(variable + "==" + keyword) | Group(keyword + "==" + variable)
+    statement_parser = Group("==" + keyword) | Group(keyword + "==")
     if len(statement_parser.searchString(code)):
-        self.add_error(label="EQUALS_TRUE") 
+        self.add_error(label="EQUALS_TRUE")
 
 def check_goto(self, code):
-    match = Literal("goto")
-    if len(match.searchString(code)):
+    # Hacky but gets the job done for now - has holes though
+    q_goto = re.compile('\".*goto.*\"')
+    r_goto = re.compile('(?:\s+|^|\{)goto\s+')
+    if r_goto.search(code) and not q_goto.search(code):
         self.add_error(label="GOTO")
 
 def check_define_statement(self, code):
-    match = Literal("#")+Literal("define")
-    if len(match.searchString(code)):
+    q_define = re.compile('\".*(?:\s+|^)#\s*define\s+.*\"')
+    r_define = re.compile('(?:\s+|^)#\s*define\s+')
+    if r_define.search(code) and not q_define.search(code):
         self.add_error(label="DEFINE_STATEMENT")
 
-def check_stringstream(self, code):
-    match = Literal("#")+Literal("include")+Literal("<sstream>")
-    try: match.parseString(code)
-    except ParseException: pass
-    else: self.add_error(label="STRINGSTREAM")
-
 def check_continue(self, code):
-    quoted_continue = '"'+SkipTo(Literal("continue"))+"continue"+SkipTo(Literal('"'))+'"'
-    if len(Literal("continue").searchString(code)) and not len(quoted_continue.searchString(code)):
+    # Hacky but gets the job done for now - has holes though
+    q_continue = re.compile('\".*continue.*\"')
+    r_continue = re.compile('(?:\s+|^|\{)continue\s*;')
+    if r_continue.search(code) and not q_continue.search(code):
         self.add_error(label="CONTINUE_STATEMENT")
 
 def check_ternary_operator(self, code):
-    # This is really easy - ternary operators require the conditional operator "?",
-    # which has no other application in C++. Since we're parsing out comments, it's as easy as:
-    quoted_ternary = '"'+SkipTo(Literal("?"))+"?"+SkipTo(Literal('"'))+'"'
-    if len(Literal("?").searchString(code)) and not len(quoted_ternary.searchString(code)):
+    q_ternary = re.compile('\".*\?.*\"')
+    r_ternary = re.compile('\?')
+    if r_ternary.search(code) and not q_ternary.search(code):
         self.add_error(label="TERNARY_OPERATOR")
 
 def check_while_true(self, code):
@@ -112,21 +107,19 @@ def check_non_const_global(self, code):
 
     if self.outside_main:
         function = check_if_function(code)
-        variable = LineStart()+Word(alphanums+"_")+Word(alphanums+"_")
-        special_keywords = LineStart()+Literal("using") | LineStart()+Literal("class") | LineStart()+Literal("struct")
-        constant = LineStart()+Optional("static")+Literal("const")
-        if not function and len(variable.searchString(code)) and \
-           not len(special_keywords.searchString(code)) and \
-           not len(constant.searchString(code)):
+        variables = variables = re.compile("^(?:\w|_)+\s+(?:\w|_|\[|\])+\s*=\s*.+;")
+        keywords = re.compile("^\s*(?:using|class|struct)")
+        constants = re.compile("^\s*(?:static\s+)?const")
+        if not function and variables.search(code) and \
+           not keywords.search(code) and \
+           not constants.search(code):
             self.add_error(label="NON_CONST_GLOBAL")
-
-
 
 def check_main_syntax(self, code):
     #Return value for main is optional in C++11
     parser = Literal("int")+Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")
     if len(parser.searchString(code)):
-        main_prefix = Literal("main")+Literal("(")
+        main_prefix = Literal("int")+Literal("main")+Literal("(")
         full_use = Literal("int")+"argc"+","+Optional("const")+"char"+"*"+"argv"+"["+"]"+")"
         # 3 options for main() syntax
         if not len((main_prefix+Literal(")")).searchString(code)) and \
@@ -136,17 +129,14 @@ def check_main_syntax(self, code):
 
 def check_first_char(self, code):
     # check if the first char is lower-case alpha or '_'
-    identifier_name = Word(srange("[a-z]") + "_", alphanums + "_")
-    keywords = ("struct", "class")
-    for keyword in keywords:
-        syntax = Literal(keyword) + identifier_name
-        parsed = syntax.searchString(code).asList()
-        if len(parsed):
-            self.add_error(label="FIRST_CHAR",
-                           data={"keyword": keyword,
-                                 "expected": str(parsed[0][1]).capitalize(),
-                                 "found": str(parsed[0][1])})
-            return
+    lowercase = re.compile("(?:^|\s+)(?:class|struct)\s+(?:[a-z]|_)\w+")
+    bad_naming = lowercase.search(code)
+    if bad_naming:
+        result = bad_naming.group(0).split()
+        self.add_error(label="FIRST_CHAR",
+                       data={"keyword": result[0],
+                             "expected": str(result[1]).capitalize(),
+                             "found": str(result[1])})
 
 def check_unnecessary_include(self, code):
     grammar = Literal('#') + Literal('include') + Literal('<') + Word(alphanums)
@@ -173,3 +163,35 @@ def check_local_include(self, code):
     except ParseException:
         return
 
+
+def check_for_loop_semicolon_spacing(self, code):
+    # Match the semicolons and any whitespace around them.
+    for_loop_regex = re.compile(
+        r"\s*for\s*\([^;]*?(\s*;\s*)[^;]*?(\s*;\s*)[^;]*?\)"
+    )
+    match = for_loop_regex.search(code)
+    if not match:
+        return
+
+    # A 2-tuple of booleans: before-spacing and after-spacing.
+    self.for_loop_spacing = getattr(self, "for_loop_spacing", None)
+
+    semicolons = match.group(1), match.group(2)
+
+    def is_spacing_okay(semicolon):
+        spacing = (
+            semicolon.startswith(" "),
+            semicolon.endswith(" ")
+        )
+
+        if self.for_loop_spacing is None:
+            self.for_loop_spacing = spacing
+            return True
+
+        return spacing == self.for_loop_spacing
+
+    if not all(is_spacing_okay(i) for i in semicolons):
+        self.add_error(
+            label="FOR_LOOP_SEMICOLON_SPACING",
+            data={"line": self.current_line_num}
+        )
