@@ -37,7 +37,7 @@ ReadTheDocs coming soon, once things actually work well enough to merit document
             ...
             
 
-4) If/when an error is discovered, the StyleRubric class adds an instance of the StyleError class to its ever growing list of errors.  This list is eventually returned as the final result.
+4) If an error is discovered, the StyleRubric class adds an instance of the StyleError class to its ever growing list of errors.  This list is eventually returned as the final result.
 
 
 
