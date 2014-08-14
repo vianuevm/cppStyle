@@ -4,7 +4,11 @@
 
 2) Download pip if you do not have it (tool to install python dependencies).
 
+<<<<<<< HEAD
 - http://pip.readthedocs.org/en/latest/installing.html
+=======
+183style is the backend of the automated C++ style grader written for and used by EECS 183 at the University of Michigan. This package is continuously integrated into [https://github.com/vianuevm/183_style_grader](https://github.com/vianuevm/183_style_grader), which provides the front-end interface for students to interact with the grader.
+>>>>>>> stevemer/master
 
 3) You will also need to run the command in the root directory of your project:
 
