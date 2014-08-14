@@ -15,12 +15,19 @@ Web application grades students' .cpp and .h files for EECS 183, a computer scie
 
 * Activate the virtual environment
 
-> virtualevn ENV
-> In Windows: ENV\Scripts\activate
-> In iOS/Linux: source ENV/bin/activate
+  > virtualevn ENV
+  
+  
+  > In Windows: ENV\Scripts\activate
+  
+  
+  > In iOS/Linux: source ENV/bin/activate
+  
 
 * Install Dependencies
+
 > ENV\Scripts\pip install -r requirements.txt (Mac replace Scripts with bin)
+
 
 * From root, ./run.py -- The website is now up and running locally.
 
