@@ -7,7 +7,7 @@
 [![Stories in Ready](https://badge.waffle.io/stevemer/183style.png?label=ready&title=Ready)](http://waffle.io/stevemer/183style)
 
 
-183style is the backend of the automated C++ style grader written for and used by EECS 183 at the University of Michigan.
+183style is the backend of the automated C++ style grader written for and used by EECS 183 at the University of Michigan. This package is continuously integrated into [https://github.com/vianuevm/183_style_grader](https://github.com/vianuevm/183_style_grader), which provides the front-end interface for students to interact with the grader.
 
 ##Installing
 
