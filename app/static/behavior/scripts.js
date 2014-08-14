@@ -1,5 +1,7 @@
 $(document).ready(function()
 {
+	$('input[type=file]').bootstrapFileInput();
+
 	// hide navigation if not logged in
 	if (window.location.href.indexOf('login') > -1)
 	{
