@@ -74,10 +74,19 @@ h1 {
 	text-align: center;
 	float: none;
 	margin: 48px auto;
-	
+
 	/* override Bootstrap's 100% width for form controls */
     width: 480px;
     background-color: rgba(244,244,244,0.76);
+}
+
+.modal-dialog
+{
+  width: 80%;
+  opacity: .9;
+  display: block;
+  text-align: left;
+
 }
 
 
@@ -117,4 +126,47 @@ a, a:focus, a:hover
   color: #fff;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
   border-bottom-color: #fff;
+}
+
+.modal-body {
+  margin-left: 20px;
+}
+
+.modal .masthead-brand
+{
+  color: black;
+}
+
+.modal-header {
+  background-color: #36454F ;
+  color: white;
+
+}
+
+.modal-body {
+  font-weight: 500;
+  color: black; /* IE8 proofing */
+  color: rgba(24,24,24,0.75);
+  border-bottom: 2px solid transparent;}
+
+.modal .masthead-nav > li > a
+{
+  font-weight: 500;
+  color: black; /* IE8 proofing */
+  color: rgba(24,24,24,0.75);
+  border-bottom: 2px solid transparent;
+}
+.modal .masthead-nav > li > a:hover,
+.modal .masthead-nav > li > a:focus
+{
+  background-color: transparent;
+  border-bottom-color: #919191;
+  border-bottom-color: rgba(50,50,50,0.29);
+}
+.modal .masthead-nav > .active > a,
+.modal .masthead-nav > .active > a:hover,
+.modal .masthead-nav > .active > a:focus
+{
+  color: black;
+  border-bottom-color: black;
 }

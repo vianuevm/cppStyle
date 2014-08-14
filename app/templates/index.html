@@ -3,7 +3,7 @@
 
 {% block content %}
 	<link href="/static/presentation/index.css" rel="stylesheet">
-	
+
 	<div class="panel panel-default" id="main-panel">
 		<div class="panel-heading">
 			<h3 class="panel-title">183style 1.0</h3>
@@ -17,8 +17,33 @@
 				<div class="form-group">
 					<input type="file" id="code-input" data-filename-placement="inside" title="Select files" multiple name="file[]" class="btn-primary" />
 				</div>
-				<button type="submit" id="code-submission" class="btn btn-primary" disabled>Submit to 183style</button>
+				<button data-toggle="modal" href="#myModal" type="submit" id="code-submission" class="btn btn-primary" disabled>Submit to 183style</button>
 			</form>
+			<div class="container">
+			<div class="modal" id="myModal">
+				<div class="modal-dialog wide-modal">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			          <h2 class="modal-title">Feedback</h4>
+			        </div>
+			        <div class="modal-body">
+
+			           {% if errors %}
+			           <ul class="list-unstyled">
+			           {% for error in errors %}
+					        <li><b> Line </b> {{error}} </li>
+					    {% endfor %}
+					    </ul>
+					    {% endif %}
+			        </div>
+			        <div class="modal-footer">
+			          <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+			        </div>
+			      </div>
+			    </div>
+			</div>
+			</div>
 		</div>
 	</div>
 	<div id="footer">
@@ -26,13 +51,15 @@
 		<h5>Photo by: <a href="https://www.flickr.com/photos/michigan-engineering">Joseph Xu</a></h5>
 	</div>
 
-    
+	<script>
+	var errors = '{{errors}}';
+	if(errors) {
+		$('#myModal').modal({show:true})
+		errors = [];
+		updateForm();
+	}
+	</script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
     <script src="/static/behavior/bootstrap-file-input/bootstrap.file-input.js"></script>
-    <script>
-      $(document).ready(function(){
-        $('input[type=file]').bootstrapFileInput();
-      });
-    </script>
 {% endblock %}
