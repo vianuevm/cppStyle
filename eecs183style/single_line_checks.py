@@ -80,7 +80,12 @@ def check_define_statement(self, code):
     q_define = re.compile('\".*(?:\s+|^)#\s*define\s+.*\"')
     r_define = re.compile('(?:\s+|^)#\s*define\s+')
     if r_define.search(code) and not q_define.search(code):
-        self.add_error(label="DEFINE_STATEMENT")
+        words = code.split()
+        # They shouldn't be using __MY_HEADER_H__ because __-names are
+        # reserved, but we'll allow it anyways.
+        legal_endings = ["_H", "_H__"]
+        if not any(words[-1].endswith(i) for i in legal_endings):
+            self.add_error(label="DEFINE_STATEMENT")
 
 def check_continue(self, code):
     # Hacky but gets the job done for now - has holes though
