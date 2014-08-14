@@ -143,6 +143,6 @@ class StyleRubric(object):
                 print_success()
             for error in errors:
                 print error
-                error_list.append("Line number " + str(error))
+                error_list.append(str(error))
             print
         return error_list
