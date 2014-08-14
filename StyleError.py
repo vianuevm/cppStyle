@@ -115,6 +115,7 @@ class StyleError(object):
                                                                                                             self.get_data().get("lines"),
                                                                                                             'line' if self.get_data().get("lines") == 1 else 'lines'),
             "DEFINITION_ABOVE_MAIN": "{} is implemented above main. Keep function definitions below main or in a separate .cpp file.".format(self.get_data().get("function")),
+            "FOR_LOOP_SEMICOLON_SPACING": "The loop on line {} doesn't have consistent spacing around its semicolons.".format(self.get_data().get("line")),
         }[label]
 
 

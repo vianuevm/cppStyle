@@ -1,23 +1,38 @@
-from pyparsing import Literal, Word, Optional, ParseException, alphanums, Keyword
+from collections import Counter
 import getopt
 import re
 
+from pyparsing import Literal, Word, Optional, ParseException, alphanums, Keyword, srange
+
+class EmptyFileException(object):
+    pass
+
+def get_indent_level(filename):
+    data = filename.readlines()
+    indent_re = re.compile('^\s+\w')
+    results = []
+    for line in data:
+        match = indent_re.search(line)
+        if match:
+            results.append(len(match.group(0))-1)
+    return Counter(results).most_common(1)[0] if results else 4
+
 def check_if_function(code):
-    return_type = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
-    function_name = Word(alphanums + '_' + ':')
-    args = Word(alphanums + ',' + ' ' + '_')
+    return_type = Word(alphanums + '_[]') # Bad style to have "_" but syntactically valid
+    function_name = Word(alphanums + '_:')
+    args = Word(alphanums + ',_[]&* ')
     function_open = Literal("{")
     function_close = Literal("}")
-    function_declaration = return_type + function_name + "(" + Optional(args) + ")"
+    function_declaration = Optional(srange("[a-z]")) + return_type + function_name + "(" + Optional(args) + ")"
     grammar = function_declaration + Optional(function_open)
     if len(grammar.searchString(code)):
         return True
     return False
 
 def check_if_function_prototype(code):
-    return_type = Word(alphanums + '_') # Bad style to have "_" but syntactically valid
-    function_name = Word(alphanums + '_' + ':')
-    args = Word(alphanums + ',' + ' ' + '_')
+    return_type = Word(alphanums + '_[]') # Bad style to have "_" but syntactically valid
+    function_name = Word(alphanums + '_:')
+    args = Word(alphanums + ',_[]&* ')
     function_open = Literal("{")
     function_close = Literal("}")
     function_declaration = return_type + function_name + "(" + Optional(args) + ")" + Optional(" ") + ";"
@@ -186,7 +201,7 @@ def check_operator_regex(code, operator):
             elif operator == '=':
                 if left_symbol == '+' or left_symbol == '-':
                     return 0
-                if right_symbol or left_symbol == '=':
+                if right_symbol == '=' or left_symbol == '=':
                     return 0
 
             else:

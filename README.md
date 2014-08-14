@@ -1,56 +1,42 @@
 ![alt tag](https://raw.github.com/vianuevm/183_style_grader/master/app/static/img/388.jpg)
 
-#183 Style 1.0 
 
 
-1) Clone the git hub repository.
+183style
+================
 
-2) Download pip if you do not have it (tool to install python dependencies).
+Web application grades students' .cpp and .h files for EECS 183, a computer science course at University of Michigan.
 
+
+
+##Setup for Web Development
+
+* Download pip the package manager.
 > http://pip.readthedocs.org/en/latest/installing.html
 
-3) You will also need to run the command in the root directory of your project:
-
+* Download virtual environment:
 > pip install virtualenv
 
-4) This created a virtual environment for you to use.  You will need to activate the virtual environment:
+* Activate the virtual environment
 
-In Mac/Linux:
--  virtualenv ENV
--  cd source ENV/bin/activate
+  > virtualevn ENV
+  
+  
+  > In Windows: ENV\Scripts\activate
+  
+  
+  > In iOS/Linux: source ENV/bin/activate
+  
 
-In Windows (in dos):
-- virtualenv ENV
-- cd ENV\Scripts
-- activate
+* Install Dependencies
 
-5) Now you need to run the command: 
-
-Windows:
-
-> venv\Scripts\pip install -r requirements.txt
+> ENV\Scripts\pip install -r requirements.txt (Mac replace Scripts with bin)
 
 
-Mac/Linux
-
-> venv\bin\pip install -r requirements.txt
+* From root, ./run.py -- The website is now up and running locally.
 
 
-6) in the root directory you will need to create/setup the database
+##Setup for Backend Development
 
-- ./db_create.py
-- ./db_upgrade.py
-
-7) In the root directory run the application:
-
->  ./run.py 
-
-8) Go to http://127.0.0.1:5000 - You're up and running locally for development!
-
-
-Open Source Used:
-==========================================================================================================================
-  - The Style Grader takes advantage of google's cpplint for helping to parse some of the code, as well as stripping the code of garbage/comments
-  -  PyParsing is used in cases where RegEx is not powerful enough to capture complex grammar (function prototypes, headers)
-  - This project used Miguel Grindberg's microblog open source project as a base point for the backend web service.  He has an awesome tutorial on Flask web development here: http://blog.miguelgrinberg.com/
-
+* Specifications on which files to read are in rubric.ini
+* Specify which files, and hit run.  (more to come, and it's probably going to change for the final grader)
