@@ -218,7 +218,7 @@ def check_operator_regex(code, operator):
                 right_code = right_not_wspace.group()
                 right_symbol = right_code[1]
                 operator = right_symbol[0]
-                if right_symbol != operator or right_symbol != '=' or right_symbol != '(':
+                if right_symbol != operator and right_symbol != '=' and right_symbol != '(':
                     return right_not_wspace.regs[0][0] + 1
     else:
         return 0

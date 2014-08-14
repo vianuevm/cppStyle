@@ -29,8 +29,8 @@ def check_int_for_bool(self, code):
 
 def check_operator_spacing(self, code):
     # Check normal operators
-    for operator in ['+', '-', '/', '%']:
-        column_num = check_operator_regex(code, '\{}'.format(operator))
+    for operator in ['\+', '-', '/', '%']:
+        column_num = check_operator_regex(code, operator)
         if column_num:
             data = {'operator': operator}
             self.add_error(label="OPERATOR_SPACING", column=column_num, data=data)
