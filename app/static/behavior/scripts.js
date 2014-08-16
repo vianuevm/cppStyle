@@ -14,10 +14,8 @@ YAHOO.util.Event.onDOMReady(function() {
 });
 
 
-$(document).ready(function()
-{
-	function updateForm()
-	{
+$(document).ready(function() {
+	function updateForm() {
 		if (!$('#code-input').val())
 		{
 			$('#code-submission').attr("disabled", "disabled");
@@ -28,16 +26,32 @@ $(document).ready(function()
 		}
 	}
 
+	function closeFeedback() {
+		var ul = document.getElementById("errorlist");
+		var items = ul.getElementsByTagName("li");
+		var itemLength = items.length;
+		while(items.length) {
+			items[0].remove();
+		}
+	}
+
 	$('input[type=file]').bootstrapFileInput();
 
 	// hide navigation if not logged in
-	if (window.location.href.indexOf('login') > -1)
-	{
+	if (window.location.href.indexOf('login') > -1) {
 		$('.navigation').hide();
 	}
 
-	$('#code-input').on("change", function(){ updateForm(); });
+	$('.closeBtn').on("click", function() {
+		closeFeedback();
+	});
+
+	$('#code-input').on("change", function(){ 
+ 		updateForm(); 
+	});
+
 	updateForm();
+
     $('#upload-file-btn').click(function() {
         var form_data = new FormData($('#upload-file')[0]);
         $.ajax({
@@ -57,7 +71,6 @@ $(document).ready(function()
 					console.log(v);
 					}
 				);
-
 			},
 		});
 	});
