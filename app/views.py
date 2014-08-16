@@ -1,5 +1,5 @@
 import os
-from flask import render_template, redirect, session, url_for, request, send_from_directory
+from flask import render_template, redirect, session, url_for, request, send_from_directory, jsonify
 from app import app
 from werkzeug import secure_filename
 from style_grader_main import style_grader_driver
@@ -31,8 +31,8 @@ def index():
     return render_template('index.html',
         title = 'Home')
 
-@app.route('/upload', methods=['POST'])
-def upload():
+@app.route('/uploadajax', methods=['POST'])
+def add_numbers():
     # Get the name of the uploaded files
     uploaded_files = request.files.getlist("file[]")
     filenames = []
@@ -56,7 +56,7 @@ def upload():
     # db.session.add(sub)
     # db.session.commit()
 
-    return render_template('index.html', filenames=filenames, errors=response )
+    return jsonify(errors=response)
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
