@@ -259,4 +259,5 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from app import app
-app.run(debug = True)
+if __name__ == "__main__":
+    app.run()
