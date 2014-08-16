@@ -170,3 +170,13 @@ a, a:focus, a:hover
   color: black;
   border-bottom-color: black;
 }
+
+#feedback-body
+{
+	font-family: "Menlo", monospace;
+}
+
+.message-success
+{
+	color: green;
+}
