@@ -18,10 +18,21 @@
   margin-top: 10px;
 }
 
+
+
 h1.styleHeader {
   color: yellow;
   opacity: .8;
   margin-top: 10px;
+}
+
+textarea {
+  width: 60%;
+  height: 35%;
+}
+
+#umich {
+  width: 60%;
 }
 
 div.container.footerContainer {
@@ -86,10 +97,7 @@ h1 {
   opacity: .9;
   display: block;
   text-align: left;
-
 }
-
-
 
 /* Links */
 a, a:focus, a:hover
@@ -137,10 +145,11 @@ a, a:focus, a:hover
   color: black;
 }
 
+
+
 .modal-header {
   background-color: #36454F ;
   color: white;
-
 }
 
 .modal-body {
