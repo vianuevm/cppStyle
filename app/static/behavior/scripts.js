@@ -67,15 +67,19 @@ $(document).ready(function() {
 				$.each(
 					data.errors,
 					function(i,v) {
-
-					if(!v.search("Grading ")) {
-						$("#errorlist").append("<li><h4>" + v + "</h4></li>") ;
-					} else {
-						$("#errorlist").append("<li>" + v + "</li>");
+						if(!v.search("Grading ")) {
+							$("#errorlist").append("<li><h4>" + v + "</h4></li>") ;
+						} else {
+							$("#errorlist").append("<li class='message-error'>" + v + "</li>");
 					}
 					console.log(v);
 					}
 				);
+                if (data.errors.length === 1)
+                {
+                	// no errors
+                	$("#errorlist").append("<li class='message-success'>No errors have been found! :)</li>");
+                }
 			},
 		});
 	});
