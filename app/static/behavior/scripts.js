@@ -67,7 +67,6 @@ $(document).ready(function() {
 				$.each(
 					data.errors,
 					function(i,v) {
-
 					if(!v.search("Grading ")) {
 						$("#errorlist").append("<li><h4>" + v + "</h4></li>") ;
 					} else {
@@ -76,6 +75,11 @@ $(document).ready(function() {
 					console.log(v);
 					}
 				);
+                if (data.errors.length === 1)
+                {
+                	// no errors
+                	$("#errorlist").append("<li>No errors have been found! :)</li>");
+                }
 			},
 		});
 	});
