@@ -27,7 +27,7 @@ h1.styleHeader {
 }
 
 textarea {
-  width: 60%;
+  width: 95%;
   height: 35%;
 }
 
@@ -91,12 +91,22 @@ h1 {
     background-color: rgba(244,244,244,0.76);
 }
 
+
+
 .modal-dialog
 {
   width: 80%;
   opacity: .9;
   display: block;
   text-align: left;
+}
+
+ .debugDialog {
+  width: 50%;
+  opacity: .9;
+  display: block;
+  text-align: left;
+
 }
 
 /* Links */
