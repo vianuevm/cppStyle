@@ -93,7 +93,7 @@ h1 {
 
 
 
-.modal-dialog
+.feedBackDialog
 {
   width: 80%;
   opacity: .9;
@@ -102,7 +102,6 @@ h1 {
 }
 
  .debugDialog {
-  width: 50%;
   opacity: .9;
   display: block;
   text-align: left;
