@@ -172,30 +172,72 @@ def check_local_include(self, code):
 def check_for_loop_semicolon_spacing(self, code):
     # Match the semicolons and any whitespace around them.
     for_loop_regex = re.compile(
-        r"\s*for\s*\([^;]*?(\s*;\s*)[^;]*?(\s*;\s*)[^;]*?\)"
+        r"""
+        \s*for\s*\(
+            (?P<code1>[^;]*?)
+
+            (?P<semicolon1>\s*;\s*)
+
+            (?P<code2>[^;]*?)
+
+            (?P<semicolon2>\s*;\s*)
+
+            (?P<code3>[^;]*?)
+        \)
+        """,
+        re.VERBOSE
     )
     match = for_loop_regex.search(code)
     if not match:
         return
 
-    # A 2-tuple of booleans: before-spacing and after-spacing.
-    self.for_loop_spacing = getattr(self, "for_loop_spacing", None)
+    self.for_loop_spacing_before = getattr(self, "for_loop_spacing_before", None)
+    self.for_loop_spacing_after = getattr(self, "for_loop_spacing_after", None)
 
-    semicolons = match.group(1), match.group(2)
+    semicolon1 = match.group("semicolon1")
+    semicolon2 = match.group("semicolon2")
+    code1 = match.group("code1")
+    code2 = match.group("code2")
+    code3 = match.group("code3")
 
-    def is_spacing_okay(semicolon):
-        spacing = (
-            semicolon.startswith(" "),
-            semicolon.endswith(" ")
-        )
+    def is_spacing_okay(semicolon, before_code, after_code):
+        spacing_before = semicolon.startswith(" ")
+        spacing_after = semicolon.endswith(" ")
 
-        if self.for_loop_spacing is None:
-            self.for_loop_spacing = spacing
-            return True
+        def check_spacing(convention, actual):
+            if convention is None:
+                convention = actual
 
-        return spacing == self.for_loop_spacing
+            if convention != actual:
+                return convention, False
+            else:
+                return convention, True
 
-    if not all(is_spacing_okay(i) for i in semicolons):
+        if before_code or after_code:
+            if before_code:
+                self.for_loop_spacing_before, result = check_spacing(
+                    self.for_loop_spacing_before,
+                    spacing_before
+                )
+                if not result:
+                    return False
+            if after_code:
+                self.for_loop_spacing_after, result = check_spacing(
+                    self.for_loop_spacing_after,
+                    spacing_after
+                )
+                if not result:
+                    return False
+        else:
+            # This is a plain semicolon, so we can't infer anything about the
+            # spacing convention.
+            pass
+        return True
+
+    if not (
+        is_spacing_okay(semicolon1, code1, code2)
+        and is_spacing_okay(semicolon2, code2, code3)
+    ):
         self.add_error(
             label="FOR_LOOP_SEMICOLON_SPACING",
             data={"line": self.current_line_num}
