@@ -21,7 +21,7 @@ import misc_checks
 import single_line_checks
 import adjustments
 
-LOCAL_DIR = os.getcwd()
+LOCAL_DIR = os.path.dirname(os.path.realpath(__file__))
 
 def safely_open(filename):
     try:
