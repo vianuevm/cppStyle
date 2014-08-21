@@ -11,7 +11,7 @@
 
 ##Installing
 
-For now, just ```git clone``` the repository - eventually this will be packaged and added to PyPI.
+For now, just ```git clone``` the repository and run `python setup.py install` --  eventually this will be packaged and added to PyPI.
 
 ##Getting Started with 183style
 
