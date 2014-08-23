@@ -9,11 +9,8 @@
         <!--need an icon, add later-->
         
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
-
 		<meta name="description" content="183style is a style grader for EECS 183, University of Michigan's intoductory computer science course.">
 		<meta name="keywords" content="183style EECS CS 183 Computer Science style grader electrical engineering umich michigan university lsa coe">
-
-
         <title>183style</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -23,22 +20,13 @@
         <link href="/static/presentation/base.css" rel="stylesheet">
 	</head>
   <body>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul>
-    {% for message in messages %}
-        <li>{{ message }} </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+
     <div class="container" id="main-container">
 	    <div class="navigation">
 			<h3 class="masthead-brand">183style</h3>
 			<ul class="nav masthead-nav">
+                <li><a href="mailto:183debug@gmail.com?Subject=Reporting an Error&body= Provide a detailed description of how to replicate the bug here:"> Report a bug </a> </li>
 				<li><a href="https://github.com/vianuevm/183_style_grader" target="_blank">Source code</a></li>
-<!--                 This is a temporary email for debug reporting
- -->            <li><a data-toggle="modal"  href="#debugModal"> Report a bug </a> 
 				<li><a href="#">Log out</a></li>
 			</ul>
                 <div class="modal" id="debugModal">
@@ -48,18 +36,17 @@
                             <h2> Report a bug </h2>
                         </div>
                         <div class="modal-body">
-                                <label for="umich">Unique name</label>
-                                <input type="text" class="form-control" id="umich" placeholder="Enter umich unique name">
-                                <div class="checkbox">
-                                    <label>
-                                      <input type="checkbox"> I have verified that the steps below replicate the error.
-                                    </label>
-                                </div>
-                                <br>
-                                <textarea  id="textarea"  placeholder="Detailed steps of how to replicate error"></textarea>
-                                <br>
-                                <button class="btn">Submit bug for review</button>
-
+                            <label for="umich">Unique name</label>
+                            <input type="text" class="form-control" id="umich" placeholder="Enter umich unique name">
+                            <div class="checkbox">
+                                <label>
+                                  <input type="checkbox"> I have verified that the steps below replicate the error.
+                                </label>
+                            </div>
+                            <br>
+                            <textarea  id="textarea"  placeholder="Detailed steps of how to replicate error"></textarea>
+                            <br>
+                            <button class="btn">Submit bug for review</button>
                         </div>
                         <div class="modal-footer">
                           <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>

@@ -1,3 +1,6 @@
+a {
+   outline: 0;
+}
 .navbar-wrapper {
   position: absolute;
   top: 0;
@@ -17,8 +20,6 @@
 .navbar .btn-navbar {
   margin-top: 10px;
 }
-
-
 
 h1.styleHeader {
   color: yellow;
@@ -144,6 +145,14 @@ a, a:focus, a:hover
   border-bottom-color: #fff;
 }
 
+.bugReport a:focus {
+  background-color: transparent;
+  border-bottom-color: #a9a9a9;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  border-bottom-color: #fff;
+}
+
 .modal-body {
   margin-left: 20px;
 }
@@ -197,3 +206,4 @@ a, a:focus, a:hover
 {
 	color: green;
 }
+
