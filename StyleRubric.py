@@ -38,14 +38,13 @@ class StyleRubric(object):
     '''
     A style grader to generate StyleErrors from a list of C++ files.
     '''
-    def __init__(self):
+    def __init__(self, student_files=None):
         ''' Load functionality based on config file specifications '''
         self.config = ConfigParser()
         self.config.read(LOCAL_DIR+'/rubric.ini')
         self.error_tracker = dict()
         self.error_types = defaultdict(int)
         self.total_errors = 0
-        self.student_files = self.load_filenames(self.config.get('FILES', 'student_files').split(','))
         self.includes = self.config.get('FILES', 'permitted_includes').split(',')
         self.local_includes = dict()
         self.all_rme = dict()
@@ -62,6 +61,11 @@ class StyleRubric(object):
         self.global_in_object_index = 0
         self.file_has_a_main = {}
         self.current_file_indentation = 4
+
+        if student_files:
+            self.student_files = student_files
+        else:
+            self.student_files = self.load_filenames(self.config.get('FILES', 'student_files').split(','))
 
 
     def add_global_brace(self, brace):

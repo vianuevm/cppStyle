@@ -1,36 +1,10 @@
 #!/usr/bin/python
+from eecs183style.test import load_code_segment
 from eecs183style.style_grader_functions import *
 from eecs183style.StyleRubric import *
-import unittest, pytest
-import sys, os
-
-def load_code_segment(filename):
-    def wrapper(func):
-        def fn(self, *args, **kwargs):
-            #Redirect stdout because it's annoying
-            #tempout,temperr = sys.stdout, sys.stderr
-            #sys.stdout = sys.stderr = open(os.devnull, 'w')
-            self.rubric = StyleRubric()
-            self.rubric.grade_student_file('test_source/'+filename)
-            #sys.stdout, sys.stderr = tempout, temperr  
-            return func(self, *args, **kwargs)
-        return fn
-    return wrapper
+import unittest
 
 class RegressionTesting(unittest.TestCase):
-
-    def setUp(self):
-        #Nothing to do here for now
-        pass
-
-    def tearDown(self):
-        #For debugging FAILs
-        #print "-- RESULTS ------------------"
-        #for x,y in self.rubric.error_types.items():
-        #    print x,y
-        #print "-----------------------------\n\n"
-        pass
-
     @load_code_segment('good.cpp')
     def test_good_file(self): self.assertTrue(not len(self.rubric.error_types))
     @load_code_segment('num_of_commands.cpp')
@@ -80,20 +54,8 @@ class RegressionTesting(unittest.TestCase):
     @load_code_segment('first_char_bad.cpp')
     def test_first_char_bad(self): self.assertEqual(6, self.rubric.error_types['FIRST_CHAR']) 
     @load_code_segment('semicolon_spacing_good1.cpp')
-    def test_semicolon_spacing_good(self): self.assertEqual(0, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
+    def test_semicolon_spacing_good1(self): self.assertEqual(0, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
     @load_code_segment('semicolon_spacing_good2.cpp')
-    def test_semicolon_spacing_good(self): self.assertEqual(0, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
+    def test_semicolon_spacing_good2(self): self.assertEqual(0, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
     @load_code_segment('semicolon_spacing_bad.cpp')
     def test_semicolon_spacing_bad(self): self.assertEqual(4, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
-
-
-def main():
-    print "\n"
-    suite = unittest.TestLoader().loadTestsFromTestCase(RegressionTesting)
-    if unittest.TextTestRunner(verbosity=2).run(suite).wasSuccessful():
-        return 0
-    else:
-        return 1
-
-if __name__ == "__main__":
-    sys.exit(main())

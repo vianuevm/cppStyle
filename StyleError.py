@@ -36,13 +36,6 @@ class StyleError(object):
                 output_str += ':' + str(self.get_column_number())
             output_str += '  '
         output_str += str(self.get_message())
-        if self.type == 'WARNING':
-            output_str = '\033[33m' + output_str + '\033[0m'
-        '''
-        printing in red
-        elif self.type == 'ERROR':
-            output_str = '\033[31m' + output_str + '\033[0m'
-        '''
         return output_str
 
     def __gt__(self, other):

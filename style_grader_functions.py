@@ -224,4 +224,4 @@ def check_operator_regex(code, operator):
         return 0
 
 def print_success():
-    print '\033[32mNo errors have been found :)\033[0m'
+    print 'No errors found'
