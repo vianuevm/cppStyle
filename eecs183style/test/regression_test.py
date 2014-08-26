@@ -59,3 +59,9 @@ class RegressionTesting(unittest.TestCase):
     def test_semicolon_spacing_good2(self): self.assertEqual(0, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
     @load_code_segment('semicolon_spacing_bad.cpp')
     def test_semicolon_spacing_bad(self): self.assertEqual(4, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
+
+    @load_code_segment('regression_indentation_group.cpp')
+    def test_regression_indentation_group(self):
+        # The input file will throw an error if there's a bug, so we don't
+        # actually need to test for anything.
+        pass
