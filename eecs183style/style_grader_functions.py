@@ -60,6 +60,8 @@ def check_if_case_arg(code):
 def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, temp_line_num):
     indentation = re.search(r'^( *)\S', clean_lines.lines[temp_line_num])
     results = list()
+    if not indentation:
+        return results
     indentation = indentation.group()
     indentation_size = len(indentation) - len(indentation.strip())
     data_structure_tracker.in_block = True
