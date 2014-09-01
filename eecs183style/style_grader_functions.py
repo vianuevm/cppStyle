@@ -173,57 +173,41 @@ def check_if_struct_or_class(code):
         return True
     return False
 
-def check_operator_regex(code, operator):
-    """
-    If an error has been found, return the column number of the operator, else return 0
-    """
-    regex_one = r'' + '\S+' + operator
-    regex_two =  r'' + operator + '\S+'
-    #check to see if there is a non-whitespace character on either side of the operator
-    if re.search(regex_one, code) or re.search(regex_two, code):
-        left_not_wspace = re.search(regex_one, code)
-        right_not_wspace = re.search(regex_two, code)
 
-        if right_not_wspace and left_not_wspace:
-            left_code = left_not_wspace.group()
-            right_code = right_not_wspace.group()
-            left_symbol = left_code[-2]
-            right_symbol = right_code[1]
-            operator = right_code[0]
-            if operator == '+' or operator == '-':
-                if right_symbol == '-' or right_symbol == '=' or right_symbol == '+':
-                    return 0
-                if left_symbol == '-' or left_symbol == '=' or left_symbol == '+':
-                    return 0
-                if left_code[0] == '(' and (right_code[-1] ==')' or (right_code[-2] == ')' and right_code[-1] == ';')):
-                    return 0
-            elif operator == '/':
-                if right_symbol == '=':
-                    return 0
-            elif operator == '=':
-                if left_symbol == '+' or left_symbol == '-':
-                    return 0
-                if right_symbol == '=' or left_symbol == '=':
-                    return 0
+def check_operator_spacing_around(code, operator):
+    """Check for correct spacing around the given operator in the line.
 
-            else:
-                # return column number of the error
-                return right_not_wspace.regs[0][0] + 1
-        elif right_not_wspace or left_not_wspace:
-            if left_not_wspace:
-                left_code = left_not_wspace.group()
-                left_symbol = left_code[-2]
-                operator = left_code[-1]
-                if left_symbol != operator or left_symbol != '=':
-                    return left_not_wspace.regs[0][0] + 1
-            else:
-                right_code = right_not_wspace.group()
-                right_symbol = right_code[1]
-                operator = right_symbol[0]
-                if right_symbol != operator and right_symbol != '=' and right_symbol != '(':
-                    return right_not_wspace.regs[0][0] + 1
-    else:
-        return 0
+    There should be exactly one space on either side of the given operator.
+    Notice that operators `*` and `&` don't quite follow this rule, since we're
+    okay with `Foo* foo` or `Foo *foo` for pointers, as long as they're
+    consistent about it.
+
+    :param str code: The line of code to check.
+    :param str operator: The operator to check, such as "+"
+    :returns: The column number of the inconsistent operator, or `None`
+              otherwise. Notice that the column number may be `0`, so you must
+              not check for falsiness, but rather check that
+              `result is not None`.
+    :rtype: int or None
+
+    """
+    operator_regex = re.compile(r"""
+        (?P<code_left>\S+)
+        (?P<whitespace_left>\s*)
+        (?P<operator>{operator})
+        (?P<whitespace_right>\s*)
+        (?P<code_right>\S+)
+    """.format(
+        operator=re.escape(operator)
+    ), re.VERBOSE)
+
+    whitespace_groups = ["whitespace_left", "whitespace_right"]
+    for match in operator_regex.finditer(code):
+        for group in whitespace_groups:
+            if match.group(group) != " ":
+                return match.start("operator")
+    return None
+
 
 def print_success():
     print 'No errors found'

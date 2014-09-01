@@ -1,4 +1,4 @@
-from style_grader_functions import check_if_function, check_operator_regex, check_if_function_prototype
+from style_grader_functions import check_if_function, check_operator_spacing_around, check_if_function_prototype
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, srange
 import re
 
@@ -27,13 +27,18 @@ def check_int_for_bool(self, code):
     if match and match.group(1).isdigit() and current_function[0] == "bool":
         self.add_error(label="INT_FOR_BOOL")
 
+
 def check_operator_spacing(self, code):
     # Check normal operators
-    for operator in ['\+', '-', '/', '%']:
-        column_num = check_operator_regex(code, operator)
-        if column_num:
+    for operator in ['+', '-', '/', '%']:
+        column_num = check_operator_spacing_around(code, operator)
+        if column_num is not None:
             data = {'operator': operator}
-            self.add_error(label="OPERATOR_SPACING", column=column_num, data=data)
+            self.add_error(
+                label="OPERATOR_SPACING",
+                column=column_num,
+                data=data
+            )
     # Check ampersands
     for match in re.findall('.&.', code):
         if '&' in [match[0], match[2]]:
