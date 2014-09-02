@@ -7,12 +7,6 @@
 
 Web application grades students' .cpp and .h files for EECS 183, a computer science course at University of Michigan.
 
-<<<<<<< HEAD
-=======
-For now, just ```git clone``` the repository and run `python setup.py install` --  eventually this will be packaged and added to PyPI.
->>>>>>> stevemer/master
-
-
 ##Setup for Web Development
 
 * Download pip the package manager.
