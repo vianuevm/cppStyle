@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 from eecs183style.style_grader_functions import print_success
 from eecs183style.StyleRubric import StyleRubric
 import sys
