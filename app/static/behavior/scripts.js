@@ -101,12 +101,6 @@ $(document).ready(function() {
 				// 	console.log(v);
 				// 	}
 				// );
-                if (data.errors.length === 1)
-                {
-                	// no errors
-					$("#errorlist").append("<li class='message-success'>No errors have been found! :)</li>");
-                }
-
 			},
 		});
 	});
