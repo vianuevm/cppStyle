@@ -1,4 +1,4 @@
-from style_grader_functions import check_if_function, check_operator_regex, check_if_function_prototype
+from style_grader_functions import check_if_function, check_operator_spacing_around, check_if_function_prototype
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, srange
 import re
 
@@ -27,13 +27,18 @@ def check_int_for_bool(self, code):
     if match and match.group(1).isdigit() and current_function[0] == "bool":
         self.add_error(label="INT_FOR_BOOL")
 
+
 def check_operator_spacing(self, code):
     # Check normal operators
     for operator in ['+', '-', '/', '%']:
-        column_num = check_operator_regex(code, '\{}'.format(operator))
-        if column_num:
+        column_num = check_operator_spacing_around(code, operator)
+        if column_num is not None:
             data = {'operator': operator}
-            self.add_error(label="OPERATOR_SPACING", column=column_num, data=data)
+            self.add_error(
+                label="OPERATOR_SPACING",
+                column=column_num,
+                data=data
+            )
     # Check ampersands
     for match in re.findall('.&.', code):
         if '&' in [match[0], match[2]]:
@@ -80,7 +85,12 @@ def check_define_statement(self, code):
     q_define = re.compile('\".*(?:\s+|^)#\s*define\s+.*\"')
     r_define = re.compile('(?:\s+|^)#\s*define\s+')
     if r_define.search(code) and not q_define.search(code):
-        self.add_error(label="DEFINE_STATEMENT")
+        words = code.split()
+        # They shouldn't be using __MY_HEADER_H__ because __-names are
+        # reserved, but we'll allow it anyways.
+        legal_endings = ["_H", "_H__"]
+        if not any(words[-1].endswith(i) for i in legal_endings):
+            self.add_error(label="DEFINE_STATEMENT")
 
 def check_continue(self, code):
     # Hacky but gets the job done for now - has holes though
