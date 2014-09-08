@@ -90,17 +90,6 @@ $(document).ready(function() {
 						$("#errorlist").append("<li class='message-error'>" + data.errors[i] + "</li>");
 					}
 				}
-				// $.each(
-				// 	data.errors,
-				// 	function(i,v) {
-				// 		if(!v.search("Grading ")) {
-				// 			$("#errorlist").append("<li><h4>" + v + "</h4></li>") ;
-				// 		} else {
-				// 			$("#errorlist").append("<li class='message-error'>" + v + "</li>");
-				// 	}
-				// 	console.log(v);
-				// 	}
-				// );
 			},
 		});
 	});

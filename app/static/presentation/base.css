@@ -19,15 +19,14 @@ body
 	color: white;
 
 	/* surround with whitespace */
-    margin: 16px 0px;
+    margin: 14px 0;
 
-    /* sticky footer */
-    position: absolute;
-    max-width: 100%;
-    display: inline;
-    height: 48px;
-    bottom: 0;
-	padding-top: 16px;
+  /* sticky footer */
+  position: absolute;
+  max-width: 100%;
+  display: inline;
+  height: 48px;
+  bottom: 0;
 }
 
 #main-container
