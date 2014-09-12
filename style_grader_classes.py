@@ -33,7 +33,7 @@ class DataStructureTracker(object):
         self.class_or_struct_brace_stack.append(brace)
         self.class_or_struct_brace_index += 1
 
-    def add_switch_braceadd_switch_brace(self, brace):
+    def add_switch_brace(self, brace):
         self.switch_brace_stack.append(brace)
         self.switch_brace_index += 1
 
