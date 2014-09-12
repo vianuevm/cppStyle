@@ -30,6 +30,10 @@ def check_int_for_bool(self, code):
 
 def check_operator_spacing(self, code):
     # Check normal operators
+
+    if code.find("----------------------------------------------") != -1:
+        return
+
     for operator in ['+', '-', '/', '%']:
         column_num = check_operator_spacing_around(code, operator)
         if column_num is not None:

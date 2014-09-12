@@ -26,12 +26,14 @@ class DataStructureTracker(object):
         self.in_public_or_private = False
         self.class_or_struct_brace_stack = []
         self.class_or_struct_brace_index = 0
+        self.in_cout_block = False
+        self.cout_index = 0
 
     def add_object_brace(self, brace):
         self.class_or_struct_brace_stack.append(brace)
         self.class_or_struct_brace_index += 1
 
-    def add_switch_brace(self, brace):
+    def add_switch_braceadd_switch_brace(self, brace):
         self.switch_brace_stack.append(brace)
         self.switch_brace_index += 1
 
@@ -56,4 +58,7 @@ class DataStructureTracker(object):
         self.class_or_struct_brace_index -= 1
         if self.class_or_struct_brace_index == 0:
             self.in_class_or_struct = False
+
+    def set_cout_block_status(self, in_block):
+        self.in_cout_block = in_block
 

@@ -82,7 +82,7 @@ class StyleError(object):
             "IF_ELSE_ERROR": "Every If-Else statement should have brackets.",
             "NON_CONST_GLOBAL": "You should never have a non-const global variable.",
             "FUNCTION_LENGTH_ERROR": "Your function is too long. Break it up into separate functions.",
-            "LINE_WIDTH": "Line of {} characters exceeded the limit of 80.".format(self.get_data().get('length')),
+            "LINE_WIDTH": "Line of {} characters exceeded the limit of 90.".format(self.get_data().get('length')),
             "INT_FOR_BOOL": "You need to return true or false, instead of an actual number.",
             "MAGIC_NUMBER": "Store numbers in variables, so that you can give them meaningful names.",
             "BRACE_CONSISTENCY": "Your braces should be either Egyptian or block style, pick one.",

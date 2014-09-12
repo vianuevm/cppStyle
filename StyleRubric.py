@@ -134,8 +134,8 @@ class StyleRubric(object):
                 if check_if_function(text):
                     if self.config.get('COMMENT_CHECKS', 'missing_rme').lower() == 'yes':
                         getattr(comment_checks, 'check_missing_rme')(self, raw_data)
-            if self.config.get('COMMENT_CHECKS', 'min_comments').lower() == 'yes':
-                getattr(comment_checks, 'check_min_comments')(self, raw_data, clean_code)
+                if self.config.get('COMMENT_CHECKS', 'min_comments').lower() == 'yes':
+                    getattr(comment_checks, 'check_min_comments')(self, raw_data, clean_code)
             for function in self.misc_checks: function(self)
             self.error_tracker[filename].sort()
             self.file_has_a_main[filename] = not self.outside_main

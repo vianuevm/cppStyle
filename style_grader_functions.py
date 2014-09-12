@@ -57,6 +57,19 @@ def check_if_case_arg(code):
     else:
         return False
 
+def check_if_cout_block(code):
+    statement = Keyword('cout')
+    grammar = statement + Optional(" ")
+
+    try:
+        grammar.parseString(code)
+        if code.find(';') == -1:
+            return True
+        else:
+            return False
+    except ParseException:
+        return False
+
 def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, temp_line_num):
     indentation = re.search(r'^( *)\S', clean_lines.lines[temp_line_num])
     results = list()
@@ -73,22 +86,31 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
             current_indentation = re.search(r'^( *)\S',
                                         clean_lines.lines[temp_line_num])
 
-
             switch_statement = check_if_switch_statement(clean_lines.lines[temp_line_num])
+            if not data_structure_tracker.in_cout_block:
+                cout_block = check_if_cout_block(clean_lines.lines[temp_line_num])
 
+            #if you hit a cout that is not finished on one line, it can be indented and still styled correctly
+            if cout_block:
+                data_structure_tracker.in_cout_block = True
             if switch_statement:
                 data_structure_tracker.in_switch = True
 
             is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
 
-            if is_break_statement and not data_structure_tracker.in_switch:
+            if is_break_statement and not data_structure_tracker.in_switch and not cout_block:
                 results.append({'label': 'UNNECESSARY_BREAK', 'line': temp_line_num + 1})
 
             if current_indentation:
                 line_start = current_indentation.group()
                 current_indentation = len(line_start) - len(line_start.strip())
 
-                if current_indentation != next_indentation and line_start.find('}') == -1:
+                if data_structure_tracker.in_cout_block and data_structure_tracker.cout_index == 1:
+                    next_indentation += tab_size
+                if data_structure_tracker.in_cout_block:
+                    data_structure_tracker.cout_index += 1
+
+                elif current_indentation != next_indentation and line_start.find('}') == -1:
                     #check for public: private: and case: exceptions
                     if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and \
                             data_structure_tracker.in_class_or_struct) or \
@@ -132,6 +154,11 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                 if check_if_case_arg(clean_lines.lines[temp_line_num]) \
                         and data_structure_tracker.in_switch:
                     next_indentation += tab_size
+
+                if data_structure_tracker.in_cout_block and clean_lines.lines[temp_line_num].find(';') != -1:
+                    data_structure_tracker.in_cout_block = False
+                    next_indentation -= tab_size
+                    data_structure_tracker.cout_index = 0
 
         except IndexError:
             data_structure_tracker.in_block = False
