@@ -11,7 +11,6 @@ from copy import deepcopy
 from glob import glob
 
 from cpplint import CleansedLines, RemoveMultiLineComments
-
 from style_grader_functions import check_if_function, print_success, get_indent_level
 from style_grader_classes import SpacingTracker
 from StyleError import StyleError
@@ -19,6 +18,7 @@ import comment_checks
 import multi_line_checks
 import misc_checks
 import single_line_checks
+from single_line_checks import erase_string
 import adjustments
 
 LOCAL_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -125,6 +125,7 @@ class StyleRubric(object):
             clean_lines = CleansedLines(data)
             clean_code = clean_lines.lines
             for self.current_line_num, code in enumerate(clean_code):
+                code = erase_string(code)
                 for function in self.single_line_checks: function(self, code)
                 for function in self.multi_line_checks: function(self, clean_lines)
             # COMMENT CHECKS #TODO

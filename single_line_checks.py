@@ -31,12 +31,15 @@ def check_int_for_bool(self, code):
 def check_operator_spacing(self, code):
     # Check normal operators
 
-    if code.find("----------------------------------------------") != -1:
-        return
+    for operator in ['+', '-', '/', '%', '*']:
 
-    for operator in ['+', '-', '/', '%']:
         column_num = check_operator_spacing_around(code, operator)
-        if column_num is not None:
+        # print code[column_num]
+        # print code[column_num - 1]
+        # print code[column_num + 1]
+
+        if column_num is not None and not increment_check(code, column_num):
+
             data = {'operator': operator}
             self.add_error(
                 label="OPERATOR_SPACING",
@@ -72,6 +75,15 @@ def check_operator_spacing(self, code):
                 self.add_error(label='OPERATOR_CONSISTENCY')
             self.spacer.asts_right = True
 
+
+def increment_check(code, column_num):
+      return (code[column_num] == '+' and code[column_num + 1] == '+') or \
+                (code[column_num] == '-' and code[column_num + 1] == '-') or \
+                (code[column_num] == '+' and code[column_num + 1] == '=') or \
+                (code[column_num] == '-' and code[column_num + 1] == '=') or \
+                (code[column_num] == '/' and code[column_num + 1] == '=') or \
+                (code[column_num] == '*' and code[column_num + 1] == '=')
+
 def check_equals_true(self, code):
     keyword = Literal("true") | Literal("false")
     statement_parser = Group("==" + keyword) | Group(keyword + "==")
@@ -84,6 +96,18 @@ def check_goto(self, code):
     r_goto = re.compile('(?:\s+|^|\{)goto\s+')
     if r_goto.search(code) and not q_goto.search(code):
         self.add_error(label="GOTO")
+
+
+def erase_string(code):
+    code = code.replace("\\\"", "")
+    results = re.findall(r'"(.*?)"', code)
+    for string in results:
+        quote_mark = "\""
+        code = code.replace(quote_mark + string + quote_mark, "\"\"")
+    return code
+
+
+
 
 def check_define_statement(self, code):
     q_define = re.compile('\".*(?:\s+|^)#\s*define\s+.*\"')
