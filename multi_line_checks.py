@@ -25,26 +25,24 @@ def check_brace_consistency(self, clean_lines):
     else_if_statement = re.search(r'^else\s*\(', code)
     else_statement = re.search(r'^else\s+', code)
     switch_statement = re.search(r'^switch\s*\(', stripped_code)
-    #TODO: Clean this line up
+    indentation = re.search(r'^( *)\S', code)
 
+    if indentation:
+        indentation = indentation.group()
+        indentation_size = len(indentation) - len(indentation.strip())
+
+    current = self.current_line_num
     if function or if_statement or else_statement or switch_statement:
-
         try:
-            if function and code.find('{') != -1 or \
-                    else_if_statement and code.find('{') != -1 or\
-                    else_statement and code.find('{') != -1 or\
-                    switch_statement and code.find('{') != -1 or\
-                    if_statement and code.find('{') != -1:
-
-                self.egyptian = True
-
-            elif function and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-                else_if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-                else_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-                switch_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1 or\
-                    if_statement and clean_lines.lines[self.current_line_num + 1].find('{') != -1:
-
-                self.not_egyptian = True
+            if function or \
+                else_if_statement or\
+                else_statement  or\
+                switch_statement or\
+                if_statement:
+                    if deep_egyptian_check(clean_lines.lines, indentation_size, current):
+                        self.egyptian = True
+                    else:
+                         self.not_egyptian = True
 
             elif not self.outside_main:
                 if not self.braces_error:
@@ -68,8 +66,6 @@ def check_block_indentation(self, clean_lines):
 
     if check_if_struct_or_class(code):
         self.global_in_object = True
-
-
 
     if self.global_in_object and code.find('{') != -1:
         self.add_global_brace('{')
@@ -127,3 +123,13 @@ def check_block_indentation(self, clean_lines):
                 self.add_error(**error)
     else:
         return
+
+
+def deep_egyptian_check(code, indentation_size, current_line):
+        while code[current_line].find('{') == -1:
+            current_line += 1
+        indent = code[current_line].find('{')
+        if code[current_line].find('{') != indentation_size:
+            return True
+        else:
+            return False
