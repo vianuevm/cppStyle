@@ -23,7 +23,7 @@ def check_if_function(code):
     args = Word(alphanums + ',_[]&* ')
     function_open = Literal("{")
     function_close = Literal("}")
-    function_declaration = Optional(srange("[a-z]")) + return_type + function_name + "(" + Optional(args) + ")"
+    function_declaration = Optional(srange("[a-z]")) + return_type + function_name + "(" + Optional(args)
     grammar = function_declaration + Optional(function_open)
     if len(grammar.searchString(code)):
         return True

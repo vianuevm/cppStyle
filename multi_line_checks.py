@@ -49,11 +49,17 @@ def check_brace_consistency(self, clean_lines):
                     self.add_error(label="BRACE_CONSISTENCY")
                     self.braces_error = True
 
+            if self.not_egyptian and self.egyptian and not self.braces_error:
+                 self.add_error(label="BRACE_CONSISTENCY")
+                 self.braces_error = True
+
             #if both of these are true, they are not consistent, therefore error.
             if self.not_egyptian:
                 if self.egyptian and not self.braces_error:
                     self.add_error(label="BRACE_CONSISTENCY")
                     self.braces_error = True
+
+
 
         except IndexError:
             # cannot access next line of end of file, rubric properties don't matter
