@@ -81,7 +81,7 @@ def check_block_indentation(self, clean_lines):
     else:
         return
 
-    if function and indentation_size != 0 and not self.global_in_object:
+    if function and indentation_size != 0 and not self.global_in_object and code.find('else if') == -1:
         data = {'expected': 0, 'found': indentation_size}
         self.add_error(label="BLOCK_INDENTATION", data=data)
 

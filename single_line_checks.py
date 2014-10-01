@@ -38,7 +38,7 @@ def check_operator_spacing(self, code):
         # print code[column_num - 1]
         # print code[column_num + 1]
 
-        if column_num is not None and not increment_check(code, column_num):
+        if column_num is not None and not increment_check(code, column_num, operator):
 
             data = {'operator': operator}
             self.add_error(
@@ -76,7 +76,7 @@ def check_operator_spacing(self, code):
             self.spacer.asts_right = True
 
 
-def increment_check(code, column_num):
+def increment_check(code, column_num, operator):
     truthVal = (code[column_num] == '+' and code[column_num + 1] == '+') or \
                 (code[column_num] == '+' and code[column_num + 1] == '=') or \
                 (code[column_num] == '-' and code[column_num + 1] == '=') or \
