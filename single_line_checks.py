@@ -30,7 +30,7 @@ def check_int_for_bool(self, code):
 
 def check_operator_spacing(self, code):
     # Check normal operators
-
+    print code
     for operator in ['+', '-', '/', '%', '*']:
 
         column_num = check_operator_spacing_around(code, operator)
@@ -77,12 +77,22 @@ def check_operator_spacing(self, code):
 
 
 def increment_check(code, column_num):
-      return (code[column_num] == '+' and code[column_num + 1] == '+') or \
-                (code[column_num] == '-' and code[column_num + 1] == '-') or \
+    truthVal = (code[column_num] == '+' and code[column_num + 1] == '+') or \
                 (code[column_num] == '+' and code[column_num + 1] == '=') or \
                 (code[column_num] == '-' and code[column_num + 1] == '=') or \
                 (code[column_num] == '/' and code[column_num + 1] == '=') or \
-                (code[column_num] == '*' and code[column_num + 1] == '=')
+                (code[column_num] == '*' and code[column_num + 1] == '=') or\
+                (code[column_num] == '-' and code[column_num + 1] == '-')
+
+    if not truthVal and code[column_num - 1]:
+        truthVal = (code[column_num] == '+' and code[column_num - 1] == '+') or \
+                    (code[column_num] == '+' and code[column_num - 1] == '=') or \
+                    (code[column_num] == '-' and code[column_num - 1] == '=') or \
+                    (code[column_num] == '/' and code[column_num - 1] == '=') or \
+                    (code[column_num] == '*' and code[column_num - 1] == '=') or \
+                    (code[column_num] == '-' and code[column_num - 1] == '-')
+
+    return truthVal
 
 def check_equals_true(self, code):
     keyword = Literal("true") | Literal("false")
