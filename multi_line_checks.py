@@ -68,7 +68,9 @@ def check_brace_consistency(self, clean_lines):
 def check_block_indentation(self, clean_lines):
     #TODO: Load from config file? 
     tab_size = 4
+
     code = clean_lines.lines[self.current_line_num]
+    print code
 
     if check_if_struct_or_class(code):
         self.global_in_object = True

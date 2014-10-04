@@ -50,6 +50,27 @@ def check_if_switch_statement(code):
         return True
     except ParseException:
         return False
+
+def check_if_statement(code):
+    statement = Keyword('if')
+    args = Word(alphanums + ',_[]&*!=+-%&|/() ')
+    grammar = statement + "("
+    try:
+        grammar.parseString(code)
+        return True
+    except ParseException:
+        return False
+
+def check_else_if(code):
+    statement = Keyword('else if')
+    args = Word(alphanums + ',_[]&* ')
+    grammar = statement + "(" + args + ")"
+    try:
+        grammar.parseString(code)
+        return True
+    except ParseException:
+        return False
+
 def check_if_case_arg(code):
     statement = Keyword('case')
     if len(statement.searchString(code)):
@@ -79,22 +100,33 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
     indentation_size = len(indentation) - len(indentation.strip())
     data_structure_tracker.in_block = True
     next_indentation = indentation_size + tab_size
-
+    check_in_if = False
     while data_structure_tracker.in_block:
         temp_line_num += 1
         try:
             current_indentation = re.search(r'^( *)\S',
                                         clean_lines.lines[temp_line_num])
-
+            print clean_lines.lines[temp_line_num]
             switch_statement = check_if_switch_statement(clean_lines.lines[temp_line_num])
+            if_statement = check_if_statement(clean_lines.lines[temp_line_num])
+            else_if = check_else_if(clean_lines.lines[temp_line_num])
             if not data_structure_tracker.in_cout_block:
                 cout_block = check_if_cout_block(clean_lines.lines[temp_line_num])
+
+
+            if if_statement or else_if:
+                if clean_lines.lines[temp_line_num + 1].find('{') == -1 and clean_lines.lines[temp_line_num].find('{') == -1:
+                    data_structure_tracker.in_if = True
+                elif clean_lines.lines[temp_line_num +1].find('{') != -1 and current_indentation != clean_lines.lines[temp_line_num].find('{'):
+                    data_structure_tracker.in_if = True
+
 
             #if you hit a cout that is not finished on one line, it can be indented and still styled correctly
             if cout_block:
                 data_structure_tracker.in_cout_block = True
             if switch_statement:
                 data_structure_tracker.in_switch = True
+
 
             is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
 
@@ -107,6 +139,7 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
 
                 if data_structure_tracker.in_cout_block and data_structure_tracker.cout_index == 1:
                     next_indentation += tab_size
+
                 if data_structure_tracker.in_cout_block:
                     data_structure_tracker.cout_index += 1
 
@@ -119,8 +152,9 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
 
                         next_indentation -= tab_size
                     else:
-                        data = {'expected': next_indentation, 'found': current_indentation}
-                        results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
+                        if not data_structure_tracker.in_if:
+                            data = {'expected': next_indentation, 'found': current_indentation}
+                            results.append({'label': 'BLOCK_INDENTATION', 'line': temp_line_num + 1, 'data': data})
 
 
                 if clean_lines.lines[temp_line_num].find("{") != -1 and clean_lines.lines[temp_line_num].find("}") != -1:
@@ -134,6 +168,10 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                         data_structure_tracker.add_object_brace("{")
                     data_structure_tracker.add_brace("{")
                     next_indentation = current_indentation + tab_size
+                    if data_structure_tracker.in_if:
+                        data_structure_tracker.in_if = False
+                        next_indentation = current_indentation
+
 
                 elif clean_lines.lines[temp_line_num].find("}") != -1:
                     end_switch = data_structure_tracker.in_switch
@@ -159,6 +197,9 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                     data_structure_tracker.in_cout_block = False
                     next_indentation -= tab_size
                     data_structure_tracker.cout_index = 0
+
+
+
 
         except IndexError:
             data_structure_tracker.in_block = False

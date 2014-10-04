@@ -18,6 +18,7 @@ class DataStructureTracker(object):
         self.in_block = False
         self.brace_stack = []
         self.brace_index = 1
+        self.in_if = False
         self.switch_brace_index = 0
         self.length_so_far = 0
         self.in_switch = False

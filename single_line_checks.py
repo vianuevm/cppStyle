@@ -31,6 +31,7 @@ def check_int_for_bool(self, code):
 def check_operator_spacing(self, code):
     # Check normal operators
     print code
+    print ""
     for operator in ['+', '-', '/', '%', '*']:
 
         column_num = check_operator_spacing_around(code, operator)
@@ -39,13 +40,13 @@ def check_operator_spacing(self, code):
         # print code[column_num + 1]
 
         if column_num is not None and not increment_check(code, column_num, operator):
-
-            data = {'operator': operator}
-            self.add_error(
-                label="OPERATOR_SPACING",
-                column=column_num,
-                data=data
-            )
+            if not (code[column_num] == '-' and code[column_num -1] and code[column_num - 1] == " "):
+                data = {'operator': operator}
+                self.add_error(
+                    label="OPERATOR_SPACING",
+                    column=column_num,
+                    data=data
+                )
     # Check ampersands
     for match in re.findall('.&.', code):
         if '&' in [match[0], match[2]]:
