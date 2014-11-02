@@ -30,6 +30,8 @@ def check_brace_consistency(self, clean_lines):
     if indentation:
         indentation = indentation.group()
         indentation_size = len(indentation) - len(indentation.strip())
+    else:
+        indentation_size = 0
 
     current = self.current_line_num
     if function or if_statement or else_statement or switch_statement:
