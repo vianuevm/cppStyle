@@ -126,6 +126,8 @@ class StyleRubric(object):
             clean_code = clean_lines.lines
             for self.current_line_num, code in enumerate(clean_code):
                 code = erase_string(code)
+                if self.current_line_num == 74:
+                    print "stop"
                 for function in self.single_line_checks: function(self, code)
                 for function in self.multi_line_checks: function(self, clean_lines)
             # COMMENT CHECKS #TODO
