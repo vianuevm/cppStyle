@@ -6,12 +6,8 @@ def style_grader_driver(online_files):
     rubric = StyleRubric()
     show_errors = []
 
-    # if online_submit:
     for filename in online_files:
         rubric.grade_student_file(filename)
-    # else:
-    #     for filename in rubric.student_files:
-    #         rubric.grade_student_file(filename)
 
     rubric.adjust_errors()
     show_errors = rubric.print_errors(show_errors)
