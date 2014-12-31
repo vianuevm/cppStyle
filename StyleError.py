@@ -77,7 +77,7 @@ class StyleError(object):
     def get_error_message(self, label):
         return {
             "USING_TABS": "Instead of tabs you must use spaces.  Fix and resubmit your code :).",
-            "OPERATOR_SPACING": "Incorrect spacing around {}.".format(self.get_data().get('operator')),
+            "OPERATOR_SPACING": "Incorrect spacing around {}.".format(self.get_data().get('operator')) + "  If this is a negative variable, you must write it as -(myVariable) using parentheses.",
             "BLOCK_INDENTATION": "Incorrect indentation. Expected: {}, found: {}.".format(self.get_data().get('expected'), self.get_data().get('found')),
             "STATEMENTS_PER_LINE": "There should only be one command (statement) on each line.",
             "IF_ELSE_ERROR": "Every If-Else statement should have brackets.",

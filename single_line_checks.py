@@ -64,6 +64,10 @@ def check_operator_spacing(self, code):
                     continue
         if code[operator_index + 1] == '=':
             compound = True
+        if code[operator_index] == '-' and code[operator_index + 1]:
+            if is_number(code[operator_index + 1]) or code[operator_index + 1] == '(':
+            #neg number - forget about it
+                continue
         if not operator_helper(compound, code, operator_index):
             self.add_error(label="OPERATOR_SPACING", column=operator_index, data={'operator': code[operator_index]})
 
@@ -171,6 +175,13 @@ def check_main_syntax(self, code):
                 not len((main_prefix + full_use).searchString(code)):
             self.add_error(label="MAIN_SYNTAX")
 
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 def check_first_char(self, code):
     # check if the first char is lower-case alpha or '_'
