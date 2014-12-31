@@ -126,7 +126,10 @@ class StyleRubric(object):
             clean_code = clean_lines.lines
             for self.current_line_num, code in enumerate(clean_code):
                 code = erase_string(code)
-                if self.current_line_num == 74:
+                if code.find('\t') != -1:
+                    self.add_error(label='USING_TABS')
+                    break
+                if self.current_line_num == 45:
                     print "stop"
                 for function in self.single_line_checks: function(self, code)
                 for function in self.multi_line_checks: function(self, clean_lines)
