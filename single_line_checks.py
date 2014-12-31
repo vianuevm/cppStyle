@@ -2,6 +2,7 @@ from style_grader_functions import check_if_function, check_operator_spacing_aro
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, srange
 import re
 
+
 def check_function_def_above_main(self, code):
     prototype = check_if_function_prototype(code)
     function = check_if_function(code)
@@ -12,7 +13,8 @@ def check_function_def_above_main(self, code):
         function_regex = re.compile("^\s*(\w+)\s+(\w+)")
         match = function_regex.search(code)
         function_name = match.group(2) if match else "NOT_FOUND"
-        self.add_error(label = "DEFINITION_ABOVE_MAIN", data={'function': function_name})
+        self.add_error(label="DEFINITION_ABOVE_MAIN", data={'function': function_name})
+
 
 def check_int_for_bool(self, code):
     if check_if_function(code):
@@ -32,74 +34,64 @@ def check_operator_spacing(self, code):
     # Check normal operators
     print code
     print ""
-    for operator in ['+', '-', '/', '%', '*']:
+    # account for *=, %=, /=, +=, -=
+    indexes = []
+    indexes = findOccurences(code, '+') + \
+              findOccurences(code, '-') + \
+              findOccurences(code, '%') + \
+              findOccurences(code, '*') + \
+              findOccurences(code, '/') + \
+              findOccurences(code, '=') + \
+              findOccurences(code, '!')
 
-        column_num = check_operator_spacing_around(code, operator)
-        # print code[column_num]
-        # print code[column_num - 1]
-        # print code[column_num + 1]
-
-        if column_num is not None and not increment_check(code, column_num, operator):
-            if not (code[column_num] == '-' and code[column_num -1] and code[column_num - 1] == " "):
-                data = {'operator': operator}
-                self.add_error(
-                    label="OPERATOR_SPACING",
-                    column=column_num,
-                    data=data
-                )
-    # Check ampersands
-    for match in re.findall('.&.', code):
-        if '&' in [match[0], match[2]]:
-            continue
-        elif match[0] == ' ':
-            if match[2] == ' ':
-                if self.spacer.amps_left or self.spacer.amps_right:
-                    self.add_error(label='OPERATOR_CONSISTENCY')
-                self.spacer.amps_both = True
-            else:
-                if self.spacer.amps_right or self.spacer.amps_both:
-                    self.add_error(label='OPERATOR_CONSISTENCY')
-                self.spacer.amps_left = True
-        else:
-            if match[2] == ' ':
-                if self.spacer.amps_left or self.spacer.amps_both:
-                    self.add_error(label='OPERATOR_CONSISTENCY')
-                self.spacer.amps_right = True
-    # Check asterisks
-    for match in re.findall('.\*+.', code):
-        if match[0] == ' ' and match[-1] != ' ':
-            if self.spacer.asts_right:
-                self.add_error(label='OPERATOR_CONSISTENCY')
-            self.spacer.asts_left = True
-        elif match[0] != ' ' and match[-1] == ' ':
-            if self.spacer.asts_left:
-                self.add_error(label='OPERATOR_CONSISTENCY')
-            self.spacer.asts_right = True
+    for operator_index in indexes:
+        if code[operator_index + 1]:
+            if code[operator_index + 1] == '+' or\
+                code[operator_index + 1] == '-' or\
+                code[operator_index + 1] == '*':
+                continue
+        if code[operator_index - 1]:
+                if code[operator_index - 1] == '+' \
+                     or code[operator_index - 1] == '-' \
+                     or code[operator_index - 1] == '*':
+            # if it's an increment, decrement ignore it
+                        continue
+        compound = False
+        # check to see if it's a compound that's been checked already
+        if code[operator_index] == '=':
+            if code[operator_index - 1]:
+                if code[operator_index - 1] in ['*', '/', '%', '+', '=', '-', '!']:
+                    continue
+        if code[operator_index + 1] == '=':
+            compound = True
+        if not operator_helper(compound, code, operator_index):
+            self.add_error(label="OPERATOR_SPACING", column=operator_index, data={'operator': code[operator_index]})
 
 
-def increment_check(code, column_num, operator):
-    truthVal = (code[column_num] == '+' and code[column_num + 1] == '+') or \
-                (code[column_num] == '+' and code[column_num + 1] == '=') or \
-                (code[column_num] == '-' and code[column_num + 1] == '=') or \
-                (code[column_num] == '/' and code[column_num + 1] == '=') or \
-                (code[column_num] == '*' and code[column_num + 1] == '=') or\
-                (code[column_num] == '-' and code[column_num + 1] == '-')
+def operator_helper(compound, code, index):
+    correct_spacing = True
+    if compound:
+        if code[index + 2] and code[index + 2] != '\r' and code[index + 2] != '\n' and code[index + 2] != ' ':
+            correct_spacing = False
+        if code[index - 1] and code[index - 1] != ' ':
+            correct_spacing = False
+    else:
+        if code[index + 1] and code[index + 1] != '\r' and code[index + 1] != '\n' and code[index + 1] != ' ':
+            correct_spacing = False
+        if code[index - 1] and code[index - 1] != ' ':
+            correct_spacing = False
+    return correct_spacing
 
-    if not truthVal and code[column_num - 1]:
-        truthVal = (code[column_num] == '+' and code[column_num - 1] == '+') or \
-                    (code[column_num] == '+' and code[column_num - 1] == '=') or \
-                    (code[column_num] == '-' and code[column_num - 1] == '=') or \
-                    (code[column_num] == '/' and code[column_num - 1] == '=') or \
-                    (code[column_num] == '*' and code[column_num - 1] == '=') or \
-                    (code[column_num] == '-' and code[column_num - 1] == '-')
 
-    return truthVal
+def findOccurences(s, ch):
+    return [i for i, letter in enumerate(s) if letter == ch]
 
 def check_equals_true(self, code):
     keyword = Literal("true") | Literal("false")
     statement_parser = Group("==" + keyword) | Group(keyword + "==")
     if len(statement_parser.searchString(code)):
         self.add_error(label="EQUALS_TRUE")
+
 
 def check_goto(self, code):
     # Hacky but gets the job done for now - has holes though
@@ -118,8 +110,6 @@ def erase_string(code):
     return code
 
 
-
-
 def check_define_statement(self, code):
     q_define = re.compile('\".*(?:\s+|^)#\s*define\s+.*\"')
     r_define = re.compile('(?:\s+|^)#\s*define\s+')
@@ -131,6 +121,7 @@ def check_define_statement(self, code):
         if not any(words[-1].endswith(i) for i in legal_endings):
             self.add_error(label="DEFINE_STATEMENT")
 
+
 def check_continue(self, code):
     # Hacky but gets the job done for now - has holes though
     q_continue = re.compile('\".*continue.*\"')
@@ -138,16 +129,19 @@ def check_continue(self, code):
     if r_continue.search(code) and not q_continue.search(code):
         self.add_error(label="CONTINUE_STATEMENT")
 
+
 def check_ternary_operator(self, code):
     q_ternary = re.compile('\".*\?.*\"')
     r_ternary = re.compile('\?')
     if r_ternary.search(code) and not q_ternary.search(code):
         self.add_error(label="TERNARY_OPERATOR")
 
+
 def check_while_true(self, code):
     statement_parser = Literal("while") + Literal("(") + Literal("true") + Literal(")")
     if len(statement_parser.searchString(code)):
         self.add_error(label="WHILE_TRUE")
+
 
 def check_non_const_global(self, code):
     inside = Literal("int main")
@@ -160,21 +154,23 @@ def check_non_const_global(self, code):
         keywords = re.compile("^\s*(?:using|class|struct)")
         constants = re.compile("^\s*(?:static\s+)?const")
         if not function and variables.search(code) and \
-           not keywords.search(code) and \
-           not constants.search(code):
+                not keywords.search(code) and \
+                not constants.search(code):
             self.add_error(label="NON_CONST_GLOBAL")
 
+
 def check_main_syntax(self, code):
-    #Return value for main is optional in C++11
-    parser = Literal("int")+Literal("main")+Literal("(")+SkipTo(Literal(")"))+Literal(")")
+    # Return value for main is optional in C++11
+    parser = Literal("int") + Literal("main") + Literal("(") + SkipTo(Literal(")")) + Literal(")")
     if len(parser.searchString(code)):
-        main_prefix = Literal("int")+Literal("main")+Literal("(")
-        full_use = Literal("int")+"argc"+","+Optional("const")+"char"+"*"+"argv"+"["+"]"+")"
+        main_prefix = Literal("int") + Literal("main") + Literal("(")
+        full_use = Literal("int") + "argc" + "," + Optional("const") + "char" + "*" + "argv" + "[" + "]" + ")"
         # 3 options for main() syntax
-        if not len((main_prefix+Literal(")")).searchString(code)) and \
-           not len((main_prefix+Literal("void")+Literal(")")).searchString(code)) and \
-           not len((main_prefix+full_use).searchString(code)):
+        if not len((main_prefix + Literal(")")).searchString(code)) and \
+                not len((main_prefix + Literal("void") + Literal(")")).searchString(code)) and \
+                not len((main_prefix + full_use).searchString(code)):
             self.add_error(label="MAIN_SYNTAX")
+
 
 def check_first_char(self, code):
     # check if the first char is lower-case alpha or '_'
@@ -187,6 +183,7 @@ def check_first_char(self, code):
                              "expected": str(result[1]).capitalize(),
                              "found": str(result[1])})
 
+
 def check_unnecessary_include(self, code):
     grammar = Literal('#') + Literal('include') + Literal('<') + Word(alphanums)
     try:
@@ -198,6 +195,7 @@ def check_unnecessary_include(self, code):
             self.add_error(label="UNNECESSARY_INCLUDE")
     except ParseException:
         return
+
 
 def check_local_include(self, code):
     grammar = Literal('#') + Literal('include') + Literal('"') + Word(alphanums)
@@ -279,8 +277,8 @@ def check_for_loop_semicolon_spacing(self, code):
         return True
 
     if not (
-        is_spacing_okay(semicolon1, code1, code2)
-        and is_spacing_okay(semicolon2, code2, code3)
+                is_spacing_okay(semicolon1, code1, code2)
+            and is_spacing_okay(semicolon2, code2, code3)
     ):
         self.add_error(
             label="FOR_LOOP_SEMICOLON_SPACING",
