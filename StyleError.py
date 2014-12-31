@@ -76,6 +76,7 @@ class StyleError(object):
 
     def get_error_message(self, label):
         return {
+            "USING_TABS": "Instead of tabs you must use spaces.  Fix and resubmit your code :).",
             "OPERATOR_SPACING": "Incorrect spacing around {}.".format(self.get_data().get('operator')),
             "BLOCK_INDENTATION": "Incorrect indentation. Expected: {}, found: {}.".format(self.get_data().get('expected'), self.get_data().get('found')),
             "STATEMENTS_PER_LINE": "There should only be one command (statement) on each line.",
