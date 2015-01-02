@@ -20,14 +20,46 @@
         <link href="/static/presentation/base.css" rel="stylesheet">
 	</head>
   <body>
+    <nav class="navbar navbar-  ">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">EECS 183</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li ><a href="https://github.com/vianuevm/cppStyle">Source Code <span class="sr-only">(current)</span></a></li>
+        <li><a href="https://github.com/vianuevm/cppStyle/issues">Report a Bug</a></li>
+        </ul>      
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+    <div class="bs-docs-header" id="content">
+        <h1> 183 style  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> </h1>
+    <div>   
+        <ul id="headerlist">
+            <li> <span id="l1"> Submit any number of c++ files. </span> </li>
+            <li> <span id="l2"> Receive instant feedback on each line of code. </span> </li>
+            <li> <span id="l3"> Resubmit your code as often as you want. </span> </li>
+        </ul>
+    </div>
+
+                    <div id="spinner" class="hidden"></div>
+
+
+
+    </div>
 
     <div class="container" id="main-container">
 	    <div class="navigation">
-			<h3 class="masthead-brand">183style</h3>
-			<ul class="nav masthead-nav">
-                <li><a href="https://github.com/vianuevm/cppStyle/issues"> Report a bug </a> </li>
-				<li><a href="https://github.com/vianuevm/183_style_grader" target="_blank">Source code</a></li>
-			</ul>
                 <div class="modal" id="debugModal">
                     <div class="modal-dialog debugDialog">
                       <div class="modal-content" id="feedback-window">
@@ -59,5 +91,6 @@
 	    </div>
     </div>
     <script src="/static/behavior/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/spin.js/1.2.4/spin.min.js"></script>
   </body>
 </html>
