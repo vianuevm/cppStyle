@@ -15,19 +15,36 @@ YAHOO.util.Event.onDOMReady(function() {
 
 
 $(document).ready(function() {
+	
+
+	this.spinner = new Spinner({radius: 30, length: 30}).spin($("#spinner")[0]);
+
 	function updateForm() {
 		if (!$('#code-input').val()) {
 			$('#code-submission').attr("disabled", "disabled");
 		} else {
 			$('.code-submission').removeAttr("disabled");
 		}
+		
 	}
 
+	$('.code-submission').click(function(){
+		closeFeedback();
+	});
+
+	showSpinner = function() {
+        $("#spinner").removeClass();
+    };
+
+    hideSpinner = function() {
+        $("#spinner").addClass("hide");
+    };
+
 	function closeFeedback() {
-		var ul = document.getElementById("errorlist");
+		var ul = document.getElementById("errorlist2");
 		var items = ul.getElementsByTagName("li");
 		var itemLength = items.length;
-		clearFileInput();
+		// clearFileInput();
 
 		while(items.length) {
 			items[0].remove();
@@ -59,6 +76,7 @@ $(document).ready(function() {
 
 	$('#code-input').on("change", function(){
 		updateForm();
+
 		
 	});
 
@@ -66,6 +84,7 @@ $(document).ready(function() {
 	
     $('#upload-file-btn').click(function() {
         var form_data = new FormData($('#upload-file')[0]);
+        showSpinner();
         $.ajax({
             type: 'POST',
             url: '/uploadajax',
@@ -79,17 +98,20 @@ $(document).ready(function() {
 				
                 for(var i = 0; i < data.errors.length; ++i) {
 					if(data.errors[i + 1] && !data.errors[i].search("Grading ") && !data.errors[i + 1].search("Grading ") ) {
-						$("#errorlist").append("<li><h4>" + data.errors[i] + "</h4></li>");
-						$("#errorlist").append("<li class='message-success'>No errors have been found! :)</li>");
+						$("#errorlist2").append("<li><h4>" + data.errors[i] + "</h4></li>");
+						$("#errorlist2").append("<li class='message-success'>No errors have been found! :)</li>");
 					} else if(!data.errors[i + 1] && !data.errors[i].search("Grading ")) {
-						$("#errorlist").append("<li><h4>" + data.errors[i] + "</h4></li>");
-						$("#errorlist").append("<li class='message-success'>No errors have been found! :)</li>");
+						$("#errorlist2").append("<li><h4>" + data.errors[i] + "</h4></li>");
+						$("#errorlist2").append("<li class='message-success'>No errors have been found! :)</li>");
 					} else if(!data.errors[i].search("Grading ")) {
-						$("#errorlist").append("<li><h4>" + data.errors[i] + "</h4></li>");
+						$("#errorlist2").append("<li><h4>" + data.errors[i] + "</h4></li>");
 					} else {
-						$("#errorlist").append("<li class='message-error'>" + data.errors[i] + "</li>");
+						$("#errorlist2").append("<li class='message-error'>" + data.errors[i] + "</li>");
 					}
 				}
+
+				$('pre').show();
+				hideSpinner();
 			},
 		});
 	});

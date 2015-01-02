@@ -1,6 +1,33 @@
 a {
    outline: 0;
 }
+
+.bs-docs-masthead, .bs-docs-header {
+position: relative;
+padding: 30px 15px;
+color: white;
+text-align: left;
+text-shadow: 0 1px 0 rgba(0,0,0,.1);
+background-color: #6f5499;
+background-image: -webkit-linear-gradient(top,#4096ee 0,#4096ee  100%);
+background-repeat: repeat-x;
+margin-top: -20;
+}
+
+#upload-file{
+  margin-left: -100;
+}
+
+#headerlist {
+  font-size: 140%;
+  float: right;
+  margin-top: -120px;
+  margin-right: 200px;
+}
+ul {
+  
+  list-style-type: square;
+}
 .navbar-wrapper {
   position: absolute;
   top: 0;
@@ -11,6 +38,13 @@ a {
   margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
 }
 
+body{
+  background-color: #f9f8f2;
+}
+
+div.navigation {
+  width: 100%;
+}
 /* Navbar links: increase padding for taller navbar */
 .navbar .nav > li > a {
   padding: 15px 20px;
@@ -23,7 +57,6 @@ a {
 
 h1.styleHeader {
   color: yellow;
-  opacity: .8;
   margin-top: 10px;
 }
 
@@ -41,7 +74,7 @@ div.container.footerContainer {
 }
 
 h5{
-  color: yellow;
+  color: black;
 }
 
 div.container.styleContainer {
@@ -56,19 +89,6 @@ div.container.headerContainer{
   margin-left: 60px;
 }
 
-body
-{
-  background: url(../img/epic.jpg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-
-.inputs {
-  margin-top: 40px;
-  margin-left: 100px;
-}
 
 h1 {
   display: block;
@@ -111,22 +131,17 @@ h1 {
 /* Links */
 a, a:focus, a:hover
 {
-  color: #fff;
+  color: black;
 }
 
 /*
  * Header
  */
-.masthead-brand
-{
-  color: white;
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-}
+
 .masthead-nav > li > a
 {
   color: #fff; /* IE8 proofing */
-  color: rgba(255,255,255,.75);
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  color: black;
   border-bottom: 2px solid transparent;
 }
 .masthead-nav > li > a:hover,
@@ -141,7 +156,6 @@ a, a:focus, a:hover
 .masthead-nav > .active > a:focus
 {
   color: #fff;
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
   border-bottom-color: #fff;
 }
 
@@ -153,19 +167,23 @@ a, a:focus, a:hover
   border-bottom-color: #fff;
 }
 
+pre{
+  width: 120%;
+  margin-left: -100;
+
+}
+
 .modal-body {
   margin-left: 20px;
 }
 
 .modal .masthead-brand
 {
-  color: black;
+  color: #4096ee;
 }
 
-
-
 .modal-header {
-  background-color: #36454F ;
+  background-color: #81CA9B ;
   color: white;
 }
 
@@ -173,7 +191,8 @@ a, a:focus, a:hover
   font-weight: 500;
   color: black; /* IE8 proofing */
   color: rgba(24,24,24,0.75);
-  border-bottom: 2px solid transparent;}
+  border-bottom: 2px solid transparent;
+}
 
 .modal .masthead-nav > li > a
 {
