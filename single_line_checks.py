@@ -60,7 +60,7 @@ def check_operator_spacing(self, code):
         # check to see if it's a compound that's been checked already
         if code[operator_index] == '=':
             if code[operator_index - 1]:
-                if code[operator_index - 1] in ['*', '/', '%', '+', '=', '-', '!']:
+                if code[operator_index - 1] in ['<', '>', '*', '/', '%', '+', '=', '-', '!']:
                     continue
         if code[operator_index + 1] == '=':
             compound = True
