@@ -143,6 +143,11 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                 if data_structure_tracker.in_cout_block:
                     data_structure_tracker.cout_index += 1
 
+                elif current_indentation != next_indentation and clean_lines.lines[temp_line_num - 1].find('=') != -1 and \
+                    clean_lines.lines[temp_line_num - 1].find(';') == -1:
+                    temp_line_num = indent_equals(temp_line_num, clean_lines.lines, current_indentation)
+
+
                 elif current_indentation != next_indentation and line_start.find('}') == -1:
                     #check for public: private: and case: exceptions
                     if(check_if_public_or_private(clean_lines.lines[temp_line_num]) and \
@@ -206,6 +211,19 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
 
 
     return results
+
+
+def indent_equals(line_num, code, current_indentation):
+    indent_size = current_indentation
+    while current_indentation and current_indentation == indent_size:
+        line_num += 1
+        current_indentation = re.search(r'^( *)\S',
+                                    code[line_num])
+        if current_indentation:
+            line_start = current_indentation.group()
+            current_indentation = len(line_start) - len(line_start.strip())
+
+    return line_num
 
 
 def check_if_public_or_private(code):

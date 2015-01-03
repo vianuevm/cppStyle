@@ -95,6 +95,9 @@ def check_block_indentation(self, clean_lines):
         data = {'expected': 0, 'found': indentation_size}
         self.add_error(label="BLOCK_INDENTATION", data=data)
 
+    if function:
+        self.current_line_num = find_function_end(clean_lines.lines, self.current_line_num)
+
     #TODO: Need to check indentation ON the same line as the function still
     if (function and not self.outside_main) or struct_or_class:
         #if not egyptian style
@@ -133,6 +136,17 @@ def check_block_indentation(self, clean_lines):
                 self.add_error(**error)
     else:
         return
+
+
+def find_function_end(code, current_line):
+    while code[current_line] and code[current_line].find('{') == -1:
+        current_line += 1
+
+    if len(code[current_line].strip()) == 1:
+        current_line -= 1
+
+    return current_line
+ #this needs to be written because currently you're thinking all functions are only one fucking line of code you idiot.
 
 
 def deep_egyptian_check(code, indentation_size, current_line):

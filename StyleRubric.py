@@ -9,7 +9,7 @@ import os
 import sys
 from copy import deepcopy
 from glob import glob
-
+import re
 from cpplint import CleansedLines, RemoveMultiLineComments
 from style_grader_functions import check_if_function, print_success, get_indent_level
 from style_grader_classes import SpacingTracker
@@ -129,7 +129,7 @@ class StyleRubric(object):
                 if code.find('\t') != -1:
                     self.add_error(label='USING_TABS')
                     break
-                if self.current_line_num == 45:
+                if self.current_line_num == 114:
                     print "stop"
                 for function in self.single_line_checks: function(self, code)
                 for function in self.multi_line_checks: function(self, clean_lines)
@@ -145,6 +145,9 @@ class StyleRubric(object):
             for function in self.misc_checks: function(self)
             self.error_tracker[filename].sort()
             self.file_has_a_main[filename] = not self.outside_main
+
+
+
 
     def adjust_errors(self):
         for function in self.adjustments:
