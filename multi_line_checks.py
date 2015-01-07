@@ -61,8 +61,6 @@ def check_brace_consistency(self, clean_lines):
                     self.add_error(label="BRACE_CONSISTENCY")
                     self.braces_error = True
 
-
-
         except IndexError:
             # cannot access next line of end of file, rubric properties don't matter
             return
@@ -98,7 +96,6 @@ def check_block_indentation(self, clean_lines):
     if function:
         self.current_line_num = find_function_end(clean_lines.lines, self.current_line_num)
 
-    #TODO: Need to check indentation ON the same line as the function still
     if (function and not self.outside_main) or struct_or_class:
         #if not egyptian style
         if code.find('{') == -1:
@@ -146,8 +143,6 @@ def find_function_end(code, current_line):
         current_line -= 1
 
     return current_line
- #this needs to be written because currently you're thinking all functions are only one fucking line of code you idiot.
-
 
 def deep_egyptian_check(code, indentation_size, current_line):
         while code[current_line].find('{') == -1:

@@ -113,20 +113,17 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
             if not data_structure_tracker.in_cout_block:
                 cout_block = check_if_cout_block(clean_lines.lines[temp_line_num])
 
-
             if if_statement or else_if:
                 if clean_lines.lines[temp_line_num + 1].find('{') == -1 and clean_lines.lines[temp_line_num].find('{') == -1:
                     data_structure_tracker.in_if = True
                 elif clean_lines.lines[temp_line_num +1].find('{') != -1 and current_indentation != clean_lines.lines[temp_line_num].find('{'):
                     data_structure_tracker.in_if = True
 
-
             #if you hit a cout that is not finished on one line, it can be indented and still styled correctly
             if cout_block:
                 data_structure_tracker.in_cout_block = True
             if switch_statement:
                 data_structure_tracker.in_switch = True
-
 
             is_break_statement = check_if_break_statement(clean_lines.lines[temp_line_num])
 
@@ -145,8 +142,8 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
 
                 elif current_indentation != next_indentation and clean_lines.lines[temp_line_num - 1].find('=') != -1 and \
                     clean_lines.lines[temp_line_num - 1].find(';') == -1:
-                    temp_line_num = indent_equals(temp_line_num, clean_lines.lines, current_indentation)
 
+                    temp_line_num = indent_equals(temp_line_num, clean_lines.lines, current_indentation)
 
                 elif current_indentation != next_indentation and line_start.find('}') == -1:
                     #check for public: private: and case: exceptions
@@ -203,12 +200,8 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                     next_indentation -= tab_size
                     data_structure_tracker.cout_index = 0
 
-
-
-
         except IndexError:
             data_structure_tracker.in_block = False
-
 
     return results
 
@@ -224,7 +217,6 @@ def indent_equals(line_num, code, current_indentation):
             current_indentation = len(line_start) - len(line_start.strip())
 
     return line_num
-
 
 def check_if_public_or_private(code):
 
@@ -259,41 +251,43 @@ def check_if_struct_or_class(code):
         return True
     return False
 
-
-def check_operator_spacing_around(code, operator):
-    """Check for correct spacing around the given operator in the line.
-
-    There should be exactly one space on either side of the given operator.
-    Notice that operators `*` and `&` don't quite follow this rule, since we're
-    okay with `Foo* foo` or `Foo *foo` for pointers, as long as they're
-    consistent about it.
-
-    :param str code: The line of code to check.
-    :param str operator: The operator to check, such as "+"
-    :returns: The column number of the inconsistent operator, or `None`
-              otherwise. Notice that the column number may be `0`, so you must
-              not check for falsiness, but rather check that
-              `result is not None`.
-    :rtype: int or None
-
-    """
-    operator_regex = re.compile(r"""
-        (?P<code_left>\S+)
-        (?P<whitespace_left>\s*)
-        (?P<operator>{operator})
-        (?P<whitespace_right>\s*)
-        (?P<code_right>\S+)
-    """.format(
-        operator=re.escape(operator)
-    ), re.VERBOSE)
-
-    whitespace_groups = ["whitespace_left", "whitespace_right"]
-    for match in operator_regex.finditer(code):
-        for group in whitespace_groups:
-            if match.group(group) != " ":
-                return match.start("operator")
-    return None
-
-
 def print_success():
     print 'No errors found'
+# DEPRECATED
+
+# def check_operator_spacing_around(code, operator):
+#     """Check for correct spacing around the given operator in the line.
+#
+#     There should be exactly one space on either side of the given operator.
+#     Notice that operators `*` and `&` don't quite follow this rule, since we're
+#     okay with `Foo* foo` or `Foo *foo` for pointers, as long as they're
+#     consistent about it.
+#
+#     :param str code: The line of code to check.
+#     :param str operator: The operator to check, such as "+"
+#     :returns: The column number of the inconsistent operator, or `None`
+#               otherwise. Notice that the column number may be `0`, so you must
+#               not check for falsiness, but rather check that
+#               `result is not None`.
+#     :rtype: int or None
+#
+#     """
+#     operator_regex = re.compile(r"""
+#         (?P<code_left>\S+)
+#         (?P<whitespace_left>\s*)
+#         (?P<operator>{operator})
+#         (?P<whitespace_right>\s*)
+#         (?P<code_right>\S+)
+#     """.format(
+#         operator=re.escape(operator)
+#     ), re.VERBOSE)
+#
+#     whitespace_groups = ["whitespace_left", "whitespace_right"]
+#     for match in operator_regex.finditer(code):
+#         for group in whitespace_groups:
+#             if match.group(group) != " ":
+#                 return match.start("operator")
+#     return None
+#
+#
+

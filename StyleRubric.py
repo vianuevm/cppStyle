@@ -146,9 +146,6 @@ class StyleRubric(object):
             self.error_tracker[filename].sort()
             self.file_has_a_main[filename] = not self.outside_main
 
-
-
-
     def adjust_errors(self):
         for function in self.adjustments:
             function(self)

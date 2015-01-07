@@ -1,4 +1,4 @@
-from style_grader_functions import check_if_function, check_operator_spacing_around, check_if_function_prototype
+from style_grader_functions import check_if_function, check_if_function_prototype
 from pyparsing import Literal, Word, Optional, ParseException, Group, SkipTo, alphanums, LineStart, srange
 import re
 
@@ -29,11 +29,9 @@ def check_int_for_bool(self, code):
     if match and match.group(1).isdigit() and current_function[0] == "bool":
         self.add_error(label="INT_FOR_BOOL")
 
-
+# New operator spacing function
 def check_operator_spacing(self, code):
     # Check normal operators
-    print code
-    print ""
     # account for *=, %=, /=, +=, -=
     indexes = []
     indexes = findOccurences(code, '+') + \
@@ -85,7 +83,6 @@ def operator_helper(compound, code, index):
         if code[index - 1] and code[index - 1] != ' ':
             correct_spacing = False
     return correct_spacing
-
 
 def findOccurences(s, ch):
     return [i for i, letter in enumerate(s) if letter == ch]
