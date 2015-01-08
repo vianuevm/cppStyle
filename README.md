@@ -33,8 +33,3 @@ Web application grades students' .cpp and .h files for EECS 183, a computer scie
 
 * From root, ./run.py -- The website is now up and running locally.
 
-
-##Setup for Backend Development
-
-* Specifications on which files to read are in rubric.ini
-* Specify which files, and hit run.  (more to come, and it's probably going to change for the final grader)
