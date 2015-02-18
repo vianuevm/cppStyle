@@ -18,9 +18,9 @@
         <script src="/static/behavior/scripts.js"></script>
         <link href="/static/presentation/base.css" rel="stylesheet">
     </head>
-    <body>
+    <body class="container">
         <!-- Navbar -->
-        <nav class="navbar navbar-  ">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -44,17 +44,21 @@
         </nav>
 
         <!-- Header/Jumbotron -->
-        <div class="bs-docs-header" id="content">
-            <h1> 183 style  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> </h1>
-            <div>   
-                <ul id="headerlist">
-                    <li> <span id="l1"> Submit any number of c++ files. </span> </li>
-                    <li> <span id="l2"> Receive instant feedback on each line of code. </span> </li>
-                    <li> <span id="l3"> Resubmit your code as often as you want. </span> </li>
-                </ul>
-            </div>
+        <div class="jumbotron">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 text-center">
+                        <h1> 183 style  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> </h1>
+                    </div>
+                    <div class="text-center">   
+                        <p class="text-align">Submit any number of C++ files</p>
+                        <p class="text-align">Receive instant feedback on each line of code</p>
+                        <p class="text-align">Resubmit your code as often as you want</p>
+                    </div>
 
-            <div id="spinner" class="hidden"></div>
+                    <div id="spinner" class="hidden"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Main container -->
