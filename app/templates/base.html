@@ -1,96 +1,96 @@
-
+<!DOCTYPE html>
 <html>
-
-	<head>
-		<meta charset="utf-8">
+    <head>
+        <meta charset="utf-8">
         <meta id="viewport" name="viewport">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <!--need an icon, add later-->
-        
-		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
-		<meta name="description" content="183style is a style grader for EECS 183, University of Michigan's intoductory computer science course.">
-		<meta name="keywords" content="183style EECS CS 183 Computer Science style grader electrical engineering umich michigan university lsa coe">
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
+        <meta name="description" content="183style is a style grader for EECS 183, University of Michigan's intoductory computer science course.">
+        <meta name="keywords" content="183style EECS CS 183 Computer Science style grader electrical engineering umich michigan university lsa coe">
         <title>183style</title>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.9.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
         <script src="/static/behavior/konami.js"></script>
         <script src="/static/behavior/scripts.js"></script>
         <link href="/static/presentation/base.css" rel="stylesheet">
-	</head>
-  <body>
-    <nav class="navbar navbar-  ">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="https://www.umich.edu/~eecs183/">EECS 183</a>
-    </div>
+    </head>
+    <body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-  ">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="https://www.umich.edu/~eecs183/">EECS 183</a>
+                </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li ><a href="https://github.com/vianuevm/cppStyle">Source Code <span class="sr-only">(current)</span></a></li>
-        <li><a href="https://github.com/vianuevm/cppStyle/issues">Report a Bug</a></li>
-        </ul>      
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-    <div class="bs-docs-header" id="content">
-        <h1> 183 style  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> </h1>
-    <div>   
-        <ul id="headerlist">
-            <li> <span id="l1"> Submit any number of c++ files. </span> </li>
-            <li> <span id="l2"> Receive instant feedback on each line of code. </span> </li>
-            <li> <span id="l3"> Resubmit your code as often as you want. </span> </li>
-        </ul>
-    </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li ><a href="https://github.com/vianuevm/cppStyle">Source Code <span class="sr-only">(current)</span></a></li>
+                        <li><a href="https://github.com/vianuevm/cppStyle/issues">Report a Bug</a></li>
+                    </ul>      
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
 
-                    <div id="spinner" class="hidden"></div>
+        <!-- Header/Jumbotron -->
+        <div class="bs-docs-header" id="content">
+            <h1> 183 style  <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> </h1>
+            <div>   
+                <ul id="headerlist">
+                    <li> <span id="l1"> Submit any number of c++ files. </span> </li>
+                    <li> <span id="l2"> Receive instant feedback on each line of code. </span> </li>
+                    <li> <span id="l3"> Resubmit your code as often as you want. </span> </li>
+                </ul>
+            </div>
 
+            <div id="spinner" class="hidden"></div>
+        </div>
 
-
-    </div>
-
-    <div class="container" id="main-container">
-	    <div class="navigation">
+        <!-- Main container -->
+        <div class="container" id="main-container">
+            <div class="navigation">
                 <div class="modal" id="debugModal">
                     <div class="modal-dialog debugDialog">
-                      <div class="modal-content" id="feedback-window">
-                        <div class="modal-header">
-                            <h2> Report a bug </h2>
-                        </div>
-                        <div class="modal-body">
-                            <label for="umich">Unique name</label>
-                            <input type="text" class="form-control" id="umich" placeholder="Enter umich unique name">
-                            <div class="checkbox">
-                                <label>
-                                  <input type="checkbox"> I have verified that the steps below replicate the error.
-                                </label>
+                        <div class="modal-content" id="feedback-window">
+                            <div class="modal-header">
+                                <h2> Report a bug </h2>
                             </div>
-                            <br>
-                            <textarea  id="textarea"  placeholder="Detailed steps of how to replicate error"></textarea>
-                            <br>
-                            <button class="btn">Submit bug for review</button>
+                            <div class="modal-body">
+                                <label for="umich">Unique name</label>
+                                <input type="text" class="form-control" id="umich" placeholder="Enter umich unique name">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> I have verified that the steps below replicate the error.
+                                  </label>
+                                </div>
+                                <br>
+                                <textarea  id="textarea"  placeholder="Detailed steps of how to replicate error"></textarea>
+                                <br>
+                                <button class="btn">Submit bug for review</button>
+                            </div>
+                            <div class="modal-footer">
+                              <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                          <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
-                        </div>
-                      </div>
                     </div>
                 </div>
             </div>
-	    <div>
-	        {% block content %}{% endblock %}
-	    </div>
-    </div>
-    <script src="/static/behavior/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/spin.js/1.2.4/spin.min.js"></script>
-  </body>
+            <div>
+               {% block content %}{% endblock %}
+            </div>
+        </div>
+        <script src="/static/behavior/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/spin.js/1.2.4/spin.min.js"></script>
+    </body>
 </html>
