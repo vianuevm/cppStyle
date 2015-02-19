@@ -14,15 +14,21 @@ background-repeat: repeat-x;
 margin-top: -20;
 }
 
+.jumbotron {
+  color: white;
+  background-color: #6f5499;
+  margin-top: 80px;
+}
+
 #upload-file{
   margin-left: -100;
 }
 
 #headerlist {
   font-size: 140%;
-  float: right;
-  margin-top: -120px;
-  margin-right: 200px;
+  /*float: right;*/
+  /*margin-top: -120px;*/
+  /*margin-right: 200px;*/
 }
 ul {
   
@@ -168,9 +174,9 @@ a, a:focus, a:hover
 }
 
 pre{
-  width: 120%;
-  margin-left: -100;
-
+  /*width: 120%;*/
+  /*margin-left: -100;*/
+  margin-top: 30px; /* match spacing between jumbotron and buttons */
 }
 
 .modal-body {

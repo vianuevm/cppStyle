@@ -29,7 +29,7 @@ def index():
             filename = filename,
             type = file.content_type)
     return render_template('index.html',
-        title = 'Home')
+                            title = 'Home')
 
 @app.route('/uploadajax', methods=['POST'])
 def add_numbers():
@@ -60,7 +60,7 @@ def add_numbers():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
- return send_from_directory(app.config['UPLOAD_FOLDER'],
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
 # @app.route('/login', methods = ['GET', 'POST'])

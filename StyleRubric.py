@@ -152,8 +152,8 @@ class StyleRubric(object):
 
     def print_errors(self, error_list):
         for filename, errors in self.error_tracker.iteritems():
-            print 'Grading {}...'.format(filename)
-            error_list.append('Grading {}...'.format(filename))
+            print 'Grading {}...'.format(filename.split('/')[-1])
+            error_list.append('Grading {}...'.format(filename.split('/')[-1]))
             if not len(errors):
                 print_success()
             for error in errors:

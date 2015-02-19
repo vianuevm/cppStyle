@@ -7,13 +7,17 @@
 		<div>
 			
 			<form id="upload-file" role="form" action="upload" method="post" enctype="multipart/form-data">
-				<fieldset>
-					<input id="code-input" type="file" data-filename-placement="inside" title="Select files" multiple name="file[]" class="btn-primary" />
-                </fieldset>
-                <br>
-                <fieldset>
-                    <button class="code-submission btn btn-primary"  href="#myModal" id="upload-file-btn" type="button" disabled>Submit to 183 style checker</button>
-                </fieldset>
+				<!-- <fieldset> -->
+				<div class="col-sm-6 col-md-6">
+					<input id="code-input" type="file" data-filename-placement="inside" title="Select files" multiple name="file[]" class="btn-primary center-block" />
+				</div>
+                <!-- </fieldset> -->
+                <!-- <br> -->
+                <!-- <fieldset> -->
+				<div class="col-sm-6 col-md-6">
+                    <span class="code-submission btn btn-primary center-block"  href="#myModal" id="upload-file-btn" type="button" disabled>Submit to 183 style checker</button>
+                </div>
+                <!-- </fieldset> -->
 			</form>
 			<div class="container">
 				
@@ -41,8 +45,8 @@
 	</div>
 
 	<pre hidden="true">
-						<ul id="errorlist2" class="list-unstyled">
-						</ul>
+		<ul id="errorlist2" class="list-unstyled">
+		</ul>
 	</pre>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
