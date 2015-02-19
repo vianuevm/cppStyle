@@ -63,7 +63,7 @@
 
         <!-- Main container -->
         <div class="container" id="main-container">
-            <div class="navigation">
+            <div class="navigation hidden">
                 <div class="modal" id="debugModal">
                     <div class="modal-dialog debugDialog">
                         <div class="modal-content" id="feedback-window">
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="row-fluid">
                {% block content %}{% endblock %}
             </div>
         </div>
