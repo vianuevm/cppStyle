@@ -1,9 +1,9 @@
 ![alt tag](https://raw.github.com/vianuevm/183_style_grader/master/app/static/img/388.jpg)
 
-[![Build Status](https://travis-ci.org/thewolfa2/183style.png?branch=master)](https://travis-ci.org/thewolfa2/183style)
-[![Coverage Status](https://coveralls.io/repos/thewolfa2/183style/badge.png?branch=master)](https://coveralls.io/r/thewolfa2/183style?branch=master)
-[![Open bugs](https://badge.waffle.io/thewolfa2/183style.png?label=bug&title=Open%20Bugs)](https://waffle.io/thewolfa2/183style)
-[![Stories in Ready](https://badge.waffle.io/thewolfa2/183style.png?label=ready&title=Ready)](http://waffle.io/thewolfa2/183style)
+[![Build Status](https://travis-ci.org/thewolfa2/cppstyle.png?branch=master)](https://travis-ci.org/thewolfa2/cppstyle)
+[![Coverage Status](https://coveralls.io/repos/thewolfa2/cppstyle/badge.png?branch=master)](https://coveralls.io/r/thewolfa2/cppstyle?branch=master)
+[![Open bugs](https://badge.waffle.io/thewolfa2/cppstyle.png?label=bug&title=Open%20Bugs)](https://waffle.io/thewolfa2/cppstyle)
+[![Stories in Ready](https://badge.waffle.io/thewolfa2/cppstyle.png?label=ready&title=Ready)](http://waffle.io/thewolfa2/cppstyle)
 
 
 183style
