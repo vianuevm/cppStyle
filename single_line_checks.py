@@ -103,11 +103,18 @@ def check_goto(self, code):
 
 
 def erase_string(code):
+    # remove contents of literal strings
     code = code.replace("\\\"", "")
     results = re.findall(r'"(.*?)"', code)
     for string in results:
         quote_mark = "\""
         code = code.replace(quote_mark + string + quote_mark, "\"\"")
+
+    # remove contents of literal chars
+    results = re.findall(r"'(.*?)'", code)
+    for string in results:
+        single_quote_mark = "'"
+        code = code.replace(single_quote_mark + string + single_quote_mark, "''")
     return code
 
 
