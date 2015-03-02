@@ -41,8 +41,8 @@ def check_operator_spacing(self, code):
               findOccurences(code, '/') + \
               findOccurences(code, '=') + \
               findOccurences(code, '!') + \
-              findMultiOccurences(code, '&&') + \
-              findMultiOccurences(code, '||')
+              findMultiOccurences(code, '&') + \
+              findMultiOccurences(code, '|')
 
     for operator_index in indexes:
         if code[operator_index + 1]:
@@ -71,6 +71,23 @@ def check_operator_spacing(self, code):
         if not operator_helper(compound, code, operator_index):
             self.add_error(label="OPERATOR_SPACING", column=operator_index, data={'operator': code[operator_index]})
 
+def is_increment_decrement(code, index):
+    if code[index + 1]:
+        if code[index] in ['+', '-'] and code[index + 1] == code[index]:
+            return True
+    return False
+
+def is_compound_operator(code, index):
+    if code[index + 1]:
+        # Check for +=, -=, *=, /=, %=, >=, <=, ==, !=
+        if code[index] in ['>', '<', '*', '/', '+', '-', '!', '=', '%']:
+            if code[index + 1] == '=':
+                return True
+        # Check &&, ||
+        elif code[index] in ['&', '|']:
+            if code[index + 1] == code[index]:
+                return True
+    return False
 
 def operator_helper(compound, code, index):
     correct_spacing = True
