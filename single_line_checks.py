@@ -40,7 +40,9 @@ def check_operator_spacing(self, code):
               findOccurences(code, '*') + \
               findOccurences(code, '/') + \
               findOccurences(code, '=') + \
-              findOccurences(code, '!')
+              findOccurences(code, '!') + \
+              findMultiOccurences(code, '&&') + \
+              findMultiOccurences(code, '||')
 
     for operator_index in indexes:
         if code[operator_index + 1]:
@@ -86,6 +88,13 @@ def operator_helper(compound, code, index):
 
 def findOccurences(s, ch):
     return [i for i, letter in enumerate(s) if letter == ch]
+def findMultiOccurences(s, sub):
+    occurences = []
+    loc = 0
+    while s.find(sub, loc) != -1:
+        occurences.append(s.find(sub, loc))
+        loc = occurences[-1] + 1 # find is inclusive of start, must move forward 1
+    return occurences
 
 def check_equals_true(self, code):
     keyword = Literal("true") | Literal("false")
