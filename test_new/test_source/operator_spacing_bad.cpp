@@ -9,10 +9,15 @@ int main() {
     x/=1;
     x%=2;
     x!=1;
+    x==1;
     x>=2;
     x<=2;
     x&&false;
     x||true;
+
+    // increment/decrement operators
+    x++;
+    x--;
 
     // normal operators
     x+1;
