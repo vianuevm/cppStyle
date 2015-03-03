@@ -63,7 +63,14 @@ def check_operator_spacing(self, code):
                 self.add_error(label='OPERATOR_SPACING', column=operator_index,
                                 data={'operator': code[operator_index:operator_index + 2]})
         else:
-            if not operator_helper(False, code, operator_index):
+            # Add code checking for unary + and - operators
+            if code[operator_index] == '!':
+                index = operator_index - 1
+                if code[index]:
+                    if code[index] != ' ' and code[index] != '\r' and \
+                        code[index] != '\n' and code[index] != '(':
+                            self.add_error(label='OPERATOR_SPACING', column=operator_index, data={'operator': code[operator_index]})
+            elif not operator_helper(False, code, operator_index):
                 self.add_error(label='OPERATOR_SPACING', column=operator_index, data={'operator': code[operator_index]})
 
 def is_increment_decrement(code, index):
