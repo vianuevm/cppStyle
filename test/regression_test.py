@@ -1,7 +1,7 @@
 #!/usr/bin/python
-from eecs183style.test import load_code_segment
-from eecs183style.style_grader_functions import *
-from eecs183style.StyleRubric import *
+from test import load_code_segment
+from style_grader_functions import *
+from StyleRubric import *
 import unittest
 
 class RegressionTesting(unittest.TestCase):
@@ -59,6 +59,15 @@ class RegressionTesting(unittest.TestCase):
     def test_semicolon_spacing_good2(self): self.assertEqual(0, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
     @load_code_segment('semicolon_spacing_bad.cpp')
     def test_semicolon_spacing_bad(self): self.assertEqual(4, self.rubric.error_types['FOR_LOOP_SEMICOLON_SPACING'])
+
+    @load_code_segment('logical_AND_OR_spacing_bad.cpp')
+    def test_bad_logical_spacing(self): self.assertEqual(3, self.rubric.error_types['OPERATOR_SPACING'])
+    @load_code_segment('logical_AND_OR_spacing_good.cpp')
+    def test_good_logical_spacing(self): self.assertEqual(0, self.rubric.error_types['OPERATOR_SPACING'])
+    @load_code_segment('operator_spacing_bad.cpp')
+    def test_bad_operator_spacing(self): self.assertEqual(20, self.rubric.error_types['OPERATOR_SPACING'])
+    @load_code_segment('operator_spacing_good.cpp')
+    def test_good_operator_spacing(self): self.assertEqual(2, self.rubric.error_types['OPERATOR_SPACING'])
 
     @load_code_segment('regression_indentation_group.cpp')
     def test_regression_indentation_group(self):

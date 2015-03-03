@@ -39,36 +39,60 @@ def check_operator_spacing(self, code):
               findOccurences(code, '%') + \
               findOccurences(code, '*') + \
               findOccurences(code, '/') + \
+              findOccurences(code, '!') + \
+              findOccurences(code, '>') + \
+              findOccurences(code, '<') + \
               findOccurences(code, '=') + \
-              findOccurences(code, '!')
+              findOccurences(code, '&') + \
+              findOccurences(code, '|')
+    indexes.sort()  # Force compound operator indexes to be correctly ordered
 
+    skip_next = False
     for operator_index in indexes:
-        if code[operator_index + 1]:
-            if code[operator_index + 1] == '+' or\
-                code[operator_index + 1] == '-' or\
-                code[operator_index + 1] == '*':
-                continue
-        if code[operator_index - 1]:
-                if code[operator_index - 1] == '+' \
-                     or code[operator_index - 1] == '-' \
-                     or code[operator_index - 1] == '*':
-            # if it's an increment, decrement ignore it
-                        continue
-        compound = False
-        # check to see if it's a compound that's been checked already
-        if code[operator_index] == '=':
-            if code[operator_index - 1]:
-                if code[operator_index - 1] in ['<', '>', '*', '/', '%', '+', '=', '-', '!']:
-                    continue
-        if code[operator_index + 1] == '=':
-            compound = True
-        if code[operator_index] == '-' and code[operator_index + 1]:
-            if is_number(code[operator_index + 1]) or code[operator_index + 1] == '(':
-            #neg number - forget about it
-                continue
-        if not operator_helper(compound, code, operator_index):
-            self.add_error(label="OPERATOR_SPACING", column=operator_index, data={'operator': code[operator_index]})
+        if skip_next:
+            # skip second operator in compound/increment/decrement operator
+            skip_next = False
+            continue
+        
+        if is_increment_decrement(code, operator_index):
+            # Don't worry about increment/decrement operators
+            skip_next = True
+        elif is_compound_operator(code, operator_index):
+            skip_next = True
+            if not operator_helper(True, code, operator_index):
+                self.add_error(label='OPERATOR_SPACING', column=operator_index,
+                                data={'operator': code[operator_index:operator_index + 2]})
+        else:
+            # Add code checking for unary + and - operators
+            if code[operator_index] == '!':
+                index = operator_index - 1
+                if code[index]:
+                    if code[index] != ' ' and code[index] != '\r' and \
+                        code[index] != '\n' and code[index] != '(':
+                            self.add_error(label='OPERATOR_SPACING', column=operator_index, data={'operator': code[operator_index]})
+            elif not operator_helper(False, code, operator_index):
+                self.add_error(label='OPERATOR_SPACING', column=operator_index, data={'operator': code[operator_index]})
 
+def is_increment_decrement(code, index):
+    if code[index + 1]:
+        if code[index] in ['+', '-'] and code[index + 1] == code[index]:
+            return True
+    return False
+
+def is_compound_operator(code, index):
+    if code[index + 1]:
+        if code[index] in ['>', '<']:
+            if code[index + 1] == '=' or code[index + 1] == code[index]:
+                return True
+        # Check for +=, -=, *=, /=, %=, >=, <=, ==, !=
+        if code[index] in ['*', '/', '+', '-', '!', '=', '%']:
+            if code[index + 1] == '=':
+                return True
+        # Check &&, ||
+        elif code[index] in ['&', '|']:
+            if code[index + 1] == code[index]:
+                return True
+    return False
 
 def operator_helper(compound, code, index):
     correct_spacing = True
@@ -86,6 +110,13 @@ def operator_helper(compound, code, index):
 
 def findOccurences(s, ch):
     return [i for i, letter in enumerate(s) if letter == ch]
+def findMultiOccurences(s, sub):
+    occurences = []
+    loc = 0
+    while s.find(sub, loc) != -1:
+        occurences.append(s.find(sub, loc))
+        loc = occurences[-1] + 1 # find is inclusive of start, must move forward 1
+    return occurences
 
 def check_equals_true(self, code):
     keyword = Literal("true") | Literal("false")
@@ -103,11 +134,20 @@ def check_goto(self, code):
 
 
 def erase_string(code):
-    code = code.replace("\\\"", "")
+    # remove contents of literal strings
+    code = code.replace("\\\"", "") # remove escaped quotes
     results = re.findall(r'"(.*?)"', code)
     for string in results:
         quote_mark = "\""
         code = code.replace(quote_mark + string + quote_mark, "\"\"")
+
+    # remove contents of literal chars
+    code = code.replace('\\\\', '') # replace escaped backslash
+    code = code.replace("\\'", "") # remove escaped single quote
+    results = re.findall(r"'(.*?)'", code)
+    for string in results:
+        single_quote_mark = "'"
+        code = code.replace(single_quote_mark + string + single_quote_mark, "''")
     return code
 
 
