@@ -42,15 +42,20 @@ def check_operator_spacing(self, code):
               findOccurences(code, '!') + \
               findOccurences(code, '>') + \
               findOccurences(code, '<') + \
-              findOccurences(code, '=')
+              findOccurences(code, '=') + \
+              findOccurences(code, '&') + \
+              findOccurences(code, '|')
     indexes.sort()  # Force compound operator indexes to be correctly ordered
 
     skip_next = False
     for operator_index in indexes:
         if skip_next:
+            # skip second operator in compound/increment/decrement operator
             skip_next = False
             continue
+        
         if is_increment_decrement(code, operator_index):
+            # Don't worry about increment/decrement operators
             skip_next = True
         elif is_compound_operator(code, operator_index):
             skip_next = True
