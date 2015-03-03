@@ -91,6 +91,9 @@ $(document).ready(function() {
             cache: false,
             processData: false,
             async: false,
+            error: function() {
+            	console.log('Failure!');
+            }
             success: function(data) {
                 console.log('Success!');
 				
