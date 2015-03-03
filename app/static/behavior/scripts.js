@@ -93,7 +93,7 @@ $(document).ready(function() {
             async: false,
             error: function() {
             	console.log('Failure!');
-            }
+            },
             success: function(data) {
                 console.log('Success!');
 				
