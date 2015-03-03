@@ -39,37 +39,27 @@ def check_operator_spacing(self, code):
               findOccurences(code, '%') + \
               findOccurences(code, '*') + \
               findOccurences(code, '/') + \
-              findOccurences(code, '=') + \
               findOccurences(code, '!') + \
-              findMultiOccurences(code, '&') + \
-              findMultiOccurences(code, '|')
+              findOccurences(code, '>') + \
+              findOccurences(code, '<') + \
+              findOccurences(code, '=')
+    indexes.sort()  # Force compound operator indexes to be correctly ordered
 
+    skip_next = False
     for operator_index in indexes:
-        if code[operator_index + 1]:
-            if code[operator_index + 1] == '+' or\
-                code[operator_index + 1] == '-' or\
-                code[operator_index + 1] == '*':
-                continue
-        if code[operator_index - 1]:
-                if code[operator_index - 1] == '+' \
-                     or code[operator_index - 1] == '-' \
-                     or code[operator_index - 1] == '*':
-            # if it's an increment, decrement ignore it
-                        continue
-        compound = False
-        # check to see if it's a compound that's been checked already
-        if code[operator_index] == '=':
-            if code[operator_index - 1]:
-                if code[operator_index - 1] in ['<', '>', '*', '/', '%', '+', '=', '-', '!']:
-                    continue
-        if code[operator_index + 1] == '=':
-            compound = True
-        if code[operator_index] == '-' and code[operator_index + 1]:
-            if is_number(code[operator_index + 1]) or code[operator_index + 1] == '(':
-            #neg number - forget about it
-                continue
-        if not operator_helper(compound, code, operator_index):
-            self.add_error(label="OPERATOR_SPACING", column=operator_index, data={'operator': code[operator_index]})
+        if skip_next:
+            skip_next = False
+            continue
+        if is_increment_decrement(code, operator_index):
+            skip_next = True
+        elif is_compound_operator(code, operator_index):
+            skip_next = True
+            if not operator_helper(True, code, operator_index):
+                self.add_error(label='OPERATOR_SPACING', column=operator_index,
+                                data={'operator': code[operator_index:operator_index + 2]})
+        else:
+            if not operator_helper(False, code, operator_index):
+                self.add_error(label='OPERATOR_SPACING', column=operator_index, data={'operator': code[operator_index]})
 
 def is_increment_decrement(code, index):
     if code[index + 1]:
