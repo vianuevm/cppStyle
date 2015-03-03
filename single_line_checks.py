@@ -31,6 +31,8 @@ def check_int_for_bool(self, code):
 
 # New operator spacing function
 def check_operator_spacing(self, code):
+    # TODO: Temporary fix to ignore & and * operators in function params
+    if check_if_function(code) or check_if_function_prototype(code): return
     # Check normal operators
     # account for *=, %=, /=, +=, -=
     indexes = []
@@ -54,11 +56,10 @@ def check_operator_spacing(self, code):
             skip_next = False
             continue
         
-        if is_increment_decrement(code, operator_index):
-            # Don't worry about increment/decrement operators
+        if skip_operator(code, operator_index):
             skip_next = True
         elif is_compound_operator(code, operator_index):
-            skip_next = True
+            skip_next = True # ignore next operator, since we are using first of compound
             if not operator_helper(True, code, operator_index):
                 self.add_error(label='OPERATOR_SPACING', column=operator_index,
                                 data={'operator': code[operator_index:operator_index + 2]})
@@ -73,9 +74,19 @@ def check_operator_spacing(self, code):
             elif not operator_helper(False, code, operator_index):
                 self.add_error(label='OPERATOR_SPACING', column=operator_index, data={'operator': code[operator_index]})
 
+def skip_operator(code, index):
+    # Don't worry about increment/decrement/pointer-arrow operators
+    return is_increment_decrement(code, index) or is_pointer_arrow(code, index)
+
 def is_increment_decrement(code, index):
     if code[index + 1]:
         if code[index] in ['+', '-'] and code[index + 1] == code[index]:
+            return True
+    return False
+
+def is_pointer_arrow(code, index):
+    if code[index + 1]:
+        if code[index] == '-' and code[index + 1] == '>':
             return True
     return False
 
