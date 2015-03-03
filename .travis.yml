@@ -1,6 +1,6 @@
 language: python
 python: "2.7"
 install: pip install -r requirements.txt
-script: py.test --cov eecs183style eecs183style/test
+script: py.test regression.py
 after_success:
     - coveralls
