@@ -90,7 +90,7 @@ def is_compound_operator(code, index):
                 return True
         # Check &&, ||
         elif code[index] in ['&', '|']:
-            if code[index + 1] == code[index]:
+            if code[index + 1] == code[index] or code[index + 1] == '=':
                 return True
     return False
 

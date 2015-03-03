@@ -15,15 +15,14 @@ YAHOO.util.Event.onDOMReady(function() {
 
 
 $(document).ready(function() {
-	
 
 	this.spinner = new Spinner({radius: 30, length: 30}).spin($("#spinner")[0]);
 
 	function updateForm() {
-		if (!$('#code-input').val()) {
-			$('#code-submission').attr("disabled", "disabled");
+		if ($('#code-input').val() != undefined && $('#code-input').val() != '') {
+			$('#upload-file-btn').removeAttr("disabled");
 		} else {
-			$('.code-submission').removeAttr("disabled");
+			$('#upload-file-btn').attr("disabled", '');
 		}
 		
 	}
@@ -54,7 +53,7 @@ $(document).ready(function() {
 	function clearFileInput() {
 		$control = $('#code-input');
 		$control.replaceWith($control = $control.clone(true));
-		$('.code-submission').attr("disabled", "disabled");
+		$('#upload-file-btn').attr("disabled", "disabled");
 		$('#code-input').parent().find('span')[0].innerHTML = "Select files";
 
 	}
@@ -76,10 +75,9 @@ $(document).ready(function() {
 
 	$('#code-input').on("change", function(){
 		updateForm();
-
-		
 	});
 
+	$('#code-input').val('');
 	updateForm();
 	
     $('#upload-file-btn').click(function() {
