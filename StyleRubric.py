@@ -126,6 +126,9 @@ class StyleRubric(object):
             clean_code = clean_lines.lines
             for self.current_line_num, code in enumerate(clean_code):
                 code = erase_string(code)
+                # TODO: Improve the check for 'Is this a #include line?'
+                if '#include' in code:
+                    continue
                 if code.find('\t') != -1:
                     self.add_error(label='USING_TABS')
                     break
