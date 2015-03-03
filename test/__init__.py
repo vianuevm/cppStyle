@@ -1,5 +1,5 @@
-from eecs183style.style_grader_functions import *
-from eecs183style.StyleRubric import *
+from style_grader_functions import *
+from StyleRubric import *
 import os.path
 
 TEST_SOURCE_PATH = os.path.abspath(os.path.dirname(__file__))

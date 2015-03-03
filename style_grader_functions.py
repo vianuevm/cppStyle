@@ -2,7 +2,7 @@ from collections import Counter
 import getopt
 import re
 
-from pyparsing import Literal, Word, Optional, ParseException, alphanums, Keyword, srange
+from pyparsing import Literal, Word, Optional, ParseException, alphanums, Keyword, srange, alphas
 
 class EmptyFileException(object):
     pass
@@ -18,9 +18,9 @@ def get_indent_level(filename):
     return Counter(results).most_common(1)[0] if results else 4
 
 def check_if_function(code):
-    return_type = Word(alphanums + '_[]') # Bad style to have "_" but syntactically valid
-    function_name = Word(alphanums + '_:')
-    args = Word(alphanums + ',_[]&* ')
+    return_type = Word(alphas + '_', alphanums + '_') # Bad style to have "_" but syntactically valid
+    function_name = Word(alphas + '_', alphanums + '_:')
+    args = Word(alphas + '_', alphanums + ',_[]&* ')
     function_open = Literal("{")
     function_close = Literal("}")
     function_declaration = Optional(srange("[a-z]")) + return_type + function_name + "(" + Optional(args)
