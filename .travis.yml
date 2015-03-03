@@ -1,6 +1,4 @@
 language: python
 python: "2.7"
 install: pip install -r requirements.txt
-script: py.test regression_test.py
-after_success:
-    - coveralls
+script: pytest regression_test.py
