@@ -148,10 +148,25 @@ class StyleRubric(object):
             for function in self.misc_checks: function(self)
             self.error_tracker[filename].sort()
             self.file_has_a_main[filename] = not self.outside_main
+            if not self.file_has_a_main[filename]:
+                self.remove_def_above_main_errors(filename)
 
     def adjust_errors(self):
         for function in self.adjustments:
             function(self)
+
+    def remove_def_above_main_errors(self, filename):
+        new_error_list = []
+        # temp error to generate the DEF_ABOVE_MAIN error message
+        temp_err = StyleError(1, 'DEFINITION_ABOVE_MAIN', data={'function': '__error_function__'})
+        def_above_main_message = temp_err.get_error_message('DEFINITION_ABOVE_MAIN').replace('__error_function__', '')
+
+        # Remove any errors that deal with function def above main
+        for e in self.error_tracker[filename]:
+            if def_above_main_message not in e.message:
+                new_error_list.append(e)
+        self.error_types['DEFINITION_ABOVE_MAIN'] = 0
+        self.error_tracker[filename] = new_error_list
 
     def print_errors(self, error_list):
         for filename, errors in self.error_tracker.iteritems():
