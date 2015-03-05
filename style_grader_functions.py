@@ -170,9 +170,6 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                         data_structure_tracker.add_object_brace("{")
                     data_structure_tracker.add_brace("{")
                     next_indentation = current_indentation + tab_size
-                    if data_structure_tracker.in_if:
-                        data_structure_tracker.in_if = False
-                        next_indentation = current_indentation
 
 
                 elif clean_lines.lines[temp_line_num].find("}") != -1:
@@ -183,6 +180,10 @@ def indent_helper(indentation, tab_size, clean_lines, data_structure_tracker, te
                         data_structure_tracker.pop_object_brace()
                     data_structure_tracker.pop_brace()
                     next_indentation = next_indentation - tab_size
+
+                    if data_structure_tracker.in_if:
+                        data_structure_tracker.in_if = False
+                        next_indentation = current_indentation
 
                     if end_switch and not data_structure_tracker.in_switch:
                         next_indentation = current_indentation

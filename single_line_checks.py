@@ -59,12 +59,13 @@ def check_operator_spacing(self, code):
         if skip_operator(code, operator_index):
             skip_next = True
         elif is_compound_operator(code, operator_index):
-            skip_next = True # ignore next operator, since we are using first of compound
+            # Always use front char in compound operators, therefore need to skip second char
+            skip_next = True
             if not operator_helper(True, code, operator_index):
                 self.add_error(label='OPERATOR_SPACING', column=operator_index,
                                 data={'operator': code[operator_index:operator_index + 2]})
         else:
-            # Add code checking for unary + and - operators
+            # TODO: Add code checking for unary + and - operators
             if code[operator_index] == '!':
                 index = operator_index - 1
                 if code[index]:
@@ -121,13 +122,6 @@ def operator_helper(compound, code, index):
 
 def findOccurences(s, ch):
     return [i for i, letter in enumerate(s) if letter == ch]
-def findMultiOccurences(s, sub):
-    occurences = []
-    loc = 0
-    while s.find(sub, loc) != -1:
-        occurences.append(s.find(sub, loc))
-        loc = occurences[-1] + 1 # find is inclusive of start, must move forward 1
-    return occurences
 
 def check_equals_true(self, code):
     keyword = Literal("true") | Literal("false")
@@ -223,13 +217,6 @@ def check_main_syntax(self, code):
                 not len((main_prefix + full_use).searchString(code)):
             self.add_error(label="MAIN_SYNTAX")
 
-
-def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
 
 def check_first_char(self, code):
     # check if the first char is lower-case alpha or '_'
